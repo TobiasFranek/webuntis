@@ -20,7 +20,7 @@ namespace Webuntis\Repositories;
 
 use Webuntis\Exceptions\RepositoryException;
 use Webuntis\Util\ExecutionHandler;
-use Webuntis\Models\Model;
+use Webuntis\Models\AbstractModel;
 
 /**
  * Class PeriodRepository
@@ -34,7 +34,7 @@ class PeriodRepository extends Repository {
      * @param array $params
      * @param null $id
      * @param null $type
-     * @return Model[]
+     * @return AbstractModel[]
      */
     public function getSomeFromCurrentDay(array $params, $id = null, $type = null) {
         if (empty($params)) {
@@ -65,7 +65,7 @@ class PeriodRepository extends Repository {
      * get the period objects from the current day
      * @param null $id
      * @param null $type
-     * @return Model[]
+     * @return AbstractModel[]
      */
     public function getAllFromCurrentDay($id = null, $type = null) {
         if ($type == null) {

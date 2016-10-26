@@ -25,7 +25,7 @@ use Webuntis\Models\Interfaces\ModelInterface;
  * @package Webuntis\Models
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-abstract class Model implements ModelInterface {
+abstract class AbstractModel implements ModelInterface {
     /**
      * @var int
      */
@@ -55,7 +55,7 @@ abstract class Model implements ModelInterface {
     /**
      * set the id
      * @param $id
-     * @return Model $this
+     * @return AbstractModel $this
      */
     public function setId($id) {
         $this->id = $id;

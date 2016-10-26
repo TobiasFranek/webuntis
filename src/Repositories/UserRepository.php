@@ -20,7 +20,7 @@ namespace Webuntis\Repositories;
 
 
 use Webuntis\WebuntisFactory;
-use Webuntis\Models\Model;
+use Webuntis\Models\AbstractModel;
 
 /**
  * Class UserRepository
@@ -30,10 +30,10 @@ use Webuntis\Models\Model;
 class UserRepository extends Repository {
     /**
      * return the current User that is logged in in the default instance
-     * @return Model
+     * @return AbstractModel
      */
     public function getCurrentUser() {
-        $instance = WebuntisFactory::create(Model::class);
+        $instance = WebuntisFactory::create(AbstractModel::class);
         return $instance->getCurrentUser();
     }
 
@@ -42,7 +42,7 @@ class UserRepository extends Repository {
      * @return int
      */
     public function getCurrentUserType() {
-        $instance = WebuntisFactory::create(Model::class);
+        $instance = WebuntisFactory::create(AbstractModel::class);
         return $instance->getCurrentUserType();
     }
 }
