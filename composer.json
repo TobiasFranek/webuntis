@@ -1,0 +1,27 @@
+{
+  "name": "tfranek/webuntis",
+  "type": "library",
+  "description": "A API library that make it easy to access the Webuntis JSON RPC 2.0 API",
+  "keywords": [
+    "webuntis",
+    "webuntisapi",
+    "api",
+    "json rpc"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tobias Franek",
+      "email": "tobias.franek@gmail.com"
+    }
+  ],
+  "require": {
+    "fguillot/json-rpc": "@stable",
+    "doctrine/cache": "^1.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Webuntis\\": "src"
+    }
+  }
+}

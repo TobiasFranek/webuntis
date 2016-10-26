@@ -1,0 +1,5 @@
+# JETBRAINS
+/.idea/
+
+# COMPOSER
+/vendor/
