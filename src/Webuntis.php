@@ -20,7 +20,7 @@ namespace Webuntis;
 
 use Doctrine\Common\Cache\ApcuCache;
 use JsonRPC\Client;
-use Webuntis\Models\Model;
+use Webuntis\Models\AbstractModel;
 use Webuntis\Query\Query;
 
 /**
@@ -95,7 +95,7 @@ class Webuntis {
 
     /**
      * return the User thats is currently logged in with this instance
-     * @return Model
+     * @return AbstractModel
      */
     public function getCurrentUser() {
         $query = new Query();

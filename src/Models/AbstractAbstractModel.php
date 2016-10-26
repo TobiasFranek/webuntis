@@ -16,33 +16,62 @@
  * and is licensed under the MIT license.
  */
 
-namespace Webuntis\Repositories;
+namespace Webuntis\Models;
 
-
-use Webuntis\WebuntisFactory;
-use Webuntis\Models\Model;
+use Webuntis\Models\Interfaces\ModelInterface;
 
 /**
- * Class UserRepository
- * @package Webuntis\Repositories
+ * Abstract Class Model
+ * @package Webuntis\Models
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class UserRepository extends Repository {
+abstract class AbstractModel implements ModelInterface {
     /**
-     * return the current User that is logged in in the default instance
-     * @return Model
+     * @var int
      */
-    public function getCurrentUser() {
-        $instance = WebuntisFactory::create(Model::class);
-        return $instance->getCurrentUser();
+    private $id;
+
+    /**
+     * @var string
+     */
+    const METHOD = '';
+
+    /**
+     * Model constructor.
+     * @param array $data
+     */
+    public function __construct(array $data) {
+        $this->parse($data);
     }
 
     /**
-     * return the user type (2 = teacher, 5 = student) of the current User that is logged in in the default instance
+     * returns the id
      * @return int
      */
-    public function getCurrentUserType() {
-        $instance = WebuntisFactory::create(Model::class);
-        return $instance->getCurrentUserType();
+    public function getId() {
+        return $this->id;
     }
+
+    /**
+     * set the id
+     * @param $id
+     * @return AbstractModel $this
+     */
+    public function setId($id) {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * serializes the object and returns an array with the objects values
+     * @return array
+     */
+    abstract function serialize();
+
+    /**
+     * parses the given data from the json rpc api to the right format for the object
+     * @param $data
+     */
+    abstract protected function parse($data);
 }

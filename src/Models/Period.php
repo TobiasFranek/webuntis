@@ -25,7 +25,7 @@ use Webuntis\Query\Query;
  * @package Webuntis\Models
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class Period extends Model {
+class Period extends AbstractModel {
 
     /**
      * @var \DateTime

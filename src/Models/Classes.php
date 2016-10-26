@@ -24,7 +24,7 @@ use Webuntis\Models\Interfaces\CachableModelInterface;
  * @package Webuntis\Models
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class Classes extends Model implements CachableModelInterface {
+class Classes extends AbstractModel implements CachableModelInterface {
 
     /**
      * @var string

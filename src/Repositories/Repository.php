@@ -20,7 +20,7 @@ namespace Webuntis\Repositories;
 
 use Webuntis\Exceptions\RepositoryException;
 use Webuntis\Util\ExecutionHandler;
-use Webuntis\Models\Model;
+use Webuntis\Models\AbstractModel;
 use Webuntis\Webuntis;
 use Webuntis\WebuntisFactory;
 
@@ -53,7 +53,7 @@ class Repository {
     /**
      * return all objects that have been searched for
      * @param array $params
-     * @return \Webuntis\Models\Model[]
+     * @return \Webuntis\Models\AbstractModel[]
      */
     public function findBy(array $params) {
         if (empty($params)) {
@@ -61,7 +61,7 @@ class Repository {
         }
         $result = ExecutionHandler::execute($this->model, $this->instance, []);
 
-        /** @var Model[] $data */
+        /** @var AbstractModel[] $data */
         $data = $this->parse($result);
 
         return $this->find($data, $params);
@@ -69,7 +69,7 @@ class Repository {
 
     /**
      * returns all objects it could find
-     * @return Model[]
+     * @return AbstractModel[]
      */
     public function findAll() {
         $result = ExecutionHandler::execute($this->model, $this->instance, []);
@@ -78,13 +78,13 @@ class Repository {
 
     /**
      * parses the given objects
-     * @param Model[] $result
-     * @return Model[]
+     * @param AbstractModel[] $result
+     * @return AbstractModel[]
      */
     protected function parse($result) {
         $data = [];
         foreach ($result as $key => $value) {
-            /** @var Model $newObj */
+            /** @var AbstractModel $newObj */
             $newObj = new $this->model($value);
             $data[] = $newObj;
         }
@@ -93,9 +93,9 @@ class Repository {
 
     /**
      * searches the $data array with the given params
-     * @param Model[] $data
+     * @param AbstractModel[] $data
      * @param array $params
-     * @return Model[]
+     * @return AbstractModel[]
      */
     protected function find($data, $params) {
         foreach ($params as $key => $value) {
