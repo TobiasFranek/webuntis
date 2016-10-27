@@ -14,3 +14,7 @@ These instructions will show you how to get this package up and running.
 ```
 composer require tfranek/webuntis
 ```
+
+## Documentation
+
+You can read the docs [here](docs/overview.md)
