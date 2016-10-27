@@ -39,12 +39,13 @@ class ExecutionHandler {
      * @return array
      */
     public static function execute($model, Webuntis $instance, array $params) {
+        $interfaces = class_implements($model);
         $cacheDriver = new ApcuCache();
-        if ($cacheDriver->contains($model::METHOD) && $model instanceof CachableModelInterface) {
+        if ($cacheDriver->contains($model::METHOD) && isset($interfaces[CachableModelInterface::class])) {
             $result = $cacheDriver->fetch($model::METHOD);
         } else {
             $result = $instance->getClient()->execute($model::METHOD, $params);
-            if ($model instanceof CachableModelInterface) {
+            if (isset($interfaces[CachableModelInterface::class])) {
                 $cacheDriver->save($model::METHOD, $result);
             }
         }
