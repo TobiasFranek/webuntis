@@ -12,7 +12,7 @@ The basic config array looks like this, but with this configruation you only can
         ]
 ```
 
-The recommended configuration is when you have an default and an admin configuraion, so you can fetch all data from the api. The admin account doesnt have to be an admin account it is enough when you give him full reading permission.
+The recommended configuration is when you have an default and an admin configuration, so you can fetch all data from the api. The admin account doesnt have to be an admin account it is enough when you give him full reading permission.
 
 ```php
  'default' => [
