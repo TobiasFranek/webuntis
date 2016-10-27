@@ -16,7 +16,7 @@ you get an Repository object which has already defined functions that allow you 
 
 ## Repositories
 
-every Repository has custom method the default Repository has these 2 methods:
+every Repository has custom methods the default Repository has these 2 methods:
 
 ```php
 $query->get('Students')->findAll();
