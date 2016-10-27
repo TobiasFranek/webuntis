@@ -37,6 +37,12 @@ use Webuntis\Repositories\UserRepository;
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
 class Query {
+
+    /**
+     * @var Repository[]
+     */
+    private static $chachedRepositories = [];
+
     /**
      * @var array
      */
@@ -78,11 +84,14 @@ class Query {
     public function get($className) {
         if (isset($this->models[$className])) {
             if (isset($this->repositories[$className])) {
-                $repository = new $this->repositories[$className]($this->models[$className]);
+                $name = $className;
             } else {
-                $repository = new $this->repositories['Default']($this->models[$className]);
+                $name = 'Default';
             }
-            return $repository;
+            if (!isset(static::$chachedRepositories[$className])) {
+                static::$chachedRepositories[$className] = new $this->repositories[$name]($this->models[$className]);
+            }
+            return static::$chachedRepositories[$className];
         }
         throw new QueryException('Model ' . $className . ' not found');
     }
