@@ -24,17 +24,12 @@ namespace Webuntis;
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
 class WebuntisConfiguration {
-    /**
-     * @var array
-     */
-    private $config = [];
 
     /**
      * WebuntisConfiguration constructor.
      * @param array $config
      */
     public function __construct(array $config) {
-        $this->config = $config;
         $this->setConfig($config);
     }
 
@@ -43,7 +38,7 @@ class WebuntisConfiguration {
      * @param array $config
      */
     public function addConfig(array $config) {
-        $newConfig = array_merge($this->config, $config);
+        $newConfig = array_merge($this->getConfig(), $config);
 
         WebuntisFactory::setConfig($newConfig);
     }
@@ -53,7 +48,7 @@ class WebuntisConfiguration {
      * @return array
      */
     public function getConfig() {
-        return $this->config;
+        return WebuntisFactory::getConfig();
     }
 
     /**
@@ -62,9 +57,8 @@ class WebuntisConfiguration {
      * @return WebuntisConfiguration $this
      */
     public function setConfig(array $config) {
-        $this->config = $config;
-
         WebuntisFactory::setConfig($config);
+
         return $this;
     }
 }

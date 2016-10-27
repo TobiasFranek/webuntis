@@ -81,4 +81,12 @@ class WebuntisFactory {
         static::$config = $config;
     }
 
+    /**
+     * return the current configuration
+     * @return array
+     */
+    public static function getConfig() {
+        return static::$config;
+    }
+
 }
