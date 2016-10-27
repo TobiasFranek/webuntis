@@ -27,7 +27,7 @@ use Webuntis\Models\AbstractModel;
  * @package Webuntis\Repositories
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class UserRepository extends Repository {
+class StudentsRepository extends Repository {
     /**
      * return the current User that is logged in in the default instance
      * @return AbstractModel

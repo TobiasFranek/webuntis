@@ -26,7 +26,7 @@ use Webuntis\Models\Interfaces\CachableModelInterface;
  * @package Webuntis\Models
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class User extends AbstractModel implements AdministrativeModelInterface, CachableModelInterface {
+class Students extends AbstractModel implements AdministrativeModelInterface, CachableModelInterface {
     /**
      * @var string
      */
@@ -68,7 +68,7 @@ class User extends AbstractModel implements AdministrativeModelInterface, Cachab
     /**
      * sets the name
      * @param string $name
-     * @return User $this
+     * @return Students $this
      */
     public function setName($name) {
         $this->name = $name;
@@ -115,7 +115,7 @@ class User extends AbstractModel implements AdministrativeModelInterface, Cachab
     /**
      * set the firstName
      * @param string $firstName
-     * @return User $this
+     * @return Students $this
      */
     public function setFirstName($firstName) {
         $this->firstName = $firstName;
@@ -134,7 +134,7 @@ class User extends AbstractModel implements AdministrativeModelInterface, Cachab
     /**
      * sets the lastName
      * @param string $lastName
-     * @return User $this
+     * @return Students $this
      */
     public function setLastName($lastName) {
         $this->lastName = $lastName;
@@ -153,7 +153,7 @@ class User extends AbstractModel implements AdministrativeModelInterface, Cachab
     /**
      * sets the gender
      * @param string $gender
-     * @return User $this
+     * @return Students $this
      */
     public function setGender($gender) {
         $this->gender = $gender;
@@ -172,7 +172,7 @@ class User extends AbstractModel implements AdministrativeModelInterface, Cachab
     /**
      * sets the key
      * @param string $key
-     * @return User $this
+     * @return Students $this
      */
     public function setKey($key) {
         $this->key = $key;
