@@ -21,7 +21,7 @@ every Repository has custom methods the default Repository has these 2 methods:
 ```php
 $query->get('Students')->findAll();
 ```
-if you call this method you get all Students in this case
+if you call this method you get all Students.
 
 ```php
 $query->get('Students')->findBy(['firstName' => 'seppi']);
