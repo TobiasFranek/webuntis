@@ -61,7 +61,7 @@ These are all the model that exists in the core build:
 * Subjects - api method: getSubjects
 * Teachers - api method: getTeachers
 
-all the Repository method return the Model so an array of Model objects. If you want to serialize the Object you only need to call the serialize() method on an objects, this method then return an array.
+all the Repository methods return an array of Model objects. If you want to serialize the Object you only need to call the serialize() method on these objects, this method then returns an array.
 
 ```php 
 $student = $query->get('Students')->getCurrentUser(); // returns an object
