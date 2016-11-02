@@ -78,7 +78,7 @@ class Repository {
 
     /**
      * parses the given objects
-     * @param AbstractModel[] $result
+     * @param array $result
      * @return AbstractModel[]
      */
     protected function parse($result) {
