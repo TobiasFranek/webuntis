@@ -41,7 +41,7 @@ class Query {
     /**
      * @var Repository[]
      */
-    private static $chachedRepositories = [];
+    private static $cachedRepositories = [];
 
     /**
      * @var array
@@ -88,10 +88,10 @@ class Query {
             } else {
                 $name = 'Default';
             }
-            if (!isset(static::$chachedRepositories[$className])) {
-                static::$chachedRepositories[$className] = new $this->repositories[$name]($this->models[$className]);
+            if (!isset(static::$cachedRepositories[$className])) {
+                static::$cachedRepositories[$className] = new $this->repositories[$name]($this->models[$className]);
             }
-            return static::$chachedRepositories[$className];
+            return static::$cachedRepositories[$className];
         }
         throw new QueryException('Model ' . $className . ' not found');
     }
