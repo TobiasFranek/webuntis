@@ -99,7 +99,7 @@ class Webuntis {
      */
     public function getCurrentUser() {
         $query = new Query();
-        return $query->get('User')->findBy(['id' => $this->currentUserId])[0];
+        return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
     }
 
     /**
