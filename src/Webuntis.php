@@ -99,9 +99,9 @@ class Webuntis {
      */
     public function getCurrentUser() {
         $query = new Query();
-        if($this->currentUserType == 2) {
+        if($this->currentUserType == 5) {
             return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
-        }else if($this->currentUserType == 5) {
+        }else if($this->currentUserType == 2) {
             return $query->get('Teachers')->findBy(['id' => $this->currentUserId])[0];
         }
     }
