@@ -49,14 +49,19 @@ class WebuntisFactory {
      * @param string $model
      * @return Webuntis
      */
-    public static function create($model) {
-        $interfaces = class_implements($model);
+    public static function create($model = null) {
+        if($model !=  null) {
+            $interfaces = class_implements($model);
 
-        if (isset($interfaces[ConfigurationModelInterface::class])) {
-            $config = $model::CONFIG_NAME;
-        } else {
+            if (isset($interfaces[ConfigurationModelInterface::class])) {
+                $config = $model::CONFIG_NAME;
+            } else {
+                $config = 'default';
+            }
+        }else {
             $config = 'default';
         }
+
 
         if (!isset(static::$instances[$config])) {
             static::$instances[$config] = new Webuntis(static::$config[$config]);
