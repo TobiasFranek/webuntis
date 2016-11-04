@@ -30,13 +30,15 @@ use Webuntis\Models\AbstractModel;
 class PeriodRepository extends Repository {
 
     /**
-     * get the period objects from the current day but with an additional filter
+     * gets the period object from the current day or the given date and can be filtered
      * @param array $params
      * @param null $id
      * @param null $type
+     * @param null $startDate
+     * @param null $endDate
      * @return AbstractModel[]
      */
-    public function getSomeFromCurrentDay(array $params, $id = null, $type = null) {
+    public function findBy(array $params, $id = null, $type = null, $startDate = null, $endDate = null) {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
@@ -46,36 +48,50 @@ class PeriodRepository extends Repository {
         if ($id == null) {
             $id = $this->instance->getCurrentUser()->getId();
         }
-        $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type]);
+        if($startDate && $endDate) {
+            $startDate = new \DateTime($startDate);
+            $endDate = new \DateTime($endDate);
+            $startDate = date_format($startDate, 'Ymd');
+            $endDate = date_format($endDate, 'Ymd');
+            $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
+        }else if ($startDate || $endDate) {
+            throw new RepositoryException('missing parameter endDate or startDate');
+        }else {
+            $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type]);
+        }
 
         $data = $this->parse($result);
 
         return $this->find($data, $params);
     }
 
-    public function findAll() {
-        //todo findall method
-    }
-
-    public function findBy() {
-        //todo findby method
-    }
-
     /**
-     * get the period objects from the current day
+     * gets the period object from the current day or fromthe given date
      * @param null $id
      * @param null $type
+     * @param null $startDate
+     * @param null $endDate
      * @return AbstractModel[]
      */
-    public function getAllFromCurrentDay($id = null, $type = null) {
+    public function findAll($id = null, $type = null, $startDate = null, $endDate = null) {
         if ($type == null) {
             $type = $this->instance->getCurrentUserType();
         }
         if ($id == null) {
             $id = $this->instance->getCurrentUser()->getId();
         }
-
-        $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type]);
+        if($startDate && $endDate) {
+            $startDate = new \DateTime($startDate);
+            $endDate = new \DateTime($endDate);
+            $startDate = date_format($startDate, 'Ymd');
+            $endDate = date_format($endDate, 'Ymd');
+            $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
+        }else if ($startDate || $endDate){
+            throw new RepositoryException('missing parameter endDate or startDate');
+        }else {
+            $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type]);
+        }
         return $this->parse($result);
     }
+
 }
