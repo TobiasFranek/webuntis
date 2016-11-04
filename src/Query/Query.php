@@ -30,6 +30,7 @@ use Webuntis\Models\Classes;
 use Webuntis\Repositories\PeriodRepository;
 use Webuntis\Repositories\Repository;
 use Webuntis\Repositories\StudentsRepository;
+use Webuntis\Repositories\UserRepository;
 
 /**
  * Class Query
@@ -49,7 +50,8 @@ class Query {
     private $repositories = [
         'Default' => Repository::class,
         'Period' => PeriodRepository::class,
-        'Students' => StudentsRepository::class
+        'Students' => StudentsRepository::class,
+        'User' => UserRepository::class
     ];
 
     /**
@@ -82,6 +84,12 @@ class Query {
      * @return Repository
      */
     public function get($className) {
+        if($className == 'User') {
+            if (!isset(static::$chachedRepositories[$className])) {
+                static::$chachedRepositories[$className] = new $this->repositories[$className]();
+            }
+            return static::$chachedRepositories[$className];
+        }
         if (isset($this->models[$className])) {
             if (isset($this->repositories[$className])) {
                 $name = $className;
