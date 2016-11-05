@@ -24,13 +24,15 @@ use Webuntis\Models\Departments;
 use Webuntis\Models\Holidays;
 use Webuntis\Models\Period;
 use Webuntis\Models\Rooms;
-use Webuntis\Models\Schoolyears;
+use Webuntis\Models\Schoolyear;
 use Webuntis\Models\Subjects;
 use Webuntis\Models\Students;
 use Webuntis\Models\Teachers;
 use Webuntis\Models\Classes;
+use Webuntis\Repositories\ClassHasTeachersRepository;
 use Webuntis\Repositories\PeriodRepository;
 use Webuntis\Repositories\Repository;
+use Webuntis\Repositories\SchoolyearRepository;
 use Webuntis\Repositories\StudentsRepository;
 use Webuntis\Repositories\UserRepository;
 
@@ -52,7 +54,9 @@ class Query {
     private $repositories = [
         'Default' => Repository::class,
         'Period' => PeriodRepository::class,
-        'User' => UserRepository::class
+        'User' => UserRepository::class,
+        'ClassHasTeachers' => ClassHasTeachersRepository::class,
+        'Schoolyear' => SchoolyearRepository::class
     ];
 
     /**
@@ -68,7 +72,7 @@ class Query {
         'Departments' => Departments::class,
         'Holidays' => Holidays::class,
         'ClassHasTeachers' => ClassHasTeachers::class,
-        'Schoolyears' => Schoolyears::class
+        'Schoolyear' => Schoolyear::class
     ];
 
     /**
