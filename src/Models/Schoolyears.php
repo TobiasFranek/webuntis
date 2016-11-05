@@ -42,7 +42,7 @@ class Schoolyears extends AbstractModel implements CachableModelInterface {
     /**
      * @var string
      */
-    const METHOD = 'getSchoolyears';
+    const METHOD = 'getCurrentSchoolyear';
 
     /**
      * parses the given data from the json rpc api to the right format for the object
