@@ -67,4 +67,61 @@ class Schoolyears extends AbstractModel implements CachableModelInterface {
             'endDate' => $this->endDate
         ];
     }
+
+    /**
+     * sets name
+     * @param $name
+     * @return $this
+     */
+    public function setName($name) {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * return the name
+     * @return string
+     */
+    public function getName(){
+        return $this->name;
+    }
+
+    /**
+     * set the startDate
+     * @param \DateTime $startDate
+     * @return $this
+     */
+    public function setStartDate(\DateTime $startDate) {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * return the startDate
+     * @return \DateTime
+     */
+    public function getStartDate(){
+        return $this->startDate;
+    }
+
+    /**
+     * sets the endDate
+     * @param \DateTime $endDate
+     * @return $this
+     */
+    public function setEndDate(\DateTime $endDate) {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * returns the endDate
+     * @return \DateTime
+     */
+    public function getEndDate(){
+        return $this->endDate;
+    }
 }
