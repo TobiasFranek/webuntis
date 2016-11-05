@@ -17,6 +17,7 @@
  */
 
 namespace Webuntis\Repositories;
+use Webuntis\Models\Schoolyear;
 use Webuntis\Util\ExecutionHandler;
 
 /**
@@ -25,6 +26,11 @@ use Webuntis\Util\ExecutionHandler;
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
 class SchoolyearRepository extends Repository{
+    /**
+     * return the parsed Schoolyear object
+     * @param array $result
+     * @return Schoolyear
+     */
     public function parse($result) {
         return new $this->model($result);
     }
