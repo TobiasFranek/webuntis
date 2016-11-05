@@ -104,16 +104,30 @@ class Period extends AbstractModel {
             $this->endTime = new \DateTime($data['date'] . ' ' . substr($data['endTime'], 0, 2) . ':' . substr($data['endTime'], strlen($data['endTime']) - 2, strlen($data['endTime'])));
         }
         foreach ($data['kl'] as $value) {
-            $this->classes[] = $query->get('Classes')->findBy(['id' => $value['id']])[0];
+            $temp = $query->get('Classes')->findBy(['id' => $value['id']]);
+            if(isset($temp[0])){
+                $this->classes[] = $temp[0];
+            }
         }
+
         foreach ($data['te'] as $value) {
-            $this->teachers[] = $query->get('Teachers')->findBy(['id' => $value['id']])[0];
+            $temp = $query->get('Teachers')->findBy(['id' => $value['id']]);
+            if(isset($temp[0])) {
+                $this->teachers[] = $temp[0];
+            }
         }
+
         foreach ($data['su'] as $value) {
-            $this->subjects[] = $query->get('Subjects')->findBy(['id' => $value['id']])[0];
+            $temp = $query->get('Subjects')->findBy(['id' => $value['id']]);
+            if(isset($temp[0])){
+                $this->subjects[] = $temp[0];
+            }
         }
         foreach ($data['ro'] as $value) {
-            $this->rooms[] = $query->get('Rooms')->findBy(['id' => $value['id']])[0];
+            $temp = $query->get('Rooms')->findBy(['id' => $value['id']]);
+            if(isset($temp[0])) {
+                $this->rooms[] = $temp[0];
+            }
         }
     }
 
