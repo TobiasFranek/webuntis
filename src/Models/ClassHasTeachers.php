@@ -68,4 +68,23 @@ class ClassHasTeachers extends Classes {
         }
         return $result;
     }
+
+    /**
+     * returns the Teachers
+     * @return array
+     */
+    public function getTeachers() {
+        return $this->teachers;
+    }
+
+    /**
+     * sets the Teachers
+     * @param array $teachers
+     * @return $this
+     */
+    public function setTeachers(array $teachers) {
+        $this->teachers = $teachers;
+
+        return $this;
+    }
 }
