@@ -19,10 +19,12 @@
 namespace Webuntis\Query;
 
 use Webuntis\Exceptions\QueryException;
+use Webuntis\Models\ClassHasTeachers;
 use Webuntis\Models\Departments;
 use Webuntis\Models\Holidays;
 use Webuntis\Models\Period;
 use Webuntis\Models\Rooms;
+use Webuntis\Models\Schoolyears;
 use Webuntis\Models\Subjects;
 use Webuntis\Models\Students;
 use Webuntis\Models\Teachers;
@@ -50,7 +52,6 @@ class Query {
     private $repositories = [
         'Default' => Repository::class,
         'Period' => PeriodRepository::class,
-        'Students' => StudentsRepository::class,
         'User' => UserRepository::class
     ];
 
@@ -66,6 +67,8 @@ class Query {
         'Rooms' => Rooms::class,
         'Departments' => Departments::class,
         'Holidays' => Holidays::class,
+        'ClassHasTeachers' => ClassHasTeachers::class,
+        'Schoolyears' => Schoolyears::class
     ];
 
     /**
