@@ -26,7 +26,16 @@ use Webuntis\Query\Query;
  * @package Webuntis\Models
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class ClassHasTeachers extends Classes {
+class ClassHasTeachers extends AbstractModel {
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $fullName;
     /**
      * @var array
      */
@@ -37,7 +46,9 @@ class ClassHasTeachers extends Classes {
      * @param array $data
      */
     public function parse($data) {
-        parent::parse($data);
+        $this->setId($data['id']);
+        $this->name = $data['name'];
+        $this->fullName = $data['longName'];
         $query = new Query();
         foreach ($data['teachers'] as $value) {
             $this->teachers[] = $query->get('Teachers')->findBy(['id' => $value['id']])[0];
@@ -51,8 +62,8 @@ class ClassHasTeachers extends Classes {
     public function serialize() {
         return [
             'id' => $this->getId(),
-            'name' => $this->getName(),
-            'fullName' => $this->getFullName(),
+            'name' => $this->name,
+            'fullName' => $this->fullName,
             'teachers' => $this->getSerializedTeachers()
         ];
     }
@@ -79,11 +90,48 @@ class ClassHasTeachers extends Classes {
 
     /**
      * sets the Teachers
-     * @param array $teachers
+     * @param Teachers[] $teachers
      * @return $this
      */
     public function setTeachers(array $teachers) {
         $this->teachers = $teachers;
+
+        return $this;
+    }
+    /**
+     * returns the name
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * set the name
+     * @param string $name
+     * @return Classes $this
+     */
+    public function setName($name) {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * returns the fullName
+     * @return string
+     */
+    public function getFullName() {
+        return $this->fullName;
+    }
+
+    /**
+     * set the fullName
+     * @param string $fullName
+     * @return Classes $this
+     */
+    public function setFullName($fullName) {
+        $this->fullName = $fullName;
 
         return $this;
     }
