@@ -43,6 +43,11 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
     private $lastName;
 
     /**
+     * @var int
+     */
+    const CACHE_LIFE_TIME = 86400;
+
+    /**
      * @var string
      */
     const METHOD = "getTeachers";

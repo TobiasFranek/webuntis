@@ -37,6 +37,11 @@ class Classes extends AbstractModel implements CachableModelInterface {
     private $fullName;
 
     /**
+     * @var int
+     */
+    const CACHE_LIFE_TIME = 86400;
+
+    /**
      * @var string
      */
     const METHOD = 'getKlassen';

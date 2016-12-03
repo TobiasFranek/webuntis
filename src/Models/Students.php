@@ -52,6 +52,11 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      */
     private $gender;
 
+    /***
+     * @var int
+     */
+    const CACHE_LIFE_TIME = 86400;
+
     /**
      * @var string
      */

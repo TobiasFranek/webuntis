@@ -17,6 +17,7 @@
  */
 
 namespace Webuntis\Models;
+
 use Webuntis\Models\Interfaces\CachableModelInterface;
 
 
@@ -38,6 +39,11 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
      * @var \DateTime
      */
     private $endDate;
+
+    /**
+     * @var int
+     */
+    const CACHE_LIFE_TIME = 86400;
 
     /**
      * @var string
@@ -83,7 +89,7 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
      * return the name
      * @return string
      */
-    public function getName(){
+    public function getName() {
         return $this->name;
     }
 
@@ -102,7 +108,7 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
      * return the startDate
      * @return \DateTime
      */
-    public function getStartDate(){
+    public function getStartDate() {
         return $this->startDate;
     }
 
@@ -121,7 +127,7 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
      * returns the endDate
      * @return \DateTime
      */
-    public function getEndDate(){
+    public function getEndDate() {
         return $this->endDate;
     }
 }

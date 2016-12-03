@@ -46,7 +46,11 @@ class ExecutionHandler {
         } else {
             $result = $instance->getClient()->execute($model::METHOD, $params);
             if (isset($interfaces[CachableModelInterface::class])) {
-                $cacheDriver->save($model::METHOD, $result);
+                if($model::CACHE_LIFE_TIME) {
+                    $cacheDriver->save($model::METHOD, $result, $model::CACHE_LIFE_TIME);
+                }else {
+                    $cacheDriver->save($model::METHOD, $result);
+                }
             }
         }
 

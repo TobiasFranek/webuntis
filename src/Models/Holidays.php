@@ -48,6 +48,11 @@ class Holidays extends AbstractModel implements CachableModelInterface {
     private $endDate;
 
     /**
+     * @var int
+     */
+    const CACHE_LIFE_TIME = 86400;
+
+    /**
      * @var string
      */
     const METHOD = 'getHolidays';
