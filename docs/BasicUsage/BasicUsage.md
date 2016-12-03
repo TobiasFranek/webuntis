@@ -92,8 +92,8 @@ $query->get('Period')->getAllFromCurrentDay();
 * StudentsRepository with these additional functions:
 
 ```php
-$query->get('Students')->getCurrentUser();
-$query->get('Students')->getCurrentUserType();
+$query->get('User')->getCurrentUser();
+$query->get('User')->getCurrentUserType();
 ```
 
 the methods mentioned before are also working on these custom repos.
@@ -110,11 +110,12 @@ These are all the model that exists in the core build:
 * Students - api method: getStudents
 * Subjects - api method: getSubjects
 * Teachers - api method: getTeachers
+* ClassHasTeachers - show all teachers according to that class, be careful it is extremely slow
 
 all the Repository method return the Model so an array of Model objects. If you want to serialize the Object you only need to call the serialize() method on an objects, this method then return an array.
 
 ```php 
-$student = $query->get('Students')->getCurrentUser(); // returns an object
+$student = $query->get('User')->getCurrentUser(); // returns an object
 $student = $student->serialize(); // turn the object into an array
 ```
 
