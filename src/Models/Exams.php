@@ -127,4 +127,88 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
         return $result;
     }
 
+    /**
+     * @return array
+     */
+    public function getClasses() {
+        return $this->classes;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndDate() {
+        return $this->endDate;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStudents() {
+        return $this->students;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getStartDate() {
+        return $this->startDate;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTeachers() {
+        return $this->teachers;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubject() {
+        return $this->subject;
+    }
+
+    /**
+     * @param array $classes
+     */
+    public function setClasses($classes) {
+        $this->classes = $classes;
+    }
+
+    /**
+     * @param \DateTime $endDate
+     */
+    public function setEndDate($endDate) {
+        $this->endDate = $endDate;
+    }
+
+    /**
+     * @param \DateTime $startDate
+     */
+    public function setStartDate($startDate) {
+        $this->startDate = $startDate;
+    }
+
+    /**
+     * @param array $students
+     */
+    public function setStudents($students) {
+        $this->students = $students;
+    }
+
+    /**
+     * @param int $subject
+     */
+    public function setSubject($subject) {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @param array $teachers
+     */
+    public function setTeachers($teachers) {
+        $this->teachers = $teachers;
+    }
+
 }
