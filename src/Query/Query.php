@@ -22,6 +22,7 @@ use Webuntis\Exceptions\QueryException;
 use Webuntis\Models\ClassHasTeachers;
 use Webuntis\Models\Departments;
 use Webuntis\Models\Exams;
+use Webuntis\Models\ExamTypes;
 use Webuntis\Models\Holidays;
 use Webuntis\Models\Period;
 use Webuntis\Models\Rooms;
@@ -76,7 +77,8 @@ class Query {
         'Holidays' => Holidays::class,
         'ClassHasTeachers' => ClassHasTeachers::class,
         'Schoolyear' => Schoolyear::class,
-        'Exams' => Exams::class
+        'Exams' => Exams::class,
+        'ExamTypes' => ExamTypes::class
     ];
 
     /**
