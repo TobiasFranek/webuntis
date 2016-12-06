@@ -24,7 +24,7 @@ use Webuntis\Query\Query;
 /**
  * Class Exams
  * @package Webuntis\Models
- * @author Tobias Franek
+ * @author Tobias Franek <tobias.franek@gmail.com>
  */
 class Exams extends AbstractModel {
 
