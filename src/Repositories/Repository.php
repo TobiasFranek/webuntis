@@ -59,10 +59,7 @@ class Repository {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
-        $result = ExecutionHandler::execute($this->model, $this->instance, []);
-
-        /** @var AbstractModel[] $data */
-        $data = $this->parse($result);
+        $data = $this->findAll();
 
         return $this->find($data, $params);
     }
