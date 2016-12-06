@@ -69,6 +69,7 @@ class Exams extends AbstractModel {
      */
     public function parse($data) {
         $query = new Query();
+        $this->setId($data['id']);
         $this->subject = $query->get('subjects')->findBy(['id' => $data['subject']])[0];
         if (!empty($data['classes'])) {
             foreach ($data['classes'] as $value) {
