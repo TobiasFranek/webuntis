@@ -79,10 +79,10 @@ class Period extends AbstractModel {
             'id' => $this->getId(),
             'startTime' => $this->startTime,
             'endTime' => $this->endTime,
-            'classes' => $this->getSerializedClasses(),
-            'teachers' => $this->getSerializedTeachers(),
-            'subjects' => $this->getSerializedSubjects(),
-            'rooms' => $this->getSerializedRooms()
+            'classes' => $this->serializeObj($this->classes),
+            'teachers' => $this->serializeObj($this->teachers),
+            'subjects' => $this->serializeObj($this->subjects),
+            'rooms' => $this->serializeObj($this->rooms)
         ];
     }
 
@@ -130,55 +130,18 @@ class Period extends AbstractModel {
             }
         }
     }
-
     /**
      * serializes the classes
+     * @param $objs array
      * @return array
      */
-    private function getSerializedClasses() {
+    private function serializeObj(array $objs) {
         $result = [];
-        foreach ($this->classes as $value) {
+        foreach ($objs as $value) {
             $result[] = $value->serialize();
         }
         return $result;
     }
-
-    /**
-     * serializes the teachers
-     * @return array
-     */
-    private function getSerializedTeachers() {
-        $result = [];
-        foreach ($this->teachers as $value) {
-            $result[] = $value->serialize();
-        }
-        return $result;
-    }
-
-    /**
-     * serializes the subjects
-     * @return array
-     */
-    private function getSerializedSubjects() {
-        $result = [];
-        foreach ($this->subjects as $value) {
-            $result[] = $value->serialize();
-        }
-        return $result;
-    }
-
-    /**
-     * serializes the rooms
-     * @return array
-     */
-    private function getSerializedRooms() {
-        $result = [];
-        foreach ($this->rooms as $value) {
-            $result[] = $value->serialize();
-        }
-        return $result;
-    }
-
     /**
      * sets the startTime
      * @param \DateTime $startTime
