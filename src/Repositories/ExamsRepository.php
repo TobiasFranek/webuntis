@@ -18,6 +18,12 @@
 
 namespace Webuntis\Repositories;
 
+use Doctrine\Common\Cache\ApcuCache;
+use Webuntis\Models\Exams;
+use Webuntis\Models\ExamTypes;
+use Webuntis\Query\Query;
+use Webuntis\Util\ExecutionHandler;
+
 /**
  * Class ExamsRepository
  * @package Webuntis\Repositories
@@ -25,6 +31,21 @@ namespace Webuntis\Repositories;
  */
 class ExamsRepository extends Repository {
     public function findAll() {
+        $cache = new ApcuCache();
+        if ($cache->contains('Exams')) {
+            $exams = $cache->fetch('Exams');
+        } else {
+            $query = new Query();
+            $examTypes = ExecutionHandler::execute(ExamTypes::class, $this->instance, []);
 
+            $exams = [];
+            $schoolyear = $query->get('schoolyear')->findAll();
+            foreach ($examTypes as $value) {
+                $exams[] = ExecutionHandler::execute(Exams::class, $this->instance, ['examTypeId' => $value['type'], 'startDate' => date_format($schoolyear->getStartDate(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
+            }
+            $cache->save('Exams', $exams, 604800);
+        }
+
+        return $this->parse($exams);
     }
 }
