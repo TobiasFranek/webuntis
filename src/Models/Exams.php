@@ -19,6 +19,7 @@
 
 namespace Webuntis\Models;
 
+use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use Webuntis\Query\Query;
 
 /**
@@ -26,7 +27,7 @@ use Webuntis\Query\Query;
  * @package Webuntis\Models
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class Exams extends AbstractModel {
+class Exams extends AbstractModel implements AdministrativeModelInterface {
 
     /**
      * @var array
