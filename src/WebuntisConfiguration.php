@@ -18,6 +18,8 @@
 
 namespace Webuntis;
 
+use Doctrine\Common\Cache\ApcuCache;
+
 /**
  * Class WebuntisConfiguration
  * @package Webuntis
@@ -57,6 +59,10 @@ class WebuntisConfiguration {
      * @return WebuntisConfiguration $this
      */
     public function setConfig(array $config) {
+        $cache = new ApcuCache();
+        foreach($config as $key => $item) {
+            $cache->delete($key);
+        }
         WebuntisFactory::setConfig($config);
 
         return $this;
