@@ -21,6 +21,7 @@ namespace Webuntis\Query;
 use Webuntis\Exceptions\QueryException;
 use Webuntis\Models\ClassHasTeachers;
 use Webuntis\Models\Departments;
+use Webuntis\Models\Exams;
 use Webuntis\Models\Holidays;
 use Webuntis\Models\Period;
 use Webuntis\Models\Rooms;
@@ -30,6 +31,7 @@ use Webuntis\Models\Students;
 use Webuntis\Models\Teachers;
 use Webuntis\Models\Classes;
 use Webuntis\Repositories\ClassHasTeachersRepository;
+use Webuntis\Repositories\ExamsRepository;
 use Webuntis\Repositories\PeriodRepository;
 use Webuntis\Repositories\Repository;
 use Webuntis\Repositories\SchoolyearRepository;
@@ -56,7 +58,8 @@ class Query {
         'Period' => PeriodRepository::class,
         'User' => UserRepository::class,
         'ClassHasTeachers' => ClassHasTeachersRepository::class,
-        'Schoolyear' => SchoolyearRepository::class
+        'Schoolyear' => SchoolyearRepository::class,
+        'Exams' => ExamsRepository::class
     ];
 
     /**
@@ -72,7 +75,8 @@ class Query {
         'Departments' => Departments::class,
         'Holidays' => Holidays::class,
         'ClassHasTeachers' => ClassHasTeachers::class,
-        'Schoolyear' => Schoolyear::class
+        'Schoolyear' => Schoolyear::class,
+        'Exams' => Exams::class
     ];
 
     /**
