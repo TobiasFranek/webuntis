@@ -53,24 +53,40 @@ class Repository {
     /**
      * return all objects that have been searched for
      * @param array $params
+     * @param array $sort
      * @return \Webuntis\Models\AbstractModel[]
      */
-    public function findBy(array $params) {
+    public function findBy(array $params, array $sort = []) {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
         $data = $this->findAll();
 
-        return $this->find($data, $params);
+        if(!empty($sort)) {
+            $field = array_keys($sort)[0];
+            $sortingOrder = $sort[$field];
+            $data = $this->find($data, $params);
+            return $this->sort($data, $field, $sortingOrder);
+        } else {
+            return $this->find($data, $params);
+        }
     }
 
     /**
      * returns all objects it could find
+     * @param array $sort
      * @return AbstractModel[]
      */
-    public function findAll() {
+    public function findAll(array $sort = []) {
         $result = ExecutionHandler::execute($this->model, $this->instance, []);
-        return $this->parse($result);
+        if(!empty($sort)) {
+            $field = array_keys($sort)[0];
+            $sortingOrder = $sort[$field];
+            $data = $this->parse($result);
+            return $this->sort($data, $field, $sortingOrder);
+        }else {
+            return $this->parse($result);
+        }
     }
 
     /**
@@ -101,11 +117,11 @@ class Repository {
             $key = $keys[0];
             if (isset($data[0]->serialize()[$key])) {
                 foreach ($data as $key2 => $value2) {
-                    if(count($keys) > 1){
+                    if (count($keys) > 1) {
                         $tempKeys = $keys;
                         $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
                         $tempKeys = implode(':', $tempKeys);
-                        if(!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+                        if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
                             $temp[] = $value2;
                         }
                     } else if ($value2->serialize()[$key] == $value) {
@@ -118,5 +134,38 @@ class Repository {
             }
         }
         return $data;
+    }
+
+    /**
+     * sorts the given array according to the bubble sort algorithm
+     * @param AbstractModel[] $array
+     * @param string $key
+     * @param string $sortOrder (ASC, DESC)
+     * @return AbstractModel[]
+     */
+    protected function sort(array $array, $key, $sortOrder) {
+        if (isset($array[0]->serialize()[$key])) {
+            if (!$length = count($array)) {
+                return $array;
+            }
+            for ($outer = 0; $outer < $length; $outer++) {
+                for ($inner = 0; $inner < $length; $inner++) {
+                    if ($array[$outer]->serialize()[$key] < $array[$inner]->serialize()[$key]) {
+                        $tmp = $array[$outer];
+                        $array[$outer] = $array[$inner];
+                        $array[$inner] = $tmp;
+                    }
+                }
+            }
+            if ($sortOrder == 'ASC') {
+                return array_reverse($array);
+            } else if ($sortOrder == 'DESC') {
+                return $array;
+            } else {
+                throw new RepositoryException('sort order ' . $sortOrder . ' does not exist');
+            }
+        }else {
+            throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
+        }
     }
 }

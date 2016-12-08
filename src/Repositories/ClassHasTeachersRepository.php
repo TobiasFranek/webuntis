@@ -15,16 +15,21 @@ use Webuntis\Query\Query;
 use Webuntis\Util\ExecutionHandler;
 
 class ClassHasTeachersRepository extends Repository {
-    public function findAll() {
+
+    /**
+     * @param array $sort
+     * @return array
+     */
+    public function findAll(array $sort = []) {
         $cache = new ApcuCache();
+        $classesHaveTeachers = [];
         if ($cache->contains('ClassesHaveTeachers')) {
-            return $cache->fetch('ClassesHaveTeachers');
+            $classesHaveTeachers = $cache->fetch('ClassesHaveTeachers');
         } else {
             $query = new Query();
 
             $classes = ExecutionHandler::execute(Classes::class, $this->instance, []);
 
-            $classesHaveTeachers = [];
 
             foreach ($classes as $class) {
                 $class['teachers'] = [];
@@ -45,6 +50,12 @@ class ClassHasTeachersRepository extends Repository {
                 $classesHaveTeachers[$key]->setTeachers($tempTeachers);
             }
             $cache->save('ClassesHaveTeachers', $classesHaveTeachers);
+        }
+        if(!empty($sort)) {
+            $field = array_keys($sort)[0];
+            $sortingOrder = $sort[$field];
+            return $this->sort($classesHaveTeachers, $field, $sortingOrder);
+        }else {
             return $classesHaveTeachers;
         }
     }

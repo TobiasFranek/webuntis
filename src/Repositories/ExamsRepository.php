@@ -19,6 +19,7 @@
 namespace Webuntis\Repositories;
 
 use Doctrine\Common\Cache\ApcuCache;
+use Webuntis\Models\AbstractModel;
 use Webuntis\Models\Exams;
 use Webuntis\Models\ExamTypes;
 use Webuntis\Query\Query;
@@ -30,7 +31,12 @@ use Webuntis\Util\ExecutionHandler;
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
 class ExamsRepository extends Repository {
-    public function findAll() {
+
+    /**
+     * @param array $sort
+     * @return AbstractModel[]
+     */
+    public function findAll(array $sort = []) {
         $query = new Query();
         $cache = new ApcuCache();
         $cache->delete('Exams');
@@ -53,6 +59,12 @@ class ExamsRepository extends Repository {
                 }
             }
         }
-        return $result;
+        if(!empty($sort)) {
+            $field = array_keys($sort)[0];
+            $sortingOrder = $sort[$field];
+            return $this->sort($result, $field, $sortingOrder);
+        }else {
+            return $result;
+        }
     }
 }

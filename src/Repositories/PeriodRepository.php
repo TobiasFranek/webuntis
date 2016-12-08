@@ -32,13 +32,14 @@ class PeriodRepository extends Repository {
     /**
      * gets the period object from the current day or the given date and can be filtered
      * @param array $params
+     * @param array $sort
      * @param null $id
      * @param null $type
      * @param null $startDate
      * @param null $endDate
      * @return AbstractModel[]
      */
-    public function findBy(array $params, $id = null, $type = null, $startDate = null, $endDate = null) {
+    public function findBy(array $params, array $sort = [],$id = null, $type = null, $startDate = null, $endDate = null) {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
@@ -61,19 +62,26 @@ class PeriodRepository extends Repository {
         }
 
         $data = $this->parse($result);
-
-        return $this->find($data, $params);
+        if(!empty($sort)) {
+            $field = array_keys($sort)[0];
+            $sortingOrder = $sort[$field];
+            $data = $this->find($data, $params);
+            return $this->sort($data, $field, $sortingOrder);
+        }else {
+            return $this->find($data, $params);
+        }
     }
 
     /**
-     * gets the period object from the current day or fromthe given date
+     * gets the period object from the current day or from the given date
+     * @param array $sort
      * @param null $id
      * @param null $type
      * @param null $startDate
      * @param null $endDate
      * @return AbstractModel[]
      */
-    public function findAll($id = null, $type = null, $startDate = null, $endDate = null) {
+    public function findAll(array $sort = [],$id = null, $type = null, $startDate = null, $endDate = null) {
         if ($type == null) {
             $type = $this->instance->getCurrentUserType();
         }
@@ -91,7 +99,14 @@ class PeriodRepository extends Repository {
         }else {
             $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type]);
         }
-        return $this->parse($result);
+        if(!empty($sort)) {
+            $field = array_keys($sort)[0];
+            $sortingOrder = $sort[$field];
+            $data = $this->parse($result);
+            return $this->sort($data, $field, $sortingOrder);
+        }else {
+            return $this->parse($result);
+        }
     }
 
 }
