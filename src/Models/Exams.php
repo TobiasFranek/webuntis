@@ -19,6 +19,7 @@
 
 namespace Webuntis\Models;
 
+use Webuntis\Exceptions\ModelException;
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use Webuntis\Query\Query;
 
@@ -30,24 +31,24 @@ use Webuntis\Query\Query;
 class Exams extends AbstractModel implements AdministrativeModelInterface {
 
     /**
-     * @var array
+     * @var Classes[]
      */
     private $classes = [];
 
     /**
-     * @var array
+     * @var Teachers[]
      */
     private $teachers = [];
 
     /**
-     * @var array
+     * @var Students[]
      */
     private $students = [];
 
     /**
-     * @var int
+     * @var Subjects[]
      */
-    private $subject;
+    private $subject = [];
 
     /**
      * @var \DateTime
@@ -71,7 +72,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     public function parse($data) {
         $query = new Query();
         $this->setId($data['id']);
-        $this->subject = $query->get('Subjects')->findBy(['id' => $data['subject']])[0];
+        $this->subject = $query->get('Subjects')->findBy(['id' => $data['subject']]);
         if (!empty($data['classes'])) {
             foreach ($data['classes'] as $value) {
                 $this->classes[] = $query->get('Classes')->findBy(['id' => $value])[0];
@@ -129,7 +130,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     }
 
     /**
-     * @return array
+     * @return Classes[]
      */
     public function getClasses() {
         return $this->classes;
@@ -143,7 +144,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     }
 
     /**
-     * @return array
+     * @return Students[]
      */
     public function getStudents() {
         return $this->students;
@@ -157,21 +158,21 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     }
 
     /**
-     * @return array
+     * @return Teachers[]
      */
     public function getTeachers() {
         return $this->teachers;
     }
 
     /**
-     * @return int
+     * @return Subjects[]
      */
     public function getSubject() {
         return $this->subject;
     }
 
     /**
-     * @param array $classes
+     * @param Classes[] $classes
      */
     public function setClasses($classes) {
         $this->classes = $classes;
@@ -192,24 +193,43 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     }
 
     /**
-     * @param array $students
+     * @param Students[] $students
      */
     public function setStudents($students) {
         $this->students = $students;
     }
 
     /**
-     * @param int $subject
+     * @param Subjects[] $subject
      */
     public function setSubject($subject) {
         $this->subject = $subject;
     }
 
     /**
-     * @param array $teachers
+     * @param Teachers[] $teachers
      */
     public function setTeachers($teachers) {
         $this->teachers = $teachers;
     }
 
+    /**
+     * return the children by given id
+     * @param $key
+     * @return AbstractModel[]
+     */
+    public function get($key) {
+        switch ($key) {
+            case 'teachers':
+                return $this->teachers;
+            case 'students':
+                return $this->students;
+            case 'classes':
+                return $this->classes;
+            case 'subject':
+                return $this->subject;
+            default:
+                throw new ModelException('array of objects' . $key . 'doesn\'t exist');
+        }
+    }
 }

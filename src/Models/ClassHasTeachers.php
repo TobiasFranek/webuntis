@@ -19,6 +19,7 @@
 namespace Webuntis\Models;
 
 
+use Webuntis\Exceptions\ModelException;
 use Webuntis\Query\Query;
 
 /**
@@ -37,7 +38,7 @@ class ClassHasTeachers extends AbstractModel {
      */
     private $fullName;
     /**
-     * @var array
+     * @var Teachers[]
      */
     private $teachers = [];
 
@@ -82,7 +83,7 @@ class ClassHasTeachers extends AbstractModel {
 
     /**
      * returns the Teachers
-     * @return array
+     * @return Teachers[]
      */
     public function getTeachers() {
         return $this->teachers;
@@ -109,7 +110,7 @@ class ClassHasTeachers extends AbstractModel {
     /**
      * set the name
      * @param string $name
-     * @return Classes $this
+     * @return ClassHasTeachers $this
      */
     public function setName($name) {
         $this->name = $name;
@@ -128,11 +129,25 @@ class ClassHasTeachers extends AbstractModel {
     /**
      * set the fullName
      * @param string $fullName
-     * @return Classes $this
+     * @return ClassHasTeachers $this
      */
     public function setFullName($fullName) {
         $this->fullName = $fullName;
 
         return $this;
+    }
+
+    /**
+     * return the children by given id
+     * @param $key
+     * @return AbstractModel[]
+     */
+    public function get($key) {
+        switch ($key) {
+            case 'teachers':
+                return $this->teachers;
+            default:
+                throw new ModelException('array of objects' . $key . 'doesn\'t exist');
+        }
     }
 }

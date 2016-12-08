@@ -18,6 +18,7 @@
 
 namespace Webuntis\Models;
 
+use Webuntis\Exceptions\ModelException;
 use Webuntis\Query\Query;
 
 /**
@@ -246,5 +247,20 @@ class Period extends AbstractModel {
         $this->rooms = $rooms;
 
         return $this;
+    }
+
+    public function get($key) {
+        switch ($key) {
+            case 'teachers':
+                return $this->teachers;
+            case 'classes':
+                return $this->classes;
+            case 'rooms':
+                return $this->rooms;
+            case 'subjects':
+                return $this->subjects;
+            default:
+                throw new ModelException('array of objects' . $key . 'doesn\'t exist');
+        }
     }
 }
