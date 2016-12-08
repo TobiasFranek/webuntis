@@ -31,21 +31,28 @@ use Webuntis\Util\ExecutionHandler;
  */
 class ExamsRepository extends Repository {
     public function findAll() {
+        $query = new Query();
         $cache = new ApcuCache();
+        $cache->delete('Exams');
         if ($cache->contains('Exams')) {
             $exams = $cache->fetch('Exams');
         } else {
-            $query = new Query();
             $examTypes = ExecutionHandler::execute(ExamTypes::class, $this->instance, []);
-
             $exams = [];
-            $schoolyear = $query->get('schoolyear')->findAll();
+            $schoolyear = $query->get('Schoolyear')->findAll();
             foreach ($examTypes as $value) {
-                $exams[] = ExecutionHandler::execute(Exams::class, $this->instance, ['examTypeId' => $value['type'], 'startDate' => date_format($schoolyear->getStartDate(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
+                $exams[] = ExecutionHandler::execute(Exams::class, $this->instance, ['examTypeId' => $value['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
             }
             $cache->save('Exams', $exams, 604800);
         }
-
-        return $this->parse($exams);
+        $result = [];
+        foreach ($exams as $value) {
+            if(!empty($value)) {
+                foreach($value as $value2) {
+                    $result[] = new $this->model($value2);
+                }
+            }
+        }
+        return $result;
     }
 }

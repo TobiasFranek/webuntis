@@ -71,20 +71,20 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     public function parse($data) {
         $query = new Query();
         $this->setId($data['id']);
-        $this->subject = $query->get('subjects')->findBy(['id' => $data['subject']])[0];
+        $this->subject = $query->get('Subjects')->findBy(['id' => $data['subject']])[0];
         if (!empty($data['classes'])) {
             foreach ($data['classes'] as $value) {
-                $this->classes[] = $query->get('classes')->findBy(['id' => $value]);
+                $this->classes[] = $query->get('Classes')->findBy(['id' => $value]);
             }
         }
         if (!empty($data['teachers'])) {
             foreach ($data['teachers'] as $value) {
-                $this->teachers[] = $query->get('teachers')->findBy(['id' => $value]);;
+                $this->teachers[] = $query->get('Teachers')->findBy(['id' => $value])[0];
             }
         }
         if (!empty($data['students'])) {
             foreach ($data['students'] as $value) {
-                $this->students[] = $query->get('students')->findBy(['id' => $value]);;
+                $this->students[] = $query->get('Students')->findBy(['id' => $value])[0];
             }
         }
         if (strlen($data['startTime']) < 4) {
@@ -108,12 +108,17 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
             'id' => $this->getId(),
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
-            'subject' => $this->subject->serialize(),
+//            'subject' => $this->subject->serialize(),
             'teachers' => $this->serializeObj($this->teachers),
-            'students' => $this->serializeObj($this->students),
-            'classes' => $this->serializeObj($this->classes)
+//            'students' => $this->serializeObj($this->students),
+//            'classes' => $this->serializeObj($this->classes),
+            'subject' => $this->subject,
+//            'teachers' => $this->teachers,
+            'students' => $this->students,
+            'classes' => $this->classes
         ];
     }
+
     /**
      * serializes the classes
      * @param $objs array

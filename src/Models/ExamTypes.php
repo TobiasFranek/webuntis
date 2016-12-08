@@ -37,14 +37,31 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
     /**
      * @var string
      */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $longName;
+
+    /**
+     * @var string
+     */
     const METHOD = 'getExamTypes';
+
+    /**
+     * @var int
+     */
+    const CACHE_LIFE_TIME = 0;
 
     /**
      * @param $data
      */
     public function parse($data) {
         $this->setId($data['id']);
-        $this->type = $data['type'];
+        $this->type = $data['id'];
+        $this->name = $data['name'];
+        $this->longName = $data['longName'];
     }
 
     /**
@@ -69,5 +86,33 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
      */
     public function setType($type) {
         $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLongName() {
+        return $this->longName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * @param string $longName
+     */
+    public function setLongName($longName) {
+        $this->longName = $longName;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name) {
+        $this->name = $name;
     }
 }
