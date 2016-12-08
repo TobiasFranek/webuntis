@@ -74,7 +74,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
         $this->subject = $query->get('Subjects')->findBy(['id' => $data['subject']])[0];
         if (!empty($data['classes'])) {
             foreach ($data['classes'] as $value) {
-                $this->classes[] = $query->get('Classes')->findBy(['id' => $value]);
+                $this->classes[] = $query->get('Classes')->findBy(['id' => $value])[0];
             }
         }
         if (!empty($data['teachers'])) {
