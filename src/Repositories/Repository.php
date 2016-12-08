@@ -97,9 +97,18 @@ class Repository {
     protected function find($data, $params) {
         foreach ($params as $key => $value) {
             $temp = [];
+            $keys = explode(":", $key);
+            $key = $keys[0];
             if (isset($data[0]->serialize()[$key])) {
                 foreach ($data as $key2 => $value2) {
-                    if ($value2->serialize()[$key] == $value) {
+                    if(count($keys) > 1){
+                        $tempKeys = $keys;
+                        $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
+                        $tempKeys = implode(':', $tempKeys);
+                        if(!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+                            $temp[] = $value2;
+                        }
+                    } else if ($value2->serialize()[$key] == $value) {
                         $temp[] = $value2;
                     }
                 }
