@@ -32,7 +32,14 @@ class YourModel extends AbstractModel {
         $this->modelField = $data['apiField'];
         $this->anotherModelField = $data['anotherApiField'];
     }
-
+    
+    //if you have models like teachers or something in your model you might wanna 
+    //search for properties of the model, for this you will need this get() method
+    //because it is used by the recursive search
+    public function get($key) {
+        //to something
+    }
+    
  	//please write getter and setter for the Model fields, or i will be sad :(
 }
 ```

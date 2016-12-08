@@ -78,17 +78,18 @@ $query->get('Students')->findBy(['firstName' => 'seppi']);
 ```
 this method return all the students with the first name 'seppi'
 
+your also can search recursively like this:
+
+```php
+$query->get('Period')->findBy(['teacher:firstName' => 'seppi']);
+```
+this will return all the Period Models where the teachers have the first name 'seppi'
+
 ### Custom Repositories
 
 There are two custom Repositories in the core already and they are the
 
-* PeriodRepository with these additional functions:
-
-```php
-$query->get('Period')->getSomeFromCurrentDay(['id' => 100]);
-$query->get('Period')->getAllFromCurrentDay();
-```
-
+* PeriodRepository only has some additional parameters to the standard methods:
 * StudentsRepository with these additional functions:
 
 ```php
@@ -111,6 +112,7 @@ These are all the model that exists in the core build:
 * Subjects - api method: getSubjects
 * Teachers - api method: getTeachers
 * ClassHasTeachers - show all teachers according to that class, be careful it is extremely slow
+* Exams - api method: getExams
 
 all the Repository method return the Model so an array of Model objects. If you want to serialize the Object you only need to call the serialize() method on an objects, this method then return an array.
 
