@@ -109,7 +109,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
             'id' => $this->getId(),
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
-            'subject' => $this->subject->serialize(),
+            'subject' => $this->serializeObj($this->subject),
             'teachers' => $this->serializeObj($this->teachers),
             'students' => $this->serializeObj($this->students),
             'classes' => $this->serializeObj($this->classes),
