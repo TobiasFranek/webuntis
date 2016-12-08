@@ -28,12 +28,18 @@ $query->get('Students')->findBy(['firstName' => 'seppi']);
 ```
 this method return all the students with the first name 'seppi'
 
-your also can search recursively like this:
+you also can search recursively like this:
 
 ```php
 $query->get('Period')->findBy(['teacher:firstName' => 'seppi']);
 ```
 this will return all the Period Models where the teachers have the first name 'seppi'
+
+you also can sort the given output
+
+$query->get('Exams')->findAll(['startDate' => 'ASC|DESC']);
+
+this will either order the model descending (DESC) or ascending (ASC)
 
 ### Custom Repositories
 
