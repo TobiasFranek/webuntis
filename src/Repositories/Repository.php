@@ -69,8 +69,6 @@ class Repository {
      * @return AbstractModel[]
      */
     public function findAll() {
-        print gettype($this->instance);
-
         $result = ExecutionHandler::execute($this->model, $this->instance, []);
         return $this->parse($result);
     }

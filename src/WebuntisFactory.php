@@ -51,7 +51,6 @@ class WebuntisFactory {
      * @return Webuntis
      */
     public static function create($model = null) {
-        $cache = new ApcuCache();
         if($model !=  null) {
             $interfaces = class_implements($model);
 
@@ -64,14 +63,11 @@ class WebuntisFactory {
             $config = 'default';
         }
 
-        if(!$cache->contains($config)) {
-            $instance = new Webuntis(static::$config[$config]);
-            $cache->save($config, $instance);
-            return $instance;
-        } else {
-            return $cache->fetch($config);
-        }
 
+        if (!isset(static::$instances[$config])) {
+            static::$instances[$config] = new Webuntis(static::$config[$config]);
+        }
+        return static::$instances[$config];
     }
 
     /**
