@@ -63,7 +63,7 @@ class Repository {
         }
         $data = $this->findAll();
 
-        if(!empty($sort)) {
+        if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->find($data, $params);
@@ -71,7 +71,7 @@ class Repository {
         } else {
             $data = $this->find($data, $params);
         }
-        if($limit != null) {
+        if ($limit != null) {
             return array_slice($data, 0, $limit);
         }
         return $data;
@@ -83,17 +83,17 @@ class Repository {
      * @param null $limit
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [], $limit  = null) {
+    public function findAll(array $sort = [], $limit = null) {
         $result = ExecutionHandler::execute($this->model, $this->instance, []);
-        if(!empty($sort)) {
+        if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->parse($result);
             $data = $this->sort($data, $field, $sortingOrder);
-        }else {
+        } else {
             $data = $this->parse($result);
         }
-        if($limit != null) {
+        if ($limit != null) {
             return array_slice($data, 0, $limit);
         }
         return $data;
@@ -125,22 +125,24 @@ class Repository {
             $temp = [];
             $keys = explode(":", $key);
             $key = $keys[0];
-            if (isset($data[0]->serialize()[$key])) {
-                foreach ($data as $key2 => $value2) {
-                    if (count($keys) > 1) {
-                        $tempKeys = $keys;
-                        $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
-                        $tempKeys = implode(':', $tempKeys);
-                        if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+            if (isset($data[0])) {
+                if (isset($data[0]->serialize()[$key])) {
+                    foreach ($data as $key2 => $value2) {
+                        if (count($keys) > 1) {
+                            $tempKeys = $keys;
+                            $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
+                            $tempKeys = implode(':', $tempKeys);
+                            if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+                                $temp[] = $value2;
+                            }
+                        } else if ($value2->serialize()[$key] == $value) {
                             $temp[] = $value2;
                         }
-                    } else if ($value2->serialize()[$key] == $value) {
-                        $temp[] = $value2;
                     }
+                    $data = $temp;
+                } else {
+                    throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
                 }
-                $data = $temp;
-            } else {
-                throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
             }
         }
         return $data;
@@ -174,7 +176,7 @@ class Repository {
             } else {
                 throw new RepositoryException('sort order ' . $sortOrder . ' does not exist');
             }
-        }else {
+        } else {
             throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
         }
     }
