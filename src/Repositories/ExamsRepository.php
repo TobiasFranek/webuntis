@@ -34,9 +34,10 @@ class ExamsRepository extends Repository {
 
     /**
      * @param array $sort
+     * @param null $limit
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = []) {
+    public function findAll(array $sort = [], $limit = null) {
         $query = new Query();
         $cache = new ApcuCache();
         $cache->delete('Exams');
@@ -62,9 +63,13 @@ class ExamsRepository extends Repository {
         if(!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
-            return $this->sort($result, $field, $sortingOrder);
+            $data = $this->sort($result, $field, $sortingOrder);
         }else {
-            return $result;
+            $data = $result;
         }
+        if($limit != null) {
+            return array_slice($data, 0, $limit);
+        }
+        return $data;
     }
 }

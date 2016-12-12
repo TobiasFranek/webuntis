@@ -33,13 +33,14 @@ class PeriodRepository extends Repository {
      * gets the period object from the current day or the given date and can be filtered
      * @param array $params
      * @param array $sort
+     * @param null $limit
      * @param null $id
      * @param null $type
      * @param null $startDate
      * @param null $endDate
      * @return AbstractModel[]
      */
-    public function findBy(array $params, array $sort = [],$id = null, $type = null, $startDate = null, $endDate = null) {
+    public function findBy(array $params, array $sort = [],$limit = null, $id = null, $type = null, $startDate = null, $endDate = null) {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
@@ -66,22 +67,27 @@ class PeriodRepository extends Repository {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->find($data, $params);
-            return $this->sort($data, $field, $sortingOrder);
+            $data = $this->sort($data, $field, $sortingOrder);
         }else {
-            return $this->find($data, $params);
+            $data = $this->find($data, $params);
         }
+        if($limit != null) {
+            return array_slice($data, 0, $limit);
+        }
+        return $data;
     }
 
     /**
      * gets the period object from the current day or from the given date
      * @param array $sort
+     * @param null $limit
      * @param null $id
      * @param null $type
      * @param null $startDate
      * @param null $endDate
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [],$id = null, $type = null, $startDate = null, $endDate = null) {
+    public function findAll(array $sort = [],$limit = null, $id = null, $type = null, $startDate = null, $endDate = null) {
         if ($type == null) {
             $type = $this->instance->getCurrentUserType();
         }
@@ -103,10 +109,14 @@ class PeriodRepository extends Repository {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->parse($result);
-            return $this->sort($data, $field, $sortingOrder);
+            $data = $this->sort($data, $field, $sortingOrder);
         }else {
-            return $this->parse($result);
+            $data = $this->parse($result);
         }
+        if($limit != null) {
+            return array_slice($data, 0, $limit);
+        }
+        return $data;
     }
 
 }

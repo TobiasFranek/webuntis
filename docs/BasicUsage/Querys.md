@@ -41,6 +41,10 @@ $query->get('Exams')->findAll(['startDate' => 'ASC|DESC']);
 
 this will either order the model descending (DESC) or ascending (ASC)
 
+you also can now give a limit to the query
+
+$query->get('Exams')->findAll(['startDate' => 'ASC|DESC'], 5);
+
 ### Custom Repositories
 
 There are two custom Repositories in the core already and they are the

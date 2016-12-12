@@ -18,9 +18,10 @@ class ClassHasTeachersRepository extends Repository {
 
     /**
      * @param array $sort
+     * @param null $limit
      * @return array
      */
-    public function findAll(array $sort = []) {
+    public function findAll(array $sort = [], $limit = null) {
         $cache = new ApcuCache();
         $classesHaveTeachers = [];
         if ($cache->contains('ClassesHaveTeachers')) {
@@ -54,9 +55,13 @@ class ClassHasTeachersRepository extends Repository {
         if(!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
-            return $this->sort($classesHaveTeachers, $field, $sortingOrder);
+            $data = $this->sort($classesHaveTeachers, $field, $sortingOrder);
         }else {
-            return $classesHaveTeachers;
+            $data = $classesHaveTeachers;
         }
+        if($limit != null) {
+            return array_slice($data, 0, $limit);
+        }
+        return $data;
     }
 }

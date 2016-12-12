@@ -85,6 +85,16 @@ $query->get('Period')->findBy(['teacher:firstName' => 'seppi']);
 ```
 this will return all the Period Models where the teachers have the first name 'seppi'
 
+you also can sort the given output
+
+$query->get('Exams')->findAll(['startDate' => 'ASC|DESC']);
+
+this will either order the model descending (DESC) or ascending (ASC)
+
+you also can now give a limit to the query
+
+$query->get('Exams')->findAll(['startDate' => 'ASC|DESC'], 5);
+
 ### Custom Repositories
 
 There are two custom Repositories in the core already and they are the

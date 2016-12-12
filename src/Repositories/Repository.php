@@ -54,9 +54,10 @@ class Repository {
      * return all objects that have been searched for
      * @param array $params
      * @param array $sort
-     * @return \Webuntis\Models\AbstractModel[]
+     * @param null $limit
+     * @return AbstractModel[]
      */
-    public function findBy(array $params, array $sort = []) {
+    public function findBy(array $params, array $sort = [], $limit = null) {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
@@ -66,27 +67,36 @@ class Repository {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->find($data, $params);
-            return $this->sort($data, $field, $sortingOrder);
+            $data = $this->sort($data, $field, $sortingOrder);
         } else {
-            return $this->find($data, $params);
+            $data = $this->find($data, $params);
         }
+        if($limit != null) {
+            return array_slice($data, 0, $limit);
+        }
+        return $data;
     }
 
     /**
      * returns all objects it could find
      * @param array $sort
+     * @param null $limit
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = []) {
+    public function findAll(array $sort = [], $limit  = null) {
         $result = ExecutionHandler::execute($this->model, $this->instance, []);
         if(!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->parse($result);
-            return $this->sort($data, $field, $sortingOrder);
+            $data = $this->sort($data, $field, $sortingOrder);
         }else {
-            return $this->parse($result);
+            $data = $this->parse($result);
         }
+        if($limit != null) {
+            return array_slice($data, 0, $limit);
+        }
+        return $data;
     }
 
     /**
