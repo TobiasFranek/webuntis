@@ -40,7 +40,6 @@ class ExamsRepository extends Repository {
     public function findAll(array $sort = [], $limit = null) {
         $query = new Query();
         $cache = new ApcuCache();
-        $cache->delete('Exams');
         if ($cache->contains('Exams')) {
             $exams = $cache->fetch('Exams');
         } else {
