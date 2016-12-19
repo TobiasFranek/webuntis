@@ -17,9 +17,9 @@
  */
 namespace Webuntis\Util;
 
-use Doctrine\Common\Cache\ApcuCache;
+use Webuntis\Models\AbstractModel;
 use Webuntis\Models\Interfaces\CachableModelInterface;
-use Webuntis\Webuntis;
+use Webuntis\Repositories\Repository;
 
 /**
  * Class ExecutionHandler
@@ -28,32 +28,34 @@ use Webuntis\Webuntis;
  */
 class ExecutionHandler {
 
-    private function __construct() {
-    }
+    private function __construct() {}
 
     /**
      * executes the given command with the right instance, model etc.
-     * @param string $model
-     * @param Webuntis $instance
+     * @param Repository $repository
      * @param array $params
-     * @return array
+     * @return AbstractModel[]
+     * @internal param string $model
+     * @internal param Webuntis $instance
      */
-    public static function execute($model, Webuntis $instance, array $params) {
+    public static function execute(Repository $repository, array $params) {
+        $model = $repository->getModel();
         $interfaces = class_implements($model);
-        $cacheDriver = new ApcuCache();
+        $cacheDriver = $repository->initMemcached();
         if ($cacheDriver->contains($model::METHOD) && isset($interfaces[CachableModelInterface::class])) {
-            $result = $cacheDriver->fetch($model::METHOD);
+            $data = $cacheDriver->fetch($model::METHOD);
         } else {
-            $result = $instance->getClient()->execute($model::METHOD, $params);
+            $result = $repository->getInstance()->getClient()->execute($model::METHOD, $params);
+            $data = $repository->parse($result);
+
             if (isset($interfaces[CachableModelInterface::class])) {
                 if($model::CACHE_LIFE_TIME) {
-                    $cacheDriver->save($model::METHOD, $result, $model::CACHE_LIFE_TIME);
+                    $cacheDriver->save($model::METHOD, $data, $model::CACHE_LIFE_TIME);
                 }else {
-                    $cacheDriver->save($model::METHOD, $result);
+                    $cacheDriver->save($model::METHOD, $data);
                 }
             }
         }
-
-        return $result;
+        return $data;
     }
 }
