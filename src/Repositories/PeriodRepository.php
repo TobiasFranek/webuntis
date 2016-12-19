@@ -55,14 +55,13 @@ class PeriodRepository extends Repository {
             $endDate = new \DateTime($endDate);
             $startDate = date_format($startDate, 'Ymd');
             $endDate = date_format($endDate, 'Ymd');
-            $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
+            $data = ExecutionHandler::execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
         }else if ($startDate || $endDate) {
             throw new RepositoryException('missing parameter endDate or startDate');
         }else {
-            $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type]);
+            $data = ExecutionHandler::execute($this, ['id' => $id, 'type' => $type]);
         }
 
-        $data = $this->parse($result);
         if(!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
@@ -99,22 +98,19 @@ class PeriodRepository extends Repository {
             $endDate = new \DateTime($endDate);
             $startDate = date_format($startDate, 'Ymd');
             $endDate = date_format($endDate, 'Ymd');
-            $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
+            $data = ExecutionHandler::execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
         }else if ($startDate || $endDate){
             throw new RepositoryException('missing parameter endDate or startDate');
         }else {
-            $result = ExecutionHandler::execute($this->model, $this->instance, ['id' => $id, 'type' => $type]);
+            $data = ExecutionHandler::execute($this, ['id' => $id, 'type' => $type]);
         }
         if(!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
-            $data = $this->parse($result);
             $data = $this->sort($data, $field, $sortingOrder);
-        }else {
-            $data = $this->parse($result);
         }
         if($limit != null) {
-            return array_slice($data, 0, $limit);
+            $data = array_slice($data, 0, $limit);
         }
         return $data;
     }

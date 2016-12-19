@@ -18,7 +18,6 @@
 
 namespace Webuntis\Repositories;
 
-use Doctrine\Common\Cache\ApcuCache;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Models\Exams;
 use Webuntis\Models\ExamTypes;
@@ -39,36 +38,36 @@ class ExamsRepository extends Repository {
      */
     public function findAll(array $sort = [], $limit = null) {
         $query = new Query();
-        $cache = new ApcuCache();
-        if ($cache->contains('Exams')) {
-            $exams = $cache->fetch('Exams');
+        if ($this->cache->contains('Exams')) {
+            $data = $this->cache->fetch('Exams');
         } else {
-            $examTypes = ExecutionHandler::execute(ExamTypes::class, $this->instance, []);
+            $examTypes = ExecutionHandler::execute(new Repository(ExamTypes::class), []);
             $exams = [];
             $schoolyear = $query->get('Schoolyear')->findAll();
             foreach ($examTypes as $value) {
-                $exams[] = ExecutionHandler::execute(Exams::class, $this->instance, ['examTypeId' => $value['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
+                $exams[] = ExecutionHandler::execute($this, ['examTypeId' => $value['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
             }
-            $cache->save('Exams', $exams, 604800);
-        }
-        $result = [];
-        foreach ($exams as $value) {
-            if(!empty($value)) {
-                foreach($value as $value2) {
-                    $result[] = new $this->model($value2);
+            $result = [];
+            foreach ($exams as $value) {
+                if(!empty($value)) {
+                    foreach($value as $value2) {
+                        $result[] = new $this->model($value2);
+                    }
                 }
             }
+            if(!empty($sort)) {
+                $field = array_keys($sort)[0];
+                $sortingOrder = $sort[$field];
+                $data = $this->sort($result, $field, $sortingOrder);
+            }else {
+                $data = $result;
+            }
+            if($limit != null) {
+                return array_slice($data, 0, $limit);
+            }
+            $this->cache->save('Exams', $data, 604800);
         }
-        if(!empty($sort)) {
-            $field = array_keys($sort)[0];
-            $sortingOrder = $sort[$field];
-            $data = $this->sort($result, $field, $sortingOrder);
-        }else {
-            $data = $result;
-        }
-        if($limit != null) {
-            return array_slice($data, 0, $limit);
-        }
+
         return $data;
     }
 }

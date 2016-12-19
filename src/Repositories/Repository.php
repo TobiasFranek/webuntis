@@ -18,7 +18,9 @@
 
 namespace Webuntis\Repositories;
 
+use Doctrine\Common\Cache\MemcachedCache;
 use Webuntis\Exceptions\RepositoryException;
+use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Util\ExecutionHandler;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Webuntis;
@@ -42,12 +44,18 @@ class Repository {
     protected $instance;
 
     /**
+     * @var MemcachedCache
+     */
+    protected $cache;
+
+    /**
      * Repository constructor.
      * @param $model
      */
     public function __construct($model) {
         $this->model = $model;
         $this->instance = WebuntisFactory::create($model);
+        $this->cache = $this->initMemcached();
     }
 
     /**
@@ -84,17 +92,15 @@ class Repository {
      * @return AbstractModel[]
      */
     public function findAll(array $sort = [], $limit = null) {
-        $result = ExecutionHandler::execute($this->model, $this->instance, []);
+        $data = ExecutionHandler::execute($this, []);
+
         if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
-            $data = $this->parse($result);
             $data = $this->sort($data, $field, $sortingOrder);
-        } else {
-            $data = $this->parse($result);
         }
         if ($limit != null) {
-            return array_slice($data, 0, $limit);
+            $data = array_slice($data, 0, $limit);
         }
         return $data;
     }
@@ -104,7 +110,7 @@ class Repository {
      * @param array $result
      * @return AbstractModel[]
      */
-    protected function parse($result) {
+    public function parse($result) {
         $data = [];
         foreach ($result as $key => $value) {
             /** @var AbstractModel $newObj */
@@ -179,5 +185,31 @@ class Repository {
         } else {
             throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
         }
+    }
+
+    /**
+     * returns the Memcache instance
+     * @return MemcachedCache
+     */
+    public function initMemcached() {
+        $memcached = new \Memcached();
+        $memcached->addServer('localhost', 11211);
+        $cacheDriver = new MemcachedCache();
+        $cacheDriver->setMemcached($memcached);
+        return $cacheDriver;
+    }
+
+    /**
+     * @return Webuntis
+     */
+    public function getInstance() {
+        return $this->instance;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModel() {
+        return $this->model;
     }
 }

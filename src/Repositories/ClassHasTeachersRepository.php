@@ -9,7 +9,6 @@
 namespace Webuntis\Repositories;
 
 
-use Doctrine\Common\Cache\ApcuCache;
 use Webuntis\Models\Classes;
 use Webuntis\Query\Query;
 use Webuntis\Util\ExecutionHandler;
@@ -22,25 +21,23 @@ class ClassHasTeachersRepository extends Repository {
      * @return array
      */
     public function findAll(array $sort = [], $limit = null) {
-        $cache = new ApcuCache();
+        $cache = $this->initMemcached();
         $classesHaveTeachers = [];
         if ($cache->contains('ClassesHaveTeachers')) {
             $classesHaveTeachers = $cache->fetch('ClassesHaveTeachers');
         } else {
             $query = new Query();
 
-            $classes = ExecutionHandler::execute(Classes::class, $this->instance, []);
-
+            $classes = ExecutionHandler::execute(new Repository(Classes::class), []);
 
             foreach ($classes as $class) {
+                $class = $class->serialize();
                 $class['teachers'] = [];
                 $classesHaveTeachers[] = new $this->model($class);
             }
             $schoolyear = $query->get('Schoolyear')->findAll();
-
-
             foreach ($classesHaveTeachers as $key => $value) {
-                $periods = $query->get('Period')->findAll($value->getId(), 1, date_format($schoolyear->getStartDate(), 'Ymd'), date_format($schoolyear->getEndDate(), 'Ymd'));
+                $periods = $query->get('Period')->findAll([], null, $value->getId(), 1, date_format($schoolyear->getStartDate(), 'Ymd'), date_format($schoolyear->getEndDate(), 'Ymd'));
                 $tempTeachers = [];
                 foreach ($periods as $value2) {
                     $teachers = $value2->getTeachers();
