@@ -49,10 +49,12 @@ class ClassHasTeachers extends AbstractModel {
     public function parse($data) {
         $this->setId($data['id']);
         $this->name = $data['name'];
-        $this->fullName = $data['longName'];
+        $this->fullName = $data['fullName'];
         $query = new Query();
-        foreach ($data['teachers'] as $value) {
-            $this->teachers[] = $query->get('Teachers')->findBy(['id' => $value['id']])[0];
+        if(!empty($data['teachers'])) {
+            foreach ($data['teachers'] as $value) {
+                $this->teachers[] = $query->get('Teachers')->findBy(['id' => $value['id']])[0];
+            }
         }
     }
 
