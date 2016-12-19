@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "76491a2d3e3288c01cba27f1a7974005",
-    "content-hash": "3e46bf57e044afe942c0057cca031592",
+    "hash": "0a4ad61b0fd212e39fd262cd7cd308a8",
+    "content-hash": "666a776d2d3d682757f49bcbe6d1c683",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -79,16 +79,16 @@
         },
         {
             "name": "fguillot/json-rpc",
-            "version": "v1.2.1",
+            "version": "v1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fguillot/JsonRPC.git",
-                "reference": "d491bb549bfa11aff4c37abcea2ffb28c9523f69"
+                "reference": "86dd3cf0724bc495cb31882122e9a3a77b9a2ffc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fguillot/JsonRPC/zipball/d491bb549bfa11aff4c37abcea2ffb28c9523f69",
-                "reference": "d491bb549bfa11aff4c37abcea2ffb28c9523f69",
+                "url": "https://api.github.com/repos/fguillot/JsonRPC/zipball/86dd3cf0724bc495cb31882122e9a3a77b9a2ffc",
+                "reference": "86dd3cf0724bc495cb31882122e9a3a77b9a2ffc",
                 "shasum": ""
             },
             "require": {
@@ -114,7 +114,7 @@
             ],
             "description": "Simple Json-RPC client/server library that just works",
             "homepage": "https://github.com/fguillot/JsonRPC",
-            "time": "2016-06-25 23:11:10"
+            "time": "2016-12-15 03:00:30"
         }
     ],
     "packages-dev": [],
@@ -126,7 +126,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~5.5|~7.0"
+        "php": "~5.5|~7.0",
+        "ext-memcached": "*"
     },
     "platform-dev": []
 }

@@ -18,7 +18,8 @@
   "require": {
     "php": "~5.5|~7.0",
     "fguillot/json-rpc": "@stable",
-    "doctrine/cache": "^1.6"
+    "doctrine/cache": "^1.6",
+    "ext-memcached": "*"
   },
   "autoload": {
     "psr-4": {
