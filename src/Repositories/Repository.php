@@ -127,27 +127,29 @@ class Repository {
      * @return AbstractModel[]
      */
     protected function find($data, $params) {
-        foreach ($params as $key => $value) {
-            $temp = [];
-            $keys = explode(":", $key);
-            $key = $keys[0];
-            if (isset($data[0])) {
-                if (isset($data[0]->serialize()[$key])) {
-                    foreach ($data as $key2 => $value2) {
-                        if (count($keys) > 1) {
-                            $tempKeys = $keys;
-                            $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
-                            $tempKeys = implode(':', $tempKeys);
-                            if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+        if(!empty($data)) {
+            foreach ($params as $key => $value) {
+                $temp = [];
+                $keys = explode(":", $key);
+                $key = $keys[0];
+                if (isset($data[0])) {
+                    if (isset($data[0]->serialize()[$key])) {
+                        foreach ($data as $key2 => $value2) {
+                            if (count($keys) > 1) {
+                                $tempKeys = $keys;
+                                $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
+                                $tempKeys = implode(':', $tempKeys);
+                                if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+                                    $temp[] = $value2;
+                                }
+                            } else if ($value2->serialize()[$key] == $value) {
                                 $temp[] = $value2;
                             }
-                        } else if ($value2->serialize()[$key] == $value) {
-                            $temp[] = $value2;
                         }
+                        $data = $temp;
+                    } else {
+                        throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
                     }
-                    $data = $temp;
-                } else {
-                    throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
                 }
             }
         }
@@ -162,29 +164,32 @@ class Repository {
      * @return AbstractModel[]
      */
     protected function sort(array $array, $key, $sortOrder) {
-        if (isset($array[0]->serialize()[$key])) {
-            if (!$length = count($array)) {
-                return $array;
-            }
-            for ($outer = 0; $outer < $length; $outer++) {
-                for ($inner = 0; $inner < $length; $inner++) {
-                    if ($array[$outer]->serialize()[$key] < $array[$inner]->serialize()[$key]) {
-                        $tmp = $array[$outer];
-                        $array[$outer] = $array[$inner];
-                        $array[$inner] = $tmp;
+        if(!empty($array)) {
+            if (isset($array[0]->serialize()[$key])) {
+                if (!$length = count($array)) {
+                    return $array;
+                }
+                for ($outer = 0; $outer < $length; $outer++) {
+                    for ($inner = 0; $inner < $length; $inner++) {
+                        if ($array[$outer]->serialize()[$key] < $array[$inner]->serialize()[$key]) {
+                            $tmp = $array[$outer];
+                            $array[$outer] = $array[$inner];
+                            $array[$inner] = $tmp;
+                        }
                     }
                 }
-            }
-            if ($sortOrder == 'ASC') {
-                return array_reverse($array);
-            } else if ($sortOrder == 'DESC') {
-                return $array;
+                if ($sortOrder == 'ASC') {
+                    return array_reverse($array);
+                } else if ($sortOrder == 'DESC') {
+                    return $array;
+                } else {
+                    throw new RepositoryException('sort order ' . $sortOrder . ' does not exist');
+                }
             } else {
-                throw new RepositoryException('sort order ' . $sortOrder . ' does not exist');
+                throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
             }
-        } else {
-            throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
         }
+        return $array;
     }
 
     /**
