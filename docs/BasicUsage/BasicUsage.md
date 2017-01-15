@@ -1,7 +1,7 @@
 # Configuration
 
 This guide shows you have to set the right configuration.
-The basic config array looks like this, but with this configuration you only can access data that need no right to access, like students or teachers
+The basic config array looks like this, but with this configuration you only can access data that needs no right to access.
 
 ```php
  'default' => [
