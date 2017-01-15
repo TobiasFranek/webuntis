@@ -61,7 +61,7 @@ $query->get('Exams')->findAll(['startDate' => 'ASC|DESC'], 5);
 There are two custom Repositories in the core already and they are the
 
 * PeriodRepository only has some additional parameters to the standard methods:
-* StudentsRepository with these additional functions:
+* UserRepository with these additional functions (This Repository can only execute these functions):
 
 ```php
 $query->get('User')->getCurrentUser();
@@ -88,8 +88,8 @@ These are all the model that exists in the core build:
 all the Repository method return the Model so an array of Model objects. If you want to serialize the Object you only need to call the serialize() method on an objects, this method then return an array.
 
 ```php 
-$student = $query->get('User')->getCurrentUser(); // returns an object
-$student = $student->serialize(); // turn the object into an array
+$user = $query->get('User')->getCurrentUser(); // returns an object
+$user = $user->serialize(); // turn the object into an array
 ```
 
 
