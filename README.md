@@ -1,5 +1,5 @@
 # Webuntis
-A API library that make it easy to access the Webuntis JSON RPC 2.0 API
+A API library that makes it easy to access the Webuntis JSON RPC 2.0 API
 
 ## Getting Started 
 These instructions will show you how to get this package up and running.
