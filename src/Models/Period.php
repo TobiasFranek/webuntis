@@ -61,6 +61,16 @@ class Period extends AbstractModel {
     /**
      * @var string
      */
+    private $code = 'normal';
+
+    /**
+     * @var string
+     */
+    private $type = 'lesson';
+
+    /**
+     * @var string
+     */
     const METHOD = "getTimetable";
 
     /**
@@ -78,6 +88,8 @@ class Period extends AbstractModel {
     public function serialize() {
         return [
             'id' => $this->getId(),
+            'code' => $this->code,
+            'type' => $this->type,
             'startTime' => $this->startTime,
             'endTime' => $this->endTime,
             'classes' => $this->serializeObj($this->classes),
@@ -104,6 +116,31 @@ class Period extends AbstractModel {
         } else {
             $this->endTime = new \DateTime($data['date'] . ' ' . substr($data['endTime'], 0, 2) . ':' . substr($data['endTime'], strlen($data['endTime']) - 2, strlen($data['endTime'])));
         }
+
+        if(isset($data['code'])) {
+            $this->code = $data['code'];
+        }
+
+        if(isset($data['lstype'])) {
+            switch ($data['lstype']){
+                case 'ls':
+                    $this->type = 'lesson';
+                    break;
+                case 'oh':
+                    $this->type = 'office hour';
+                    break;
+                case 'sb':
+                    $this->type = 'standby';
+                    break;
+                case 'bs':
+                    $this->type = 'break supervision';
+                    break;
+                case 'ex':
+                    $this->type = 'examination';
+                    break;
+            }
+        }
+
         foreach ($data['kl'] as $value) {
             $temp = $query->get('Classes')->findBy(['id' => $value['id']]);
             if(isset($temp[0])){
@@ -247,6 +284,34 @@ class Period extends AbstractModel {
         $this->rooms = $rooms;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCode() {
+        return $this->code;
+    }
+
+    /**
+     * @param mixed $code
+     */
+    public function setCode($code) {
+        $this->code = $code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type) {
+        $this->type = $type;
     }
 
     public function get($key) {
