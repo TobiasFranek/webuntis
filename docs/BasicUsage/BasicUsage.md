@@ -5,6 +5,7 @@ The basic config array looks like this, but with this configuration you only can
 
 ```php
  'default' => [
+       //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'yourusername',
@@ -16,12 +17,14 @@ The recommended configuration is when you have an default and an admin configura
 
 ```php
  'default' => [
+        //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'yourusername',
         'password' => 'yourpassword'
     ],
   'admin' => [
+        //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'youradminusername',
