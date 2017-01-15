@@ -144,6 +144,18 @@ class Repository {
                                 }
                             } else if ($value2->serialize()[$key] == $value) {
                                 $temp[] = $value2;
+                            } else if($this->endsWith($value, '%') && $this->startsWith($value, '%')){
+                                if($this->contains($value2->serialize()[$key], substr($value, 1, strlen($value) - 2))) {
+                                    $temp[] = $value2;
+                                }
+                            } else if($this->startsWith($value, '%')) {
+                                if($this->startsWith($value2->serialize()[$key], substr($value,1, strlen($value)))){
+                                    $temp[] = $value2;
+                                }
+                            } else if($this->endsWith($value, '%')) {
+                                if($this->endsWith($value2->serialize()[$key], substr($value, 0, strlen($value) - 1))){
+                                    $temp[] = $value2;
+                                }
                             }
                         }
                         $data = $temp;
@@ -216,5 +228,32 @@ class Repository {
      */
     public function getModel() {
         return $this->model;
+    }
+
+    /**
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
+    protected function startsWith($haystack, $needle) {
+        return substr($haystack, 0, strlen($needle)) == $needle;
+    }
+
+    /**
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
+    protected function endsWith($haystack, $needle) {
+        return substr($haystack, strlen($haystack) - strlen($needle), strlen($haystack)) == $needle;
+    }
+
+    /**
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
+    protected function contains($haystack, $needle) {
+        return strpos($haystack, $needle) != false;
     }
 }
