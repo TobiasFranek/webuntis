@@ -83,29 +83,40 @@ $query->get('Students')->findBy(['firstName' => 'seppi']);
 ```
 this method return all the students with the first name 'seppi'
 
-your also can search recursively like this:
+you also can search recursively like this:
 
 ```php
 $query->get('Period')->findBy(['teacher:firstName' => 'seppi']);
 ```
 this will return all the Period Models where the teachers have the first name 'seppi'
 
+you also can search if a certain string exists in a firstName like this:
+
+```php
+$query->get('Period')->findBy(['teacher:firstName' => '%epp%']);
+```
+
 you also can sort the given output
 
+```php
+
 $query->get('Exams')->findAll(['startDate' => 'ASC|DESC']);
+```
 
 this will either order the model descending (DESC) or ascending (ASC)
 
 you also can now give a limit to the query
+```php
 
 $query->get('Exams')->findAll(['startDate' => 'ASC|DESC'], 5);
+```
 
 ### Custom Repositories
 
 There are two custom Repositories in the core already and they are the
 
 * PeriodRepository only has some additional parameters to the standard methods:
-* StudentsRepository with these additional functions:
+* UserRepository with these additional functions (This Repository can only execute these functions):
 
 ```php
 $query->get('User')->getCurrentUser();
@@ -132,8 +143,8 @@ These are all the model that exists in the core build:
 all the Repository method return the Model so an array of Model objects. If you want to serialize the Object you only need to call the serialize() method on an objects, this method then return an array.
 
 ```php 
-$student = $query->get('User')->getCurrentUser(); // returns an object
-$student = $student->serialize(); // turn the object into an array
+$user = $query->get('User')->getCurrentUser(); // returns an object
+$user = $user->serialize(); // turn the object into an array
 ```
 
 

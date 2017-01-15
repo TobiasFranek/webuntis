@@ -1,10 +1,11 @@
 # Configuration
 
 This guide shows you have to set the right configuration.
-The basic config array looks like this, but with this configruation you only can access data that need no right to access, like students or teachers
+The basic config array looks like this, but with this configuration you only can access data that needs no right to access.
 
 ```php
  'default' => [
+       //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'yourusername',
@@ -12,16 +13,18 @@ The basic config array looks like this, but with this configruation you only can
         ]
 ```
 
-The recommended configuration is when you have an default and an admin configuration, so you can fetch all data from the api. The admin account doesnt have to be an admin account it is enough when you give him full reading permission.
+The recommended configuration is when you have an default and an admin configuration, so you can fetch all data from the api. The admin account doesn't have to be an admin account it is enough when you give him full reading permission.
 
 ```php
  'default' => [
+        //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'yourusername',
         'password' => 'yourpassword'
     ],
   'admin' => [
+        //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'youradminusername',
@@ -34,12 +37,14 @@ To apply the configuration you have to simply create a new WebuntisConfiguration
 ```php
 $config = new WebuntisConfiguration( 
 'default' => [
+       //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'yourusername',
         'password' => 'yourpassword'
     ],
 'admin' => [
+       //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'youradminusername',
