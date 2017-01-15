@@ -314,6 +314,10 @@ class Period extends AbstractModel {
         $this->type = $type;
     }
 
+    /**
+     * @param $key
+     * @return Classes[]|Rooms[]|Subjects[]|Teachers[]
+     */
     public function get($key) {
         switch ($key) {
             case 'teachers':
