@@ -61,7 +61,8 @@ class Query {
         'User' => UserRepository::class,
         'ClassHasTeachers' => ClassHasTeachersRepository::class,
         'Schoolyear' => SchoolyearRepository::class,
-        'Exams' => ExamsRepository::class
+        'Exams' => ExamsRepository::class,
+        'Substitutions' => Substitutions::class
     ];
 
     /**
