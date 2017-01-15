@@ -29,6 +29,7 @@ use Webuntis\Models\Rooms;
 use Webuntis\Models\Schoolyear;
 use Webuntis\Models\Subjects;
 use Webuntis\Models\Students;
+use Webuntis\Models\Substitutions;
 use Webuntis\Models\Teachers;
 use Webuntis\Models\Classes;
 use Webuntis\Repositories\ClassHasTeachersRepository;
@@ -78,7 +79,8 @@ class Query {
         'ClassHasTeachers' => ClassHasTeachers::class,
         'Schoolyear' => Schoolyear::class,
         'Exams' => Exams::class,
-        'ExamTypes' => ExamTypes::class
+        'ExamTypes' => ExamTypes::class,
+        'Substitutions' => Substitutions::class
     ];
 
     /**
