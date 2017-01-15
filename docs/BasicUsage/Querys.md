@@ -35,15 +35,26 @@ $query->get('Period')->findBy(['teacher:firstName' => 'seppi']);
 ```
 this will return all the Period Models where the teachers have the first name 'seppi'
 
+you also can search if a certain string exists in a firstName like this:
+
+```php
+$query->get('Period')->findBy(['teacher:firstName' => '%epp%']);
+```
+
 you also can sort the given output
 
+```php
+
 $query->get('Exams')->findAll(['startDate' => 'ASC|DESC']);
+```
 
 this will either order the model descending (DESC) or ascending (ASC)
 
 you also can now give a limit to the query
+```php
 
 $query->get('Exams')->findAll(['startDate' => 'ASC|DESC'], 5);
+```
 
 ### Custom Repositories
 
