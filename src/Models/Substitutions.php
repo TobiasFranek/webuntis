@@ -53,6 +53,11 @@ class Substitutions extends AbstractModel {
      */
     private $text;
 
+    /**
+     * @var string
+     */
+    const METHOD = 'getSubstitutions';
+
 
     function serialize() {
         return [
