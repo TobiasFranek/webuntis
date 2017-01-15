@@ -37,12 +37,14 @@ To apply the configuration you have to simply create a new WebuntisConfiguration
 ```php
 $config = new WebuntisConfiguration( 
 'default' => [
+       //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'yourusername',
         'password' => 'yourpassword'
     ],
 'admin' => [
+       //f.e. thalia, cissa etc.
         'server' => 'yourserver',
         'school' => 'yourschool',
         'username' => 'youradminusername',
