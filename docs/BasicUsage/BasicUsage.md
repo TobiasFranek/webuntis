@@ -148,12 +148,30 @@ These are all the model that exists in the core build:
 * Exams - api method: getExams
 * Substitutions - api method: getSubstitutions
 
+### Serializer
+
 all the Repository method return the Model so an array of Model objects. If you want to serialize the Object you only need to call the serialize() method on an objects, this method then return an array.
 
 ```php 
 $user = $query->get('User')->getCurrentUser(); // returns an object
 $user = $user->serialize(); // turn the object into an array
 ```
+
+if you want an other format(supported: json, xml, yml) you have to write this:
+
+```php
+$user = $query->get('User')->getCurrentUser(); // returns an object
+$user = $user->serialize('json|xml|yml'); // turn the object into an array
+```
+
+if you have an array of object you can serialize the array including the models that are in there, you have to call the Serializer Class:
+
+```php
+$students = $query->get('Students')->findAll(); // returns an object array
+$students =  \Webuntis\Serializer\Serializer::serialize($students, 'json|xml|yml') // turn the object array into an array,
+                                                                                   // if the second parameter is empty it will return an php array
+```
+
 
 
 
