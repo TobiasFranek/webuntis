@@ -240,13 +240,15 @@ class Repository {
 
     /**
      * returns the Memcache instance
+     * @param string $host
+     * @param int $port
      * @return Memcached
      */
-    public function initMemcached() {
+    public function initMemcached($host = 'localhost', $port = 11211) {
         $cacheDriver = new Memcached();
         if (self::$disabledCache == false && extension_loaded('memcached')) {
             $memcached = new \Memcached();
-            $memcached->addServer('localhost', 11211);
+            $memcached->addServer($host, $port);
             $cacheDriver->setMemcached($memcached);
         }
         return $cacheDriver;
