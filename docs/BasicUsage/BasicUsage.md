@@ -32,10 +32,30 @@ The recommended configuration is when you have an default and an admin configura
     ]
 ```
 
+if you want to turn off caching (which is not recommended) take this configuration:
+
+```php
+ 'default' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'yourusername',
+        'password' => 'yourpassword'
+    ],
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ],
+    'disableCache' => true
+```
+
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
 
 ```php
-$config = new WebuntisConfiguration( 
+$config = new WebuntisConfiguration(
 'default' => [
        //f.e. thalia, cissa etc.
         'server' => 'yourserver',
