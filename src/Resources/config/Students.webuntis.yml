@@ -1,0 +1,18 @@
+Webuntis\Models\Students:
+    repositoryClass: null
+    fields:
+        name:
+            type: string
+            apiName: name
+        firstName:
+            type: string
+            apiName: foreName
+        lastName:
+            type: string
+            apiName: longName
+        key:
+            type: string
+            apiName: key
+        gender:
+            type: string
+            apiName: gender

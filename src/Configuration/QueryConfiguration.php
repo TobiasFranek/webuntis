@@ -21,6 +21,7 @@ namespace Webuntis\Configuration;
 
 use Symfony\Component\Yaml\Yaml;
 use Webuntis\Repositories\Repository;
+use Webuntis\Repositories\UserRepository;
 
 class QueryConfiguration {
 
@@ -39,6 +40,7 @@ class QueryConfiguration {
      */
     private $repositories = [
         'Default' => Repository::class,
+        'User' => UserRepository::class,
     ];
 
     public function __construct() {

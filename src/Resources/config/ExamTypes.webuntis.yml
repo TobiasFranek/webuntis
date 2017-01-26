@@ -1,0 +1,12 @@
+Webuntis\Models\ExamTypes:
+    repositoryClass: null
+    fields:
+        name:
+            type: string
+            apiName: name
+        longName:
+            type: string
+            apiName: longName
+        type:
+            type: string
+            apiName: id

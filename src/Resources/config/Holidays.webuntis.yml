@@ -1,0 +1,15 @@
+Webuntis\Models\Holidays:
+    repositoryClass: null
+    fields:
+        startDate:
+            type: date
+            apiName: startDate
+        endDate:
+            type: date
+            apiName: startDate
+        fullName:
+            type: string
+            apiName: longName
+        name:
+            type: string
+            apiName: name

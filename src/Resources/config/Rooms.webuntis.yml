@@ -1,0 +1,9 @@
+Webuntis\Models\Rooms:
+    repositoryClass: null
+    fields:
+        name:
+            type: string
+            apiName: name
+        fullName:
+            type: string
+            apiName: longName

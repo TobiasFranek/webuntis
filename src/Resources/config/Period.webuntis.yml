@@ -1,0 +1,27 @@
+Webuntis\Models\Period:
+    repositoryClass: Webuntis\Repositories\PeriodRepository
+    fields:
+        startTime:
+            type: date
+            apiName: startTime
+        endTime:
+            type: date
+            apiName: endTime
+        classes:
+            type: array
+            apiName: kl
+        teachers:
+            type: array
+            apiName: te
+        subjects:
+            type: array
+            apiName: su
+        rooms:
+            type: array
+            apiName: ro
+        code:
+            type: string
+            apiName: code
+        type:
+            type: string
+            apiName: lstype

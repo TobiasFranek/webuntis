@@ -1,0 +1,12 @@
+Webuntis\Models\Schoolyear:
+    repositoryClass: Webuntis\Repositories\SchoolyearRepository
+    fields:
+        startDate:
+            type: date
+            apiName: startDate
+        endDate:
+            type: date
+            apiName: endDate
+        name:
+            type: string
+            apiName: name
