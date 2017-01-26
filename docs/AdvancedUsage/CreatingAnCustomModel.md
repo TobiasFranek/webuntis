@@ -18,15 +18,6 @@ class YourModel extends AbstractModel {
     //defines the method that has to be executed to get the data from the API
     const METHOD = 'apiMethod';
 
-  
-    public function serialize() {
-        //return the object in an array
-        return [
-           'modelField' => $this->modelField,
-           'anotherModelField' => $this->anotherModelField
-        ];
-    }
-
     protected function parse($data) {
         //how to parse the given data to your model
         $this->modelField = $data['apiField'];
@@ -37,7 +28,7 @@ class YourModel extends AbstractModel {
     //search for properties of the model, for this you will need this get() method
     //because it is used by the recursive search
     public function get($key) {
-        //to something
+        //do something
     }
     
  	//please write getter and setter for the Model fields, or i will be sad :(

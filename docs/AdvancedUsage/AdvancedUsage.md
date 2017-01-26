@@ -38,7 +38,7 @@ to execute your own api request in you custom Repository is pretty easy.
 just write this:
 
 ```php
-$result = ExecutionHandler::execute($this->model, $this->instance, []);
+$result = ExecutionHandler::execute($this, []);
 ```
 
 this method return the result of the api request as an array.
@@ -89,22 +89,19 @@ class YourModel extends AbstractModel {
     //defines the method that has to be executed to get the data from the API
     const METHOD = 'apiMethod';
 
-  
-    public function serialize() {
-        //return the object in an array
-        return [
-           'modelField' => $this->modelField,
-           'anotherModelField' => $this->anotherModelField
-        ];
-    }
-
     protected function parse($data) {
         //how to parse the given data to your model
         $this->modelField = $data['apiField'];
         $this->anotherModelField = $data['anotherApiField'];
     }
-
- 	//please write getter and setter for the Model fields, or i will be sad :(
+    
+    //if you have models like teachers or something in your model you might wanna 
+    //search for properties of the model, for this you will need this get() method
+    //because it is used by the recursive search
+    public function get($key) {
+        //do something
+    }
+    //please write getter and setter for the Model fields, or i will be sad :(
 }
 ```
 
