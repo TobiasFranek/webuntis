@@ -1,5 +1,5 @@
 Webuntis\Models\Substitutions:
-    repositoryClass: Webuntis\Repositories\PeriodRepository
+    repositoryClass: Webuntis\Repositories\SubstitutionsRepository
     fields:
         startTime:
             type: date

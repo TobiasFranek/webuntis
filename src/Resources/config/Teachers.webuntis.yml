@@ -1,4 +1,4 @@
-Webuntis\Models\Students:
+Webuntis\Models\Teachers:
     repositoryClass: null
     fields:
         name:
