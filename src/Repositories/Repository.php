@@ -48,6 +48,8 @@ class Repository {
      */
     protected $cache;
 
+    public static $disabledCache;
+
     /**
      * Repository constructor.
      * @param $model
@@ -237,11 +239,14 @@ class Repository {
      * @return MemcachedCache
      */
     public function initMemcached() {
-        $memcached = new \Memcached();
-        $memcached->addServer('localhost', 11211);
-        $cacheDriver = new MemcachedCache();
-        $cacheDriver->setMemcached($memcached);
-        return $memcached;
+        if(self::$disabledCache == false && extension_loaded('memcached')) {
+            $memcached = new \Memcached();
+            $memcached->addServer('localhost', 11211);
+            $cacheDriver = new MemcachedCache();
+            $cacheDriver->setMemcached($memcached);
+            return $memcached;
+        }
+        return false;
     }
 
     /**
@@ -256,6 +261,10 @@ class Repository {
      */
     public function getModel() {
         return $this->model;
+    }
+
+    public function checkIfCachingIsDisabled() {
+        return self::$disabledCache;
     }
 
     /**

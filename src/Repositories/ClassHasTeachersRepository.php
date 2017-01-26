@@ -23,7 +23,7 @@ class ClassHasTeachersRepository extends Repository {
     public function findAll(array $sort = [], $limit = null) {
         $cache = $this->initMemcached();
         $classesHaveTeachers = [];
-        if ($cache->contains('ClassesHaveTeachers')) {
+        if ($this->checkIfCachingIsDisabled() == false && $cache->contains('ClassesHaveTeachers')) {
             $classesHaveTeachers = $cache->fetch('ClassesHaveTeachers');
         } else {
             $query = new Query();
@@ -47,7 +47,9 @@ class ClassHasTeachersRepository extends Repository {
                 }
                 $classesHaveTeachers[$key]->setTeachers($tempTeachers);
             }
-            $cache->save('ClassesHaveTeachers', $classesHaveTeachers);
+            if($this->checkIfCachingIsDisabled() == false) {
+                $cache->save('ClassesHaveTeachers', $classesHaveTeachers);
+            }
         }
         if(!empty($sort)) {
             $field = array_keys($sort)[0];

@@ -19,6 +19,7 @@
 namespace Webuntis;
 
 use Doctrine\Common\Cache\ApcuCache;
+use Webuntis\Repositories\Repository;
 
 /**
  * Class WebuntisConfiguration
@@ -59,6 +60,19 @@ class WebuntisConfiguration {
      * @return WebuntisConfiguration $this
      */
     public function setConfig(array $config) {
+        if(isset($config['disableCache'])) {
+            if(extension_loaded('memcached') == false) {
+                Repository::$disabledCache = true;
+            }else {
+                Repository::$disabledCache = $config['disableCache'];
+            }
+        } else {
+            if(extension_loaded('memcached') == false) {
+                Repository::$disabledCache = true;
+            }else {
+                Repository::$disabledCache = false;
+            }
+        }
         WebuntisFactory::setConfig($config);
 
         return $this;

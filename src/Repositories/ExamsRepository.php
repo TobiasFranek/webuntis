@@ -38,7 +38,7 @@ class ExamsRepository extends Repository {
      */
     public function findAll(array $sort = [], $limit = null) {
         $query = new Query();
-        if ($this->cache->contains('Exams')) {
+        if ($this->checkIfCachingIsDisabled() == false && $this->cache->contains('Exams')) {
             $data = $this->cache->fetch('Exams');
         } else {
             $examTypes = ExecutionHandler::execute(new Repository(ExamTypes::class), []);
@@ -65,7 +65,9 @@ class ExamsRepository extends Repository {
             if($limit != null) {
                 return array_slice($data, 0, $limit);
             }
-            $this->cache->save('Exams', $data, 604800);
+            if($this->checkIfCachingIsDisabled() == false) {
+                $this->cache->save('Exams', $data, 604800);
+            }
         }
 
         return $data;
