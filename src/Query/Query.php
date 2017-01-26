@@ -39,6 +39,7 @@ use Webuntis\Repositories\PeriodRepository;
 use Webuntis\Repositories\Repository;
 use Webuntis\Repositories\SchoolyearRepository;
 use Webuntis\Repositories\StudentsRepository;
+use Webuntis\Repositories\SubstitutionsRepository;
 use Webuntis\Repositories\UserRepository;
 
 /**
@@ -63,7 +64,7 @@ class Query {
         'ClassHasTeachers' => ClassHasTeachersRepository::class,
         'Schoolyear' => SchoolyearRepository::class,
         'Exams' => ExamsRepository::class,
-        'Substitutions' => Substitutions::class
+        'Substitutions' => SubstitutionsRepository::class
     ];
 
     /**
@@ -87,18 +88,12 @@ class Query {
 
     /**
      * Query constructor.
-     * @param array $models
-     * @param array $repositories
      */
-    public function __construct(array $models = [], array $repositories = []) {
-        $this->models = array_merge($this->models, $models);
-        $this->repositories = array_merge($this->repositories, $repositories);
+    public function __construct() {
         $config = new QueryConfiguration();
 
-        $config->getModels();
-        $config->getRepositories();
-
-        print "test";
+        $this->models = $config->getModels();
+        $this->repositories = $config->getRepositories();
     }
 
     /**
