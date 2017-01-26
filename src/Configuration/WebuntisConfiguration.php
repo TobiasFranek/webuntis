@@ -16,10 +16,10 @@
  * and is licensed under the MIT license.
  */
 
-namespace Webuntis;
+namespace Webuntis\Configuration;
 
-use Doctrine\Common\Cache\ApcuCache;
 use Webuntis\Repositories\Repository;
+use Webuntis\WebuntisFactory;
 
 /**
  * Class WebuntisConfiguration
