@@ -38,8 +38,8 @@ class Serializer {
      * @param $format
      * @return mixed|string
      */
-    public static function serialize($data, $format) {
-        if($format == 'php') {
+    public static function serialize($data, $format = null) {
+        if(!$format) {
             return json_decode(self::getSerializer()->serialize($data, 'json'), true);
         }else {
             return self::getSerializer()->serialize($data, $format);

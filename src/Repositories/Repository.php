@@ -133,7 +133,7 @@ class Repository {
                 $keys = explode(":", $key);
                 $key = $keys[0];
                 if (isset($data[0])) {
-                    if (isset($data[0]->serialize('php')[$key])) {
+                    if (isset($data[0]->serialize()[$key])) {
                         foreach ($data as $key2 => $value2) {
                             if (count($keys) > 1) {
                                 $tempKeys = $keys;
@@ -142,18 +142,18 @@ class Repository {
                                 if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
                                     $temp[] = $value2;
                                 }
-                            } else if ($value2->serialize('php')[$key] == $value) {
+                            } else if ($value2->serialize()[$key] == $value) {
                                 $temp[] = $value2;
                             } else if($this->endsWith($value, '%') && $this->startsWith($value, '%')){
-                                if($this->contains($value2->serialize('php')[$key], substr($value, 1, strlen($value) - 2))) {
+                                if($this->contains($value2->serialize()[$key], substr($value, 1, strlen($value) - 2))) {
                                     $temp[] = $value2;
                                 }
                             } else if($this->startsWith($value, '%')) {
-                                if($this->startsWith($value2->serialize('php')[$key], substr($value,1, strlen($value)))){
+                                if($this->startsWith($value2->serialize()[$key], substr($value,1, strlen($value)))){
                                     $temp[] = $value2;
                                 }
                             } else if($this->endsWith($value, '%')) {
-                                if($this->endsWith($value2->serialize('php')[$key], substr($value, 0, strlen($value) - 1))){
+                                if($this->endsWith($value2->serialize()[$key], substr($value, 0, strlen($value) - 1))){
                                     $temp[] = $value2;
                                 }
                             }
@@ -177,13 +177,13 @@ class Repository {
      */
     protected function sort(array $array, $key, $sortOrder) {
         if(!empty($array)) {
-            if (isset($array[0]->serialize('php')[$key])) {
+            if (isset($array[0]->serialize()[$key])) {
                 if (!$length = count($array)) {
                     return $array;
                 }
                 for ($outer = 0; $outer < $length; $outer++) {
                     for ($inner = 0; $inner < $length; $inner++) {
-                        if ($array[$outer]->serialize('php')[$key] < $array[$inner]->serialize('php')[$key]) {
+                        if ($array[$outer]->serialize()[$key] < $array[$inner]->serialize()[$key]) {
                             $tmp = $array[$outer];
                             $array[$outer] = $array[$inner];
                             $array[$inner] = $tmp;

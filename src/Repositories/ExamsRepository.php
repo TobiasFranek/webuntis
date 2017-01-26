@@ -45,7 +45,7 @@ class ExamsRepository extends Repository {
             $exams = [];
             $schoolyear = $query->get('Schoolyear')->findAll();
             foreach ($examTypes as $value) {
-                $exams[] = ExecutionHandler::execute($this, ['examTypeId' => $value->serialize('php')['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
+                $exams[] = ExecutionHandler::execute($this, ['examTypeId' => $value->serialize()['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
             }
             $result = [];
             foreach ($exams as $value) {
