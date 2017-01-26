@@ -28,6 +28,13 @@ Usage:
 ```php
 $searchedForObjects = $this->sort($parsedObjects, $field, $sortingOrder);
 ```
+* parse()the parse method parses an result automatically to the right model
+
+Usage:
+
+```php
+$parsedObjects = $this->parse($result);
+```
 
 I highly recommend these methods!
 
@@ -68,3 +75,13 @@ $query->get('ModelName')->yourMethod();
 ```
 
 your Repository gets executed.
+
+## Caching 
+
+If you want to cache data in your repository. To get the Memcached Service call:
+
+```php
+$this->initMemcached($host, $port); //parameter are optional
+```
+
+this will return an doctrine MemcachedCache object. How to use this MemcachedCache object is documented [here](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/caching.html).
