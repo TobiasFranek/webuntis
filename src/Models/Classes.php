@@ -45,18 +45,7 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * @var string
      */
     const METHOD = 'getKlassen';
-
-    /**
-     * serializes the object and returns an array with the objects values
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->name,
-            'fullName' => $this->fullName
-        ];
-    }
+    
 
     /**
      * parses the given data from the json rpc api to the right format for the object

@@ -59,31 +59,6 @@ class ClassHasTeachers extends AbstractModel {
     }
 
     /**
-     * serializes the object and returns an array with the objects values
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->name,
-            'fullName' => $this->fullName,
-            'teachers' => $this->getSerializedTeachers()
-        ];
-    }
-
-    /**
-     * serializes the teachers
-     * @return array
-     */
-    private function getSerializedTeachers() {
-        $result = [];
-        foreach ($this->teachers as $value) {
-            $result[] = $value->serialize();
-        }
-        return $result;
-    }
-
-    /**
      * returns the Teachers
      * @return Teachers[]
      */

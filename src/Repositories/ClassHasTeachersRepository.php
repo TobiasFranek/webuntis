@@ -31,7 +31,7 @@ class ClassHasTeachersRepository extends Repository {
             $classes = ExecutionHandler::execute(new Repository(Classes::class), []);
 
             foreach ($classes as $class) {
-                $class = $class->serialize();
+                $class = $class->serialize('php');
                 $class['teachers'] = [];
                 $classesHaveTeachers[] = new $this->model($class);
             }

@@ -72,19 +72,6 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
     }
 
     /**
-     * serializes the object and returns an array with the objects values
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->name,
-            'firstName' => $this->firstName,
-            'lastName' => $this->lastName
-        ];
-    }
-
-    /**
      * sets the name
      * @param string $name
      * @return Teachers $this

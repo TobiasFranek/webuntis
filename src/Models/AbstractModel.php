@@ -19,6 +19,7 @@
 namespace Webuntis\Models;
 
 use Webuntis\Models\Interfaces\ModelInterface;
+use Webuntis\Serializer\Serializer;
 
 /**
  * Abstract Class Model
@@ -65,9 +66,12 @@ abstract class AbstractModel implements ModelInterface {
 
     /**
      * serializes the object and returns an array with the objects values
+     * @param $format
      * @return array
      */
-    abstract function serialize();
+    public function serialize($format) {
+        return Serializer::serialize($this, $format);
+    }
 
     /**
      * parses the given data from the json rpc api to the right format for the object

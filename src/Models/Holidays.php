@@ -69,19 +69,6 @@ class Holidays extends AbstractModel implements CachableModelInterface {
         $this->endDate = new \DateTime($data['endDate']);
     }
 
-    /**
-     * serializes the object and returns an array with the objects values
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->name,
-            'fullName' => $this->fullName,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate
-        ];
-    }
 
     /**
      * returns the name

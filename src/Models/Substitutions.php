@@ -79,20 +79,6 @@ class Substitutions extends AbstractModel {
      */
     const METHOD = 'getSubstitutions';
 
-
-    function serialize() {
-        return [
-            'type' => $this->type,
-            'text' => $this->text,
-            'startTime' => $this->startTime,
-            'endTime' => $this->endTime,
-            'lesson' => $this->lesson,
-            'classes' => $this->serializeObj($this->classes),
-            'teachers' => $this->serializeObj($this->teachers),
-            'subjects' => $this->serializeObj($this->subjects),
-            'rooms' => $this->serializeObj($this->rooms)
-        ];
-    }
     protected function parse($data) {
         $query = new Query();
         if (strlen($data['startTime']) < 4) {
@@ -285,18 +271,5 @@ class Substitutions extends AbstractModel {
             default:
                 throw new ModelException('array of objects' . $key . 'doesn\'t exist');
         }
-    }
-
-    /**
-     * serializes the classes
-     * @param $objs array
-     * @return array
-     */
-    private function serializeObj(array $objs) {
-        $result = [];
-        foreach ($objs as $value) {
-            $result[] = $value->serialize();
-        }
-        return $result;
     }
 }

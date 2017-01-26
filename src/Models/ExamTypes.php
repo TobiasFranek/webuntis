@@ -65,16 +65,6 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
     }
 
     /**
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'type' => $this->type
-        ];
-    }
-
-    /**
      * @return int
      */
     public function getType() {

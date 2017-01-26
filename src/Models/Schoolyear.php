@@ -62,19 +62,6 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
     }
 
     /**
-     * serializes the object and returns an array with the objects values
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'name' => $this->name,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate
-        ];
-    }
-
-    /**
      * sets name
      * @param $name
      * @return $this

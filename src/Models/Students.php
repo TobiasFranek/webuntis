@@ -95,21 +95,6 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
     }
 
     /**
-     * serializes the object and returns an array with the objects values
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'key' => $this->key,
-            'name' => $this->name,
-            'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
-            'gender' => $this->gender
-        ];
-    }
-
-    /**
      * return the firstName
      * @return string
      */

@@ -99,36 +99,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
             $this->endDate = new \DateTime($data['date'] . ' ' . substr($data['endTime'], 0, 2) . ':' . substr($data['endTime'], strlen($data['endTime']) - 2, strlen($data['endTime'])));
         }
     }
-
-    /**
-     * serializes the model
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
-            'subject' => $this->serializeObj($this->subject),
-            'teachers' => $this->serializeObj($this->teachers),
-            'students' => $this->serializeObj($this->students),
-            'classes' => $this->serializeObj($this->classes),
-        ];
-    }
-
-    /**
-     * serializes the classes
-     * @param $objs array
-     * @return array
-     */
-    private function serializeObj(array $objs) {
-        $result = [];
-        foreach ($objs as $value) {
-            $result[] = $value->serialize();
-        }
-        return $result;
-    }
-
+    
     /**
      * @return Classes[]
      */

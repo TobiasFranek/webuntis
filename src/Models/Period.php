@@ -82,24 +82,6 @@ class Period extends AbstractModel {
     }
 
     /**
-     * serializes the object and returns an array with the objects values
-     * @return array
-     */
-    public function serialize() {
-        return [
-            'id' => $this->getId(),
-            'code' => $this->code,
-            'type' => $this->type,
-            'startTime' => $this->startTime,
-            'endTime' => $this->endTime,
-            'classes' => $this->serializeObj($this->classes),
-            'teachers' => $this->serializeObj($this->teachers),
-            'subjects' => $this->serializeObj($this->subjects),
-            'rooms' => $this->serializeObj($this->rooms)
-        ];
-    }
-
-    /**
      * parses the given data from the json rpc api to the right format for the object
      * @param array $data
      */
@@ -168,18 +150,7 @@ class Period extends AbstractModel {
             }
         }
     }
-    /**
-     * serializes the classes
-     * @param $objs array
-     * @return array
-     */
-    private function serializeObj(array $objs) {
-        $result = [];
-        foreach ($objs as $value) {
-            $result[] = $value->serialize();
-        }
-        return $result;
-    }
+
     /**
      * sets the startTime
      * @param \DateTime $startTime

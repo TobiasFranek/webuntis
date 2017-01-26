@@ -16,28 +16,46 @@
  * and is licensed under the MIT license.
  */
 
-namespace Webuntis\Models\Interfaces;
+namespace Webuntis\Serializer;
+
+use JMS\Serializer\SerializerBuilder;
 
 /**
- * Interface ModelInterface
- * @package Webuntis\Models\Interfaces
+ * Class Serializer
+ * @package Webuntis\Serializer
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-interface ModelInterface {
-    /**
-     * @return int
-     */
-    public function getId();
+class Serializer {
+
+    static private $serializer;
+
+    private function __construct() {}
 
     /**
-     * @param $id
-     * @return int
-     */
-    public function setId($id);
-
-    /**
+     * serializes the given data with jms
+     * added additional php array function
+     * @param $data
      * @param $format
-     * @return array
+     * @return mixed|string
      */
-    public function serialize($format);
+    public static function serialize($data, $format) {
+        if($format == 'php') {
+            return json_decode(self::getSerializer()->serialize($data, 'json'), true);
+        }else {
+            return self::getSerializer()->serialize($data, $format);
+        }
+    }
+
+    /**
+     * return a serializer
+     * @return \JMS\Serializer\Serializer
+     */
+    private static function getSerializer() {
+        if(!self::$serializer) {
+            self::$serializer = SerializerBuilder::create()->build();
+            return self::$serializer;
+        }else {
+            return self::$serializer;
+        }
+    }
 }
