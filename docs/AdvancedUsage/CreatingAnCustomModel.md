@@ -18,15 +18,6 @@ class YourModel extends AbstractModel {
     //defines the method that has to be executed to get the data from the API
     const METHOD = 'apiMethod';
 
-  
-    public function serialize() {
-        //return the object in an array
-        return [
-           'modelField' => $this->modelField,
-           'anotherModelField' => $this->anotherModelField
-        ];
-    }
-
     protected function parse($data) {
         //how to parse the given data to your model
         $this->modelField = $data['apiField'];
