@@ -20,8 +20,11 @@
     "fguillot/json-rpc": "@stable",
     "doctrine/cache": "^1.6",
     "jms/serializer": "^1.4",
-    "symfony/yaml": "^3.2",
-    "ext-memcached": "*"
+    "symfony/yaml": "^3.2"
+
+  },
+  "suggest": {
+    "ext-memcached": "I highly recommend this extension, because it is needed for caching, if you don't install this caching will not work"
   },
   "autoload": {
     "psr-4": {
