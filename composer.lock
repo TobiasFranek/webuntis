@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6958f4b84a989523aa9d75fad707ce32",
+    "hash": "294f55dc1ea8d4b0dfd480ff68db5aef",
     "content-hash": "45fcb89b43efceb57bb0a9885c1f0374",
     "packages": [
         {
@@ -255,16 +255,16 @@
         },
         {
             "name": "fguillot/json-rpc",
-            "version": "v1.2.3",
+            "version": "v1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fguillot/JsonRPC.git",
-                "reference": "86dd3cf0724bc495cb31882122e9a3a77b9a2ffc"
+                "reference": "ea2720b13e986bbf23e832b135c84c91ead7259f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fguillot/JsonRPC/zipball/86dd3cf0724bc495cb31882122e9a3a77b9a2ffc",
-                "reference": "86dd3cf0724bc495cb31882122e9a3a77b9a2ffc",
+                "url": "https://api.github.com/repos/fguillot/JsonRPC/zipball/ea2720b13e986bbf23e832b135c84c91ead7259f",
+                "reference": "ea2720b13e986bbf23e832b135c84c91ead7259f",
                 "shasum": ""
             },
             "require": {
@@ -290,7 +290,7 @@
             ],
             "description": "Simple Json-RPC client/server library that just works",
             "homepage": "https://github.com/fguillot/JsonRPC",
-            "time": "2016-12-15 03:00:30"
+            "time": "2017-01-12 21:31:30"
         },
         {
             "name": "jms/metadata",

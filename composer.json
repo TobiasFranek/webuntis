@@ -24,7 +24,7 @@
 
   },
   "suggest": {
-    "ext-memcached": "I highly recommend this extension, because it is needed for caching, if you don't install this caching will not work"
+    "ext-memcached": "Required for caching"
   },
   "autoload": {
     "psr-4": {
