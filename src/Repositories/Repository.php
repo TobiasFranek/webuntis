@@ -244,7 +244,7 @@ class Repository {
             $memcached->addServer('localhost', 11211);
             $cacheDriver = new MemcachedCache();
             $cacheDriver->setMemcached($memcached);
-            return $memcached;
+            return $cacheDriver;
         }
         return false;
     }
