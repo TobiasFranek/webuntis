@@ -18,6 +18,7 @@
 
 namespace Webuntis\Query;
 
+use Webuntis\Configuration\QueryConfiguration;
 use Webuntis\Exceptions\QueryException;
 use Webuntis\Models\ClassHasTeachers;
 use Webuntis\Models\Departments;
@@ -92,6 +93,12 @@ class Query {
     public function __construct(array $models = [], array $repositories = []) {
         $this->models = array_merge($this->models, $models);
         $this->repositories = array_merge($this->repositories, $repositories);
+        $config = new QueryConfiguration();
+
+        $config->getModels();
+        $config->getRepositories();
+
+        print "test";
     }
 
     /**

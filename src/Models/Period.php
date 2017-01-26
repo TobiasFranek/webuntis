@@ -103,25 +103,7 @@ class Period extends AbstractModel {
             $this->code = $data['code'];
         }
 
-        if(isset($data['lstype'])) {
-            switch ($data['lstype']){
-                case 'ls':
-                    $this->type = 'lesson';
-                    break;
-                case 'oh':
-                    $this->type = 'office hour';
-                    break;
-                case 'sb':
-                    $this->type = 'standby';
-                    break;
-                case 'bs':
-                    $this->type = 'break supervision';
-                    break;
-                case 'ex':
-                    $this->type = 'examination';
-                    break;
-            }
-        }
+        $this->type = $data['lstype'];
 
         foreach ($data['kl'] as $value) {
             $temp = $query->get('Classes')->findBy(['id' => $value['id']]);
