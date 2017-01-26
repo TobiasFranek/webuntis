@@ -20,27 +20,7 @@ namespace Webuntis\Query;
 
 use Webuntis\Configuration\QueryConfiguration;
 use Webuntis\Exceptions\QueryException;
-use Webuntis\Models\ClassHasTeachers;
-use Webuntis\Models\Departments;
-use Webuntis\Models\Exams;
-use Webuntis\Models\ExamTypes;
-use Webuntis\Models\Holidays;
-use Webuntis\Models\Period;
-use Webuntis\Models\Rooms;
-use Webuntis\Models\Schoolyear;
-use Webuntis\Models\Subjects;
-use Webuntis\Models\Students;
-use Webuntis\Models\Substitutions;
-use Webuntis\Models\Teachers;
-use Webuntis\Models\Classes;
-use Webuntis\Repositories\ClassHasTeachersRepository;
-use Webuntis\Repositories\ExamsRepository;
-use Webuntis\Repositories\PeriodRepository;
 use Webuntis\Repositories\Repository;
-use Webuntis\Repositories\SchoolyearRepository;
-use Webuntis\Repositories\StudentsRepository;
-use Webuntis\Repositories\SubstitutionsRepository;
-use Webuntis\Repositories\UserRepository;
 
 /**
  * Class Query
@@ -53,38 +33,6 @@ class Query {
      * @var Repository[]
      */
     private static $cachedRepositories = [];
-
-    /**
-     * @var array
-     */
-    private $repositories = [
-        'Default' => Repository::class,
-        'Period' => PeriodRepository::class,
-        'User' => UserRepository::class,
-        'ClassHasTeachers' => ClassHasTeachersRepository::class,
-        'Schoolyear' => SchoolyearRepository::class,
-        'Exams' => ExamsRepository::class,
-        'Substitutions' => SubstitutionsRepository::class
-    ];
-
-    /**
-     * @var array
-     */
-    private $models = [
-        'Period' => Period::class,
-        'Students' => Students::class,
-        'Teachers' => Teachers::class,
-        'Classes' => Classes::class,
-        'Subjects' => Subjects::class,
-        'Rooms' => Rooms::class,
-        'Departments' => Departments::class,
-        'Holidays' => Holidays::class,
-        'ClassHasTeachers' => ClassHasTeachers::class,
-        'Schoolyear' => Schoolyear::class,
-        'Exams' => Exams::class,
-        'ExamTypes' => ExamTypes::class,
-        'Substitutions' => Substitutions::class
-    ];
 
     /**
      * Query constructor.
