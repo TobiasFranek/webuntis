@@ -13,20 +13,20 @@ you still can use the default methods like findBy() and findAll().
 
 there are also function like parse() and find() to make the creation of an custom Repository easier.
 
-* parse()the parse method parses an result automatically to the right model
-
-Usage:
-
-```php
-$parsedObjects = $this->parse($result);
-```
-
 * find() the find method searches the given parsed objects for the given parameters
 
 Usage:
 
 ```php
 $searchedForObjects = $this->find($parsedObjects, $params);
+```
+
+* sort() the sort method sorts the given data
+
+Usage:
+
+```php
+$searchedForObjects = $this->sort($parsedObjects, $field, $sortingOrder);
 ```
 
 I highly recommend these methods!
@@ -68,6 +68,7 @@ $query->get('ModelName')->yourMethod();
 ```
 
 your Repository gets executed.
+
 
 # Creating an custom Model
 
