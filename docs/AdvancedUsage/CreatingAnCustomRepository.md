@@ -38,7 +38,7 @@ to execute your own api request in you custom Repository is pretty easy.
 just write this:
 
 ```php
-$result = ExecutionHandler::execute($this->model, $this->instance, []);
+$result = ExecutionHandler::execute($this, []);
 ```
 
 this method return the result of the api request as an array.
