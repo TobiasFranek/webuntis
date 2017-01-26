@@ -28,7 +28,7 @@ class YourModel extends AbstractModel {
     //search for properties of the model, for this you will need this get() method
     //because it is used by the recursive search
     public function get($key) {
-        //to something
+        //do something
     }
     
  	//please write getter and setter for the Model fields, or i will be sad :(
