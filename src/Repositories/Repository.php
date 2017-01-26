@@ -19,6 +19,7 @@
 namespace Webuntis\Repositories;
 
 use Doctrine\Common\Cache\MemcachedCache;
+use Webuntis\Cache\Memcached;
 use Webuntis\Exceptions\RepositoryException;
 use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Util\ExecutionHandler;
@@ -48,6 +49,9 @@ class Repository {
      */
     protected $cache;
 
+    /**
+     * @var bool
+     */
     public static $disabledCache;
 
     /**
@@ -236,17 +240,16 @@ class Repository {
 
     /**
      * returns the Memcache instance
-     * @return MemcachedCache
+     * @return Memcached
      */
     public function initMemcached() {
-        if(self::$disabledCache == false && extension_loaded('memcached')) {
+        $cacheDriver = new Memcached();
+        if (self::$disabledCache == false && extension_loaded('memcached')) {
             $memcached = new \Memcached();
             $memcached->addServer('localhost', 11211);
-            $cacheDriver = new MemcachedCache();
             $cacheDriver->setMemcached($memcached);
-            return $cacheDriver;
         }
-        return false;
+        return $cacheDriver;
     }
 
     /**

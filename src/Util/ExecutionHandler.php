@@ -28,7 +28,8 @@ use Webuntis\Repositories\Repository;
  */
 class ExecutionHandler {
 
-    private function __construct() {}
+    private function __construct() {
+    }
 
     /**
      * executes the given command with the right instance, model etc.
@@ -41,25 +42,20 @@ class ExecutionHandler {
     public static function execute(Repository $repository, array $params) {
         $model = $repository->getModel();
         $interfaces = class_implements($model);
-        if($repository->checkIfCachingIsDisabled() == false) {
-            $cacheDriver = $repository->initMemcached();
-            if ($cacheDriver->contains($model::METHOD) && isset($interfaces[CachableModelInterface::class])) {
-                $data = $cacheDriver->fetch($model::METHOD);
-            } else {
-                $result = $repository->getInstance()->getClient()->execute($model::METHOD, $params);
-                $data = $repository->parse($result);
-
-                if (isset($interfaces[CachableModelInterface::class])) {
-                    if($model::CACHE_LIFE_TIME) {
-                        $cacheDriver->save($model::METHOD, $data, $model::CACHE_LIFE_TIME);
-                    }else {
-                        $cacheDriver->save($model::METHOD, $data);
-                    }
-                }
-            }
-        }else {
+        $cacheDriver = $repository->initMemcached();
+        if ($cacheDriver->contains($model::METHOD) && isset($interfaces[CachableModelInterface::class])) {
+            $data = $cacheDriver->fetch($model::METHOD);
+        } else {
             $result = $repository->getInstance()->getClient()->execute($model::METHOD, $params);
             $data = $repository->parse($result);
+
+            if (isset($interfaces[CachableModelInterface::class])) {
+                if ($model::CACHE_LIFE_TIME) {
+                    $cacheDriver->save($model::METHOD, $data, $model::CACHE_LIFE_TIME);
+                } else {
+                    $cacheDriver->save($model::METHOD, $data);
+                }
+            }
         }
         return $data;
     }
