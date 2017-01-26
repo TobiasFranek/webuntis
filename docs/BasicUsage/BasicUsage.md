@@ -79,28 +79,31 @@ $query->get('Students')->findAll();
 if you call this method you get all Students in this case
 
 ```php
-$query->get('Students')->findBy(['firstName' => 'seppi']);
+$query->get('Students')->findBy(['first_name' => 'seppi']);
 ```
 this method return all the students with the first name 'seppi'
 
 you also can search recursively like this:
 
 ```php
-$query->get('Period')->findBy(['teacher:firstName' => 'seppi']);
+$query->get('Period')->findBy(['teacher:first_name' => 'seppi']);
 ```
 this will return all the Period Models where the teachers have the first name 'seppi'
 
 you also can search if a certain string exists in a firstName like this:
 
 ```php
-$query->get('Period')->findBy(['teacher:firstName' => '%epp%']);
+$query->get('Period')->findBy(['teacher:first_name' => '%epp%']);
 ```
 
 you also can sort the given output
 
 ```php
 
-$query->get('Exams')->findAll(['startDate' => 'ASC|DESC']);
+$query->get('Exams')->findAll(['start_date' => 'ASC|DESC']);
+
+//you can sort by properties that are in objects that the main objects contains, but that is restricted to one level
+$query->get('Exams')->findAll(['teachers:first_name' => 'ASC|DESC']);
 ```
 
 this will either order the model descending (DESC) or ascending (ASC)
@@ -108,7 +111,7 @@ this will either order the model descending (DESC) or ascending (ASC)
 you also can now give a limit to the query
 ```php
 
-$query->get('Exams')->findAll(['startDate' => 'ASC|DESC'], 5);
+$query->get('Exams')->findAll(['start_date' => 'ASC|DESC'], 5);
 ```
 
 ### Custom Repositories
@@ -117,12 +120,12 @@ There are two custom Repositories in the core already and they are the
 
 * PeriodRepository only has some additional parameters to the standard methods.
 * SubstitutionsRepository has some additional MANDATORY parameters to the standard methods.
- 
+
 ```php
 //department is not mandatory
 $query->get('Substitution')->findAll(department, startDate, endDate);
 ```
- 
+
 * UserRepository with these additional functions (This Repository can only execute these functions):
 
 ```php
@@ -152,7 +155,7 @@ These are all the model that exists in the core build:
 
 all the Repository method return the Model so an array of Model objects. If you want to serialize the Object you only need to call the serialize() method on an objects, this method then return an array.
 
-```php 
+```php
 $user = $query->get('User')->getCurrentUser(); // returns an object
 $user = $user->serialize(); // turn the object into an array
 ```
@@ -171,10 +174,5 @@ $students = $query->get('Students')->findAll(); // returns an object array
 $students =  \Webuntis\Serializer\Serializer::serialize($students, 'json|xml|yml') // turn the object array into an array,
                                                                                    // if the second parameter is empty it will return an php array
 ```
-
-
-
-
-
 
 

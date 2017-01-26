@@ -127,7 +127,7 @@ class Repository {
      * @return AbstractModel[]
      */
     protected function find($data, $params) {
-        if(!empty($data)) {
+        if (!empty($data)) {
             foreach ($params as $key => $value) {
                 $temp = [];
                 $keys = explode(":", $key);
@@ -144,16 +144,16 @@ class Repository {
                                 }
                             } else if ($value2->serialize()[$key] == $value) {
                                 $temp[] = $value2;
-                            } else if($this->endsWith($value, '%') && $this->startsWith($value, '%')){
-                                if($this->contains($value2->serialize()[$key], substr($value, 1, strlen($value) - 2))) {
+                            } else if ($this->endsWith($value, '%') && $this->startsWith($value, '%')) {
+                                if ($this->contains($value2->serialize()[$key], substr($value, 1, strlen($value) - 2))) {
                                     $temp[] = $value2;
                                 }
-                            } else if($this->startsWith($value, '%')) {
-                                if($this->startsWith($value2->serialize()[$key], substr($value,1, strlen($value)))){
+                            } else if ($this->startsWith($value, '%')) {
+                                if ($this->startsWith($value2->serialize()[$key], substr($value, 1, strlen($value)))) {
                                     $temp[] = $value2;
                                 }
-                            } else if($this->endsWith($value, '%')) {
-                                if($this->endsWith($value2->serialize()[$key], substr($value, 0, strlen($value) - 1))){
+                            } else if ($this->endsWith($value, '%')) {
+                                if ($this->endsWith($value2->serialize()[$key], substr($value, 0, strlen($value) - 1))) {
                                     $temp[] = $value2;
                                 }
                             }
@@ -169,39 +169,67 @@ class Repository {
     }
 
     /**
-     * sorts the given array according to the bubble sort algorithm
-     * @param AbstractModel[] $array
-     * @param string $key
-     * @param string $sortOrder (ASC, DESC)
+     * sort the given data array, that contains of AbstractModels
+     * @param $data
+     * @param $field
+     * @param $sortingOrder
      * @return AbstractModel[]
      */
-    protected function sort(array $array, $key, $sortOrder) {
-        if(!empty($array)) {
-            if (isset($array[0]->serialize()[$key])) {
-                if (!$length = count($array)) {
-                    return $array;
-                }
-                for ($outer = 0; $outer < $length; $outer++) {
-                    for ($inner = 0; $inner < $length; $inner++) {
-                        if ($array[$outer]->serialize()[$key] < $array[$inner]->serialize()[$key]) {
-                            $tmp = $array[$outer];
-                            $array[$outer] = $array[$inner];
-                            $array[$inner] = $tmp;
-                        }
+    public function sort($data, $field, $sortingOrder) {
+        usort($data, $this->sortingAlgorithm($field, $sortingOrder));
+        return $data;
+    }
+
+    /**
+     * generates the right sorting lambda for the usort() method
+     * @param $key
+     * @param $sortingOrder
+     * @return \Closure
+     */
+    private function sortingAlgorithm($key, $sortingOrder) {
+        $keys = explode(':', $key);
+        $offset = null;
+        if (count($keys) > 1) {
+            $offset = $keys[0];
+            $key = $keys[1];
+        } else {
+            $key = $keys[0];
+        }
+        if ($sortingOrder == 'ASC') {
+            return function ($a, $b) use ($key, $offset) {
+                if ($offset) {
+                    if (gettype($a->serialize()[$offset][0][$key]) == 'string' && gettype($b->serialize()[$offset][0][$key] == 'string')) {
+                        return strcmp($a->serialize()[$offset][0][$key], $b->serialize()[$offset][0][$key]);
+                    } else {
+                        return $b->serialize()[$offset][0][$key] < $a->serialize()[$offset][0][$key];
+                    }
+                } else {
+                    if (gettype($a->serialize()[$key]) == 'string' && gettype($b->serialize()[$key] == 'string')) {
+                        return strcmp($a->serialize()[$key], $b->serialize()[$key]);
+                    } else {
+                        return $b->serialize()[$key] < $a->serialize()[$key];
                     }
                 }
-                if ($sortOrder == 'ASC') {
-                    return array_reverse($array);
-                } else if ($sortOrder == 'DESC') {
-                    return $array;
+            };
+        } else if ($sortingOrder == 'DESC') {
+            return function ($a, $b) use ($key, $offset) {
+                if ($offset) {
+                    if (gettype($a->serialize()[$offset][0][$key]) == 'string' && gettype($b->serialize()[$offset][0][$key] == 'string')) {
+                        return strcmp($b->serialize()[$offset][0][$key], $a->serialize()[$offset][0][$key]);
+                    } else {
+                        return strcmp($b->serialize()[$offset][0][$key], $a->serialize()[$offset][0][$key]);
+                    }
                 } else {
-                    throw new RepositoryException('sort order ' . $sortOrder . ' does not exist');
+                    if (gettype($a->serialize()[$key]) == 'string' && gettype($b->serialize()[$key] == 'string')) {
+                        return $b->serialize()[$key] > $a->serialize()[$key];
+                    } else {
+                        return $b->serialize()[$key] > $a->serialize()[$key];
+                    }
                 }
-            } else {
-                throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
-            }
+            };
+        } else {
+            throw new RepositoryException('sort order ' . $sortingOrder . ' does not exist');
         }
-        return $array;
     }
 
     /**
