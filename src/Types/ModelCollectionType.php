@@ -19,34 +19,41 @@
 namespace Webuntis\Types;
 
 
-use Webuntis\Configuration\YAMLConfiguration;
 use Webuntis\Models\AbstractModel;
+use Webuntis\Query\Query;
 use Webuntis\Types\Interfaces\TypeInterface;
 
-class TypeHandler {
+/**
+ * Class ModelArrayType
+ * @package Webuntis\Types
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ */
+class ModelCollectionType implements TypeInterface {
 
     /**
-     * @var TypeInterface[]
+     * executes an certain parsing part
+     * @param AbstractModel $model
+     * @param $data
+     * @param $field
      */
-    private static $types = [
-        'string' => StringType::class,
-        'modelCollection' => ModelCollectionType::class
-    ];
-
-    public function __construct() {
-        $this->loadCostumTypes();
-    }
-
-    private function loadCostumTypes() {
-        $additionalTypes = YAMLConfiguration::getAdditionalTypes();
-        foreach ($additionalTypes as $key => $value) {
-            self::$types[$key] = $value;
+    public static function execute(AbstractModel &$model, $data, $field) {
+        $fieldName = array_keys($field)[0];
+        $fieldValues = $field[$fieldName];
+        $query = new Query();
+        $tmp = [];
+        if(!empty($data[$fieldValues['api']['name']])) {
+            foreach ($data[$fieldValues['api']['name']] as $value) {
+                $tmp[] = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $value[$fieldValues['api']['searchkey']]])[0];
+            }
+            $model->set($fieldName, $tmp);
         }
     }
 
-    public function handle(AbstractModel &$model, $data, $fields) {
-        foreach($fields as $key => $value) {
-            self::$types[$value['type']]::execute($model, $data, [$key => $value]);
-        }
+    /**
+     * return name of the type
+     * @return string
+     */
+    public function getName() {
+        return 'modelCollection';
     }
 }
