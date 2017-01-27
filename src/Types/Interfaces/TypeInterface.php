@@ -19,6 +19,8 @@
 namespace Webuntis\Types\Interfaces;
 
 
+use Webuntis\Models\AbstractModel;
+
 interface TypeInterface {
 
     /**
@@ -26,4 +28,12 @@ interface TypeInterface {
      * @return string
      */
     public function getName();
+
+    /**
+     * executes an certain parsing part
+     * @param AbstractModel $model
+     * @param $data
+     * @param $field
+     */
+    public static function execute(AbstractModel &$model, $data, $field) ;
 }
