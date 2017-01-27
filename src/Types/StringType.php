@@ -22,6 +22,11 @@ namespace Webuntis\Types;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
 
+/**
+ * Class StringType
+ * @package Webuntis\Types
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ */
 class StringType implements TypeInterface {
 
     /**
