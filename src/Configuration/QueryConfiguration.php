@@ -84,6 +84,18 @@ class QueryConfiguration {
     }
 
     /**
+     * returns all config fields
+     * @return array
+     */
+    public function getAllFields() {
+        $result = [];
+        foreach(self::$files as $value) {
+            $result[] = $value['fields'];
+        }
+        return $result;
+    }
+
+    /**
      * @return array
      */
     public function getModels() {
