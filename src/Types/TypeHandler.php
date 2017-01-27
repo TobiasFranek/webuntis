@@ -33,7 +33,8 @@ class TypeHandler {
         'string' => StringType::class,
         'modelCollection' => ModelCollectionType::class,
         'mergeTimeAndDate' => MergeTimeAndDateType::class,
-        'model' => ModelType::class
+        'model' => ModelType::class,
+        'date' => DateType::class
     ];
 
     public function __construct() {
