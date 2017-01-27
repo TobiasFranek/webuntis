@@ -82,58 +82,6 @@ class Period extends AbstractModel {
     }
 
     /**
-     * parses the given data from the json rpc api to the right format for the object
-     * @param array $data
-     */
-    protected function parse($data) {
-        $query = new Query();
-        $this->setId($data['id']);
-        if (strlen($data['startTime']) < 4) {
-            $this->startTime = new \DateTime($data['date'] . ' ' . '0' . substr($data['startTime'], 0, 1) . ':' . substr($data['startTime'], strlen($data['startTime']) - 2, strlen($data['startTime'])));
-        } else {
-            $this->startTime = new \DateTime($data['date'] . ' ' . substr($data['startTime'], 0, 2) . ':' . substr($data['startTime'], strlen($data['startTime']) - 2, strlen($data['startTime'])));
-        }
-        if (strlen($data['endTime']) < 4) {
-            $this->endTime = new \DateTime($data['date'] . ' ' . '0' . substr($data['endTime'], 0, 1) . ':' . substr($data['endTime'], strlen($data['endTime']) - 2, strlen($data['endTime'])));
-        } else {
-            $this->endTime = new \DateTime($data['date'] . ' ' . substr($data['endTime'], 0, 2) . ':' . substr($data['endTime'], strlen($data['endTime']) - 2, strlen($data['endTime'])));
-        }
-
-        if(isset($data['code'])) {
-            $this->code = $data['code'];
-        }
-
-        $this->type = $data['lstype'];
-
-        foreach ($data['kl'] as $value) {
-            $temp = $query->get('Classes')->findBy(['id' => $value['id']]);
-            if(isset($temp[0])){
-                $this->classes[] = $temp[0];
-            }
-        }
-
-        foreach ($data['te'] as $value) {
-            $temp = $query->get('Teachers')->findBy(['id' => $value['id']]);
-            if(isset($temp[0])) {
-                $this->teachers[] = $temp[0];
-            }
-        }
-
-        foreach ($data['su'] as $value) {
-            $temp = $query->get('Subjects')->findBy(['id' => $value['id']]);
-            if(isset($temp[0])){
-                $this->subjects[] = $temp[0];
-            }
-        }
-        foreach ($data['ro'] as $value) {
-            $temp = $query->get('Rooms')->findBy(['id' => $value['id']]);
-            if(isset($temp[0])) {
-                $this->rooms[] = $temp[0];
-            }
-        }
-    }
-
-    /**
      * sets the startTime
      * @param \DateTime $startTime
      * @return Period $this

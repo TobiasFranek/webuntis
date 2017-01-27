@@ -61,17 +61,6 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
     }
 
     /**
-     * parses the given data from the json rpc api to the right format for the object
-     * @param array $data
-     */
-    protected function parse($data) {
-        $this->setId($data['id']);
-        $this->firstName = $data['foreName'];
-        $this->lastName = $data['longName'];
-        $this->name = $data['name'];
-    }
-
-    /**
      * sets the name
      * @param string $name
      * @return Teachers $this

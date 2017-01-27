@@ -43,22 +43,6 @@ class ClassHasTeachers extends AbstractModel {
     private $teachers = [];
 
     /**
-     * parses the given data from the json rpc api to the right format for the object
-     * @param array $data
-     */
-    public function parse($data) {
-        $this->setId($data['id']);
-        $this->name = $data['name'];
-        $this->fullName = $data['fullName'];
-        $query = new Query();
-        if(!empty($data['teachers'])) {
-            foreach ($data['teachers'] as $value) {
-                $this->teachers[] = $query->get('Teachers')->findBy(['id' => $value['id']])[0];
-            }
-        }
-    }
-
-    /**
      * returns the Teachers
      * @return Teachers[]
      */

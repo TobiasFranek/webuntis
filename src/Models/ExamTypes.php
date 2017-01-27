@@ -55,16 +55,6 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
     const CACHE_LIFE_TIME = 0;
 
     /**
-     * @param $data
-     */
-    public function parse($data) {
-        $this->setId($data['id']);
-        $this->type = $data['id'];
-        $this->name = $data['name'];
-        $this->longName = $data['longName'];
-    }
-
-    /**
      * @return int
      */
     public function getType() {

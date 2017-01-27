@@ -58,19 +58,6 @@ class Holidays extends AbstractModel implements CachableModelInterface {
     const METHOD = 'getHolidays';
 
     /**
-     * parses the given data from the json rpc api to the right format for the object
-     * @param array $data
-     */
-    protected function parse($data) {
-        $this->setId($data['id']);
-        $this->name = $data['name'];
-        $this->fullName = $data['longName'];
-        $this->startDate = new \DateTime($data['startDate']);
-        $this->endDate = new \DateTime($data['endDate']);
-    }
-
-
-    /**
      * returns the name
      * @return string
      */

@@ -66,41 +66,6 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     const METHOD = 'getExams';
 
     /**
-     * parses the given data to the model
-     * @param $data
-     */
-    public function parse($data) {
-        $query = new Query();
-        $this->setId($data['id']);
-        $this->subject = $query->get('Subjects')->findBy(['id' => $data['subject']]);
-        if (!empty($data['classes'])) {
-            foreach ($data['classes'] as $value) {
-                $this->classes[] = $query->get('Classes')->findBy(['id' => $value])[0];
-            }
-        }
-        if (!empty($data['teachers'])) {
-            foreach ($data['teachers'] as $value) {
-                $this->teachers[] = $query->get('Teachers')->findBy(['id' => $value])[0];
-            }
-        }
-        if (!empty($data['students'])) {
-            foreach ($data['students'] as $value) {
-                $this->students[] = $query->get('Students')->findBy(['id' => $value])[0];
-            }
-        }
-        if (strlen($data['startTime']) < 4) {
-            $this->startDate = new \DateTime($data['date'] . ' ' . '0' . substr($data['startTime'], 0, 1) . ':' . substr($data['startTime'], strlen($data['startTime']) - 2, strlen($data['startTime'])));
-        } else {
-            $this->startDate = new \DateTime($data['date'] . ' ' . substr($data['startTime'], 0, 2) . ':' . substr($data['startTime'], strlen($data['startTime']) - 2, strlen($data['startTime'])));
-        }
-        if (strlen($data['endTime']) < 4) {
-            $this->endDate = new \DateTime($data['date'] . ' ' . '0' . substr($data['endTime'], 0, 1) . ':' . substr($data['endTime'], strlen($data['endTime']) - 2, strlen($data['endTime'])));
-        } else {
-            $this->endDate = new \DateTime($data['date'] . ' ' . substr($data['endTime'], 0, 2) . ':' . substr($data['endTime'], strlen($data['endTime']) - 2, strlen($data['endTime'])));
-        }
-    }
-    
-    /**
      * @return Classes[]
      */
     public function getClasses() {

@@ -51,17 +51,6 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
     const METHOD = 'getCurrentSchoolyear';
 
     /**
-     * parses the given data from the json rpc api to the right format for the object
-     * @param $data array
-     */
-    public function parse($data) {
-        $this->setId($data['id']);
-        $this->name = $data['name'];
-        $this->startDate = new \DateTime($data['startDate']);
-        $this->endDate = new \DateTime($data['endDate']);
-    }
-
-    /**
      * sets name
      * @param $name
      * @return $this
