@@ -24,11 +24,11 @@ use Webuntis\Query\Query;
 use Webuntis\Types\Interfaces\TypeInterface;
 
 /**
- * Class ModelCollectionType
+ * Class ModelType
  * @package Webuntis\Types
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class ModelCollectionType implements TypeInterface {
+class ModelType implements TypeInterface {
 
     /**
      * executes an certain parsing part
@@ -40,13 +40,7 @@ class ModelCollectionType implements TypeInterface {
         $fieldName = array_keys($field)[0];
         $fieldValues = $field[$fieldName];
         $query = new Query();
-        $tmp = [];
-        if(!empty($data[$fieldValues['api']['name']])) {
-            foreach ($data[$fieldValues['api']['name']] as $value) {
-                $tmp[] = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $value[$fieldValues['api']['searchkey']]])[0];
-            }
-            $model->set($fieldName, $tmp);
-        }
+        $model->set($fieldName, $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $data[$fieldValues['api']['name']]]));
     }
 
     /**
@@ -54,6 +48,6 @@ class ModelCollectionType implements TypeInterface {
      * @return string
      */
     public function getName() {
-        return 'modelCollection';
+        return 'model';
     }
 }
