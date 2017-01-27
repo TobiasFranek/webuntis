@@ -29,7 +29,9 @@ use Webuntis\Types\Interfaces\TypeInterface;
 class DateType implements TypeInterface {
     public static function execute(AbstractModel &$model, $data, $field) {
         $fieldName = array_keys($field)[0];
-        $model->set($fieldName, new \DateTime($data[$field[$fieldName]['api']['name']]));
+        if(isset($data[$field[$fieldName]['api']['name']])) {
+            $model->set($fieldName, new \DateTime($data[$field[$fieldName]['api']['name']]));
+        }
     }
 
     public function getName() {

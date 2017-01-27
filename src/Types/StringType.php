@@ -37,7 +37,9 @@ class StringType implements TypeInterface {
      */
     public static function execute(AbstractModel &$model, $data, $field) {
         $fieldName = array_keys($field)[0];
-        $model->set($fieldName, $data[$field[$fieldName]['api']['name']]);
+        if(isset($data[$field[$fieldName]['api']['name']])) {
+            $model->set($fieldName, $data[$field[$fieldName]['api']['name']]);
+        }
     }
 
     /**

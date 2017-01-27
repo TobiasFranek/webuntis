@@ -41,12 +41,15 @@ class ModelCollectionType implements TypeInterface {
         $fieldValues = $field[$fieldName];
         $query = new Query();
         $tmp = [];
-        if(!empty($data[$fieldValues['api']['name']])) {
-            foreach ($data[$fieldValues['api']['name']] as $value) {
-                $tmp[] = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $value[$fieldValues['api']['searchkey']]])[0];
+        if (isset($data[$fieldValues['api']['name']])) {
+            if (!empty($data[$fieldValues['api']['name']])) {
+                foreach ($data[$fieldValues['api']['name']] as $value) {
+                    $tmp[] = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $value[$fieldValues['api']['searchkey']]])[0];
+                }
+                $model->set($fieldName, $tmp);
             }
-            $model->set($fieldName, $tmp);
         }
+
     }
 
     /**

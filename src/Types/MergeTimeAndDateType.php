@@ -38,10 +38,12 @@ class MergeTimeAndDateType implements TypeInterface {
     public static function execute(AbstractModel &$model, $data, $field) {
         $fieldName = array_keys($field)[0];
         $fieldValues = $field[$fieldName];
-        if (strlen($data[$fieldValues['api']['time']]) < 4) {
-            $model->set($fieldName, new \DateTime($data[$fieldValues['api']['date']] . ' ' . '0' . substr($data[$fieldValues['api']['time']], 0, 1) . ':' . substr($data[$fieldValues['api']['time']], strlen($data[$fieldValues['api']['time']]) - 2, strlen($data[$fieldValues['api']['time']]))));
-        } else {
-            $model->set($fieldName, new \DateTime($data[$fieldValues['api']['date']] . ' ' . substr($data[$fieldValues['api']['time']], 0, 2) . ':' . substr($data[$fieldValues['api']['time']], strlen($data[$fieldValues['api']['time']]) - 2, strlen($data[$fieldValues['api']['time']]))));
+        if (isset($data[$fieldValues['api']['time']])) {
+            if (strlen($data[$fieldValues['api']['time']]) < 4) {
+                $model->set($fieldName, new \DateTime($data[$fieldValues['api']['date']] . ' ' . '0' . substr($data[$fieldValues['api']['time']], 0, 1) . ':' . substr($data[$fieldValues['api']['time']], strlen($data[$fieldValues['api']['time']]) - 2, strlen($data[$fieldValues['api']['time']]))));
+            } else {
+                $model->set($fieldName, new \DateTime($data[$fieldValues['api']['date']] . ' ' . substr($data[$fieldValues['api']['time']], 0, 2) . ':' . substr($data[$fieldValues['api']['time']], strlen($data[$fieldValues['api']['time']]) - 2, strlen($data[$fieldValues['api']['time']]))));
+            }
         }
     }
 
