@@ -3,10 +3,13 @@ Webuntis\Models\Schoolyear:
     fields:
         startDate:
             type: date
-            apiName: startDate
+            api:
+                name: startDate
         endDate:
             type: date
-            apiName: endDate
+            api:
+                name: endDate
         name:
             type: string
-            apiName: name
+            api:
+                name: name

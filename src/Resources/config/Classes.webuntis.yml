@@ -3,7 +3,9 @@ Webuntis\Models\Classes:
     fields:
         name:
             type: string
-            apiName: name
+            api:
+                name: name
         fullName:
             type: string
-            apiName: longName
+            api:
+                name: longName

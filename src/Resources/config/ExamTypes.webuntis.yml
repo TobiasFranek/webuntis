@@ -3,10 +3,13 @@ Webuntis\Models\ExamTypes:
     fields:
         name:
             type: string
-            apiName: name
+            api:
+                name: name
         longName:
             type: string
-            apiName: longName
+            api:
+                name: longName
         type:
             type: string
-            apiName: id
+            api:
+                name: id

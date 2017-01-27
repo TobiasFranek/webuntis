@@ -3,10 +3,13 @@ Webuntis\Models\Teachers:
     fields:
         name:
             type: string
-            apiName: name
+            api:
+                name: name
         firstName:
             type: string
-            apiName: foreName
+            api:
+                name: foreName
         lastName:
             type: string
-            apiName: longName
+            api:
+                name: longName

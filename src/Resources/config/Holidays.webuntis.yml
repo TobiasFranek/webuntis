@@ -3,13 +3,17 @@ Webuntis\Models\Holidays:
     fields:
         startDate:
             type: date
-            apiName: startDate
+            api:
+                name: startDate
         endDate:
             type: date
-            apiName: startDate
+            api:
+                name: startDate
         fullName:
             type: string
-            apiName: longName
+            api:
+                name: longName
         name:
             type: string
-            apiName: name
+            api:
+                name: name

@@ -3,20 +3,26 @@ Webuntis\Models\Exams:
     fields:
         startDate:
             type: date
-            apiName: startDate
+            api:
+                name: startDate
         endDate:
             type: date
-            apiName: endDate
+            api:
+                name: endDate
         classes:
             type: array
-            apiName: classes
+            api:
+                name: classes
         teachers:
             type: array
-            apiName: teachers
+            api:
+                name: teachers
         students:
             type: array
-            apiName: students
+            api:
+                name: students
         subject:
             type: array
-            apiName: subject
+            api:
+                name: subject
 

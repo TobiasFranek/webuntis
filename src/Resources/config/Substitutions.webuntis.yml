@@ -3,28 +3,37 @@ Webuntis\Models\Substitutions:
     fields:
         startTime:
             type: date
-            apiName: startTime
+            api:
+                name: startTime
         endTime:
             type: date
-            apiName: endTime
+            api:
+                name: endTime
         classes:
             type: array
-            apiName: kl
+            api:
+                name: kl
         teachers:
             type: array
-            apiName: te
+            api:
+                name: te
         subjects:
             type: array
-            apiName: su
+            api:
+                name: su
         rooms:
             type: array
-            apiName: ro
+            api:
+                name: ro
         lesson:
             type: string
-            apiName: lsid
+            api:
+                name: lsid
         type:
             type: string
-            apiName: type
+            api:
+                name: type
         text:
             type: string
-            apiName: text
+            api:
+                name: text

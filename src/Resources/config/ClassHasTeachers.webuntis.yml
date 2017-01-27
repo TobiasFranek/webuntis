@@ -3,10 +3,17 @@ Webuntis\Models\ClassHasTeachers:
     fields:
         name:
             type: string
-            apiName: name
+            api:
+                name: name
         fullName:
             type: string
-            apiName: fullName
+            api:
+                name: fullName
         teachers:
-            type: array
-            apiName: teachers
+            type: modelCollection
+            api:
+                name: teachers
+                searchkey: id
+            model:
+                name: Teachers
+                searchkey: id

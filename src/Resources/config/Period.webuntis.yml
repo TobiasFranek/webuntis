@@ -3,25 +3,33 @@ Webuntis\Models\Period:
     fields:
         startTime:
             type: date
-            apiName: startTime
+            api:
+                name: startTime
         endTime:
             type: date
-            apiName: endTime
+            api:
+                name: endTime
         classes:
             type: array
-            apiName: kl
+            api:
+                name: kl
         teachers:
             type: array
-            apiName: te
+            api:
+                name: te
         subjects:
             type: array
-            apiName: su
+            api:
+                name: su
         rooms:
             type: array
-            apiName: ro
+            api:
+                name: ro
         code:
             type: string
-            apiName: code
+            api:
+                name: code
         type:
             type: string
-            apiName: lstype
+            api:
+                name: lstype
