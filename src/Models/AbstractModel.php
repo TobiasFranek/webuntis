@@ -18,8 +18,11 @@
 
 namespace Webuntis\Models;
 
+use Webuntis\Configuration\YAMLConfiguration;
 use Webuntis\Models\Interfaces\ModelInterface;
 use Webuntis\Serializer\Serializer;
+use Webuntis\Types\StringType;
+use Webuntis\Types\TypeHandler;
 
 /**
  * Abstract Class Model
@@ -77,5 +80,11 @@ abstract class AbstractModel implements ModelInterface {
      * parses the given data from the json rpc api to the right format for the object
      * @param $data
      */
-    abstract protected function parse($data);
+    protected function parse($data) {
+        $this->setId($data['id']);
+        $fields = YAMLConfiguration::getFields(get_class($this));
+        $typeHandler = new TypeHandler();
+
+        $typeHandler->handle($this, $data, $fields);
+    }
 }

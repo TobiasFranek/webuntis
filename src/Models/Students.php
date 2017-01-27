@@ -18,8 +18,10 @@
 
 namespace Webuntis\Models;
 
+use Webuntis\Configuration\YAMLConfiguration;
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use Webuntis\Models\Interfaces\CachableModelInterface;
+use Webuntis\Types\StringType;
 
 /**
  * Class User
@@ -85,15 +87,29 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * parses the given data from the json rpc api to the right format for the object
      * @param array $data
      */
-    protected function parse($data) {
-        $this->setId($data['id']);
-        $this->key = $data['key'];
-        $this->name = $data['name'];
-        $this->firstName = $data['foreName'];
-        $this->lastName = $data['longName'];
-        $this->gender = $data['gender'];
-    }
-
+//    protected function parse($data) {
+//        $this->setId($data['id']);
+//        $this->key = $data['key'];
+//        $this->name = $data['name'];
+//        $this->firstName = $data['foreName'];
+//        $this->lastName = $data['longName'];
+//        $this->gender = $data['gender'];
+//    }
+//    /**
+//     * parses the given data from the json rpc api to the right format for the object
+//     * @param $data
+//     */
+//    protected function parse($data) {
+//        $this->setId($data['id']);
+//        $test = __CLASS__;
+//        $fields = QueryConfiguration::getFields(__CLASS__);
+//        foreach($fields as $key => $value) {
+//            if($value['type'] == 'string') {
+//                StringType::execute($this, $data, $key, $value['apiName']);
+//            }
+//        }
+//        print "test";
+//    }
     /**
      * return the firstName
      * @return string
@@ -168,5 +184,14 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
         $this->key = $key;
 
         return $this;
+    }
+
+    /**
+     * sets an given field
+     * @param $field
+     * @param $value
+     */
+    public function set($field, $value) {
+        $this->$field = $value;
     }
 }

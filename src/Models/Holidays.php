@@ -144,5 +144,12 @@ class Holidays extends AbstractModel implements CachableModelInterface {
         $this->endDate = $date;
         return $this;
     }
-
+    /**
+     * sets an given field
+     * @param $field
+     * @param $value
+     */
+    public function set($field, $value) {
+        $this->$field = $value;
+    }
 }

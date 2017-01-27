@@ -105,4 +105,12 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
     public function setName($name) {
         $this->name = $name;
     }
+    /**
+     * sets an given field
+     * @param $field
+     * @param $value
+     */
+    public function set($field, $value) {
+        $this->$field = $value;
+    }
 }

@@ -45,17 +45,6 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * @var string
      */
     const METHOD = 'getKlassen';
-    
-
-    /**
-     * parses the given data from the json rpc api to the right format for the object
-     * @param array $data
-     */
-    protected function parse($data) {
-        $this->setId($data['id']);
-        $this->name = $data['name'];
-        $this->fullName = $data['longName'];
-    }
 
     /**
      * returns the name
@@ -93,5 +82,14 @@ class Classes extends AbstractModel implements CachableModelInterface {
         $this->fullName = $fullName;
 
         return $this;
+    }
+
+    /**
+     * sets an given field
+     * @param $field
+     * @param $value
+     */
+    public function set($field, $value) {
+        $this->$field = $value;
     }
 }

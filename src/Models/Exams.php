@@ -203,4 +203,12 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
                 throw new ModelException('array of objects' . $key . 'doesn\'t exist');
         }
     }
+    /**
+     * sets an given field
+     * @param $field
+     * @param $value
+     */
+    public function set($field, $value) {
+        $this->$field = $value;
+    }
 }

@@ -117,4 +117,13 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
     public function getEndDate() {
         return $this->endDate;
     }
+
+    /**
+     * sets an given field
+     * @param $field
+     * @param $value
+     */
+    public function set($field, $value) {
+        $this->$field = $value;
+    }
 }
