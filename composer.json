@@ -20,7 +20,10 @@
     "fguillot/json-rpc": "@stable",
     "doctrine/cache": "^1.6",
     "jms/serializer": "^1.4",
-    "symfony/yaml": "^3.2"
+    "symfony/yaml": "^3.2",
+    "symfony/console": "^3.2",
+    "symfony/filesystem": "^3.2",
+    "memio/memio": "^1.1"
 
   },
   "suggest": {
