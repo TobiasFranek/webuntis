@@ -96,6 +96,20 @@ class YAMLConfiguration {
     }
 
     /**
+     * return all the additional Types that could be defined
+     * @return array
+     */
+    public static function getAdditionalTypes() {
+        $result = [];
+        foreach(self::$files as $value) {
+            if(isset($value[array_keys($value)[0]]['additionalTypes'])) {
+                $result = array_merge($result, $value[array_keys($value)[0]]['additionalTypes']);
+            }
+        }
+        return $result;
+    }
+
+    /**
      * @return array
      */
     public function getModels() {
