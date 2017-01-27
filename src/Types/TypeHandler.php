@@ -30,7 +30,8 @@ class TypeHandler {
      */
     private static $types = [
         'string' => StringType::class,
-        'modelCollection' => ModelCollectionType::class
+        'modelCollection' => ModelCollectionType::class,
+        'mergeTimeAndDate' => MergeTimeAndDateType::class
     ];
 
     public function __construct() {
