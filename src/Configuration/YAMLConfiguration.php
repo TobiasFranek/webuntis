@@ -87,7 +87,7 @@ class YAMLConfiguration {
      * returns all config fields
      * @return array
      */
-    public function getAllFields() {
+    public static function getAllFields() {
         $result = [];
         foreach(self::$files as $value) {
             $result[] = $value['fields'];
