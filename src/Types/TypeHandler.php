@@ -36,6 +36,7 @@ class TypeHandler {
      */
     private static $types = [
         'string' => StringType::class,
+        'int' => IntType::class,
         'modelCollection' => ModelCollectionType::class,
         'mergeTimeAndDate' => MergeTimeAndDateType::class,
         'model' => ModelType::class,
