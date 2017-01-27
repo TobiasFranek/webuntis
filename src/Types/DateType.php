@@ -27,14 +27,30 @@ use Webuntis\Types\Interfaces\TypeInterface;
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
 class DateType implements TypeInterface {
+    /**
+     * executes an certain parsing part
+     * @param AbstractModel $model
+     * @param $data
+     * @param $field
+     */
     public static function execute(AbstractModel &$model, $data, $field) {
         $fieldName = array_keys($field)[0];
         if(isset($data[$field[$fieldName]['api']['name']])) {
             $model->set($fieldName, new \DateTime($data[$field[$fieldName]['api']['name']]));
         }
     }
-
-    public function getName() {
+    /**
+     * return name of the type
+     * @return string
+     */
+    public static function getName() {
         return 'date';
+    }
+    /**
+     * return type of the Type Class
+     * @return string
+     */
+    public static function getType() {
+        return \DateTime::class;
     }
 }

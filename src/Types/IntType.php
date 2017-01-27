@@ -46,7 +46,15 @@ class IntType implements TypeInterface {
      * return name of the type
      * @return string
      */
-    public function getName() {
+    public static function getName() {
+        return 'int';
+    }
+
+    /**
+     * return type of the Type Class
+     * @return string
+     */
+    public static function getType() {
         return 'int';
     }
 }

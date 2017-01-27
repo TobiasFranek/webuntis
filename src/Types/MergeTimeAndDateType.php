@@ -51,7 +51,15 @@ class MergeTimeAndDateType implements TypeInterface {
      * return name of the type
      * @return string
      */
-    public function getName() {
+    public static function getName() {
         return 'mergeTimeAndDate';
+    }
+
+    /**
+     * return type of the Type Class
+     * @return string
+     */
+    public static function getType() {
+        return \DateTime::class;
     }
 }

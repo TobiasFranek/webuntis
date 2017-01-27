@@ -46,7 +46,15 @@ class StringType implements TypeInterface {
      * return name of the type
      * @return string
      */
-    public function getName() {
+    public static function getName() {
+        return 'string';
+    }
+
+    /**
+     * return type of the Type Class
+     * @return string
+     */
+    public static function getType() {
         return 'string';
     }
 }

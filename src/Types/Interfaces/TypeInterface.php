@@ -32,7 +32,13 @@ interface TypeInterface {
      * returns the name of the Type
      * @return string
      */
-    public function getName();
+    public static function getName();
+
+    /**
+     * returns type of the class
+     * @return string
+     */
+    public static function getType();
 
     /**
      * executes an certain parsing part
