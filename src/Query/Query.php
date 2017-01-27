@@ -18,7 +18,7 @@
 
 namespace Webuntis\Query;
 
-use Webuntis\Configuration\QueryConfiguration;
+use Webuntis\Configuration\YAMLConfiguration;
 use Webuntis\Exceptions\QueryException;
 use Webuntis\Repositories\Repository;
 
@@ -38,7 +38,7 @@ class Query {
      * Query constructor.
      */
     public function __construct() {
-        $config = new QueryConfiguration();
+        $config = new YAMLConfiguration();
 
         $this->models = $config->getModels();
         $this->repositories = $config->getRepositories();

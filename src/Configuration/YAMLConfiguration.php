@@ -28,7 +28,7 @@ use Webuntis\Repositories\UserRepository;
  * @package Webuntis\Configuration
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class QueryConfiguration {
+class YAMLConfiguration {
 
     /**
      * @var array
