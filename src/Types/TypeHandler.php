@@ -24,6 +24,11 @@ use Webuntis\Exceptions\TypeException;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
 
+/**
+ * Class TypeHandler
+ * @package Webuntis\Types
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ */
 class TypeHandler {
 
     /**
@@ -38,14 +43,25 @@ class TypeHandler {
     ];
 
     public function __construct() {
-        $this->loadCostumTypes();
+        $this->loadCustomTypes();
     }
 
-    private function loadCostumTypes() {
+    /**
+     * loads the additonal custom types
+     */
+    private function loadCustomTypes() {
         $additionalTypes = YAMLConfiguration::getAdditionalTypes();
         foreach ($additionalTypes as $key => $value) {
             self::$types[$key] = $value;
         }
+    }
+
+    public static function getAllTypes() {
+        $additionalTypes = YAMLConfiguration::getAdditionalTypes();
+        foreach ($additionalTypes as $key => $value) {
+            self::$types[$key] = $value;
+        }
+        return self::$types;
     }
 
     public function handle(AbstractModel &$model, $data, $fields) {

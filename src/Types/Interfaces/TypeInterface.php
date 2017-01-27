@@ -21,6 +21,11 @@ namespace Webuntis\Types\Interfaces;
 
 use Webuntis\Models\AbstractModel;
 
+/**
+ * Interface TypeInterface
+ * @package Webuntis\Types\Interfaces
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ */
 interface TypeInterface {
 
     /**
