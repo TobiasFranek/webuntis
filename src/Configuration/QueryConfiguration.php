@@ -23,6 +23,11 @@ use Symfony\Component\Yaml\Yaml;
 use Webuntis\Repositories\Repository;
 use Webuntis\Repositories\UserRepository;
 
+/**
+ * Class QueryConfiguration
+ * @package Webuntis\Configuration
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ */
 class QueryConfiguration {
 
     /**
@@ -53,17 +58,29 @@ class QueryConfiguration {
     /**
      * parses the files to the repos and models
      */
-    public function parse() {
+    private function parse() {
         foreach(self::$files as $value) {
-            $parsedFile = YAML::parse(file_get_contents($value));
-            $namespace = array_keys($parsedFile)[0];
+            $namespace = array_keys($value)[0];
             $splittedNamespace = explode("\\", $namespace);
             $modelName = $splittedNamespace[count($splittedNamespace) - 1];
-            if($parsedFile[$namespace]['repositoryClass'] != null) {
-                $this->repositories[$modelName] = $parsedFile[$namespace]['repositoryClass'];
+            if($value[$namespace]['repositoryClass'] != null) {
+                $this->repositories[$modelName] = $value[$namespace]['repositoryClass'];
             }
             $this->models[$modelName] = $namespace;
         }
+    }
+
+    /**
+     * @param $namespace
+     * @return array
+     */
+    public static function getFields($namespace) {
+        foreach(self::$files as $value) {
+            if(isset($value[$namespace])) {
+                return $value[$namespace]['fields'];
+            }
+        }
+        return [];
     }
 
     /**
@@ -85,6 +102,11 @@ class QueryConfiguration {
      */
     public function load() {
         self::$files = $this->rglob('*.webuntis.yml');
+        $parsedFiles = [];
+        foreach(self::$files as $value) {
+            $parsedFiles[] = Yaml::parse(file_get_contents($value));
+        }
+        self::$files = $parsedFiles;
     }
 
     /**
