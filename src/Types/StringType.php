@@ -24,9 +24,15 @@ use Webuntis\Types\Interfaces\TypeInterface;
 
 class StringType implements TypeInterface {
 
-
-    public static function execute(AbstractModel &$model, $data, $fieldName, $apiName) {
-        $model->set($fieldName, $data[$apiName]);
+    /**
+     * executes an certain parsing part
+     * @param AbstractModel $model
+     * @param $data
+     * @param $field
+     */
+    public static function execute(AbstractModel &$model, $data, $field) {
+        $fieldName = array_keys($field)[0];
+        $model->set($fieldName, $data[$field[$fieldName]['apiName']]);
     }
 
     /**
