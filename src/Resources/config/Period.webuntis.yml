@@ -2,29 +2,47 @@ Webuntis\Models\Period:
     repositoryClass: Webuntis\Repositories\PeriodRepository
     fields:
         startTime:
-            type: date
+            type: mergeTimeAndDate
             api:
-                name: startTime
+                time: startTime
+                date: date
         endTime:
-            type: date
+            type: mergeTimeAndDate
             api:
-                name: endTime
+                time: endTime
+                date: date
         classes:
-            type: array
+            type: modelCollection
             api:
                 name: kl
+                searchkey: id
+            model:
+                name: Classes
+                searchkey: id
         teachers:
-            type: array
+            type: modelCollection
             api:
                 name: te
+                searchkey: id
+            model:
+                name: Teachers
+                searchkey: id
         subjects:
-            type: array
+            type: modelCollection
             api:
                 name: su
+                searchkey: id
+            model:
+                name: Subjects
+                searchkey: id
         rooms:
-            type: array
+            type: modelCollection
             api:
                 name: ro
+                searchkey: id
+            model:
+                name: Rooms
+                searchkey: id
         code:
             type: string
             api:

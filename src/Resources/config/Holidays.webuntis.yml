@@ -8,7 +8,7 @@ Webuntis\Models\Holidays:
         endDate:
             type: date
             api:
-                name: startDate
+                name: endDate
         fullName:
             type: string
             api:
