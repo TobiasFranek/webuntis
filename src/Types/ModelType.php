@@ -87,6 +87,6 @@ class ModelType implements TypeInterface {
      * @return string
      */
     public static function getType() {
-        return '\\' . AbstractModel::class;
+        return '\\' . AbstractModel::class . '[]';
     }
 }
