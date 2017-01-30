@@ -2,14 +2,12 @@
 
 Creating a custom Repository, so you can have custom query methods is pretty simple.
 
-first you have to make a Repository Class which inherits the default Repository Class, like this:
+first you have to make a Repository Class like this:
 
-```php
-class YourRepository extends Repository {
-	//you custom repository code and methods
-}
+```shell
+php vendor/tfranek/webuntis/bin/console.php webuntis:generate:repository [optional path to the model]
 ```
-you still can use the default methods like findBy() and findAll().
+you can still use the default methods like findBy() and findAll().
 
 there are also function like parse() and find() to make the creation of an custom Repository easier.
 
@@ -27,6 +25,13 @@ Usage:
 
 ```php
 $searchedForObjects = $this->sort($parsedObjects, $field, $sortingOrder);
+```
+* parse()the parse method parses an result automatically to the right model
+
+Usage:
+
+```php
+$parsedObjects = $this->parse($result);
 ```
 
 I highly recommend these methods!
@@ -69,6 +74,16 @@ $query->get('ModelName')->yourMethod();
 
 your Repository gets executed.
 
+## Caching 
+
+If you want to cache data in your repository. To get the Memcached Service call:
+
+```php
+$this->initMemcached($host, $port); //parameter are optional
+```
+
+this will return an doctrine MemcachedCache object. How to use this MemcachedCache object is documented [here](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/caching.html).
+
 
 # Creating an custom Model
 
@@ -76,65 +91,28 @@ Why would you create a custom Model? It is simple, what if you want different fi
 
 First you have to learn how a Model is assembled every model inherits from the AbstractModel and there are mandatory methods like parse() and serialize(). But it is important to know that you implement the right Interfaces because the Interfaces say if the Model is Cacheable or need Adminrights to execute the command.
 
-you need to define your model like this:
+if you have installed the package over composer you can use this command
 
-```php
-class YourModel extends AbstractModel {
-
-    //this could be somthing like this ('firstName', 'lastName')
-    private $modelField;
-
-    //this could be somthing like this ('firstName', 'lastName')
-    private $anotherModelField;
-
-    //defines the method that has to be executed to get the data from the API
-    const METHOD = 'apiMethod';
-
-    protected function parse($data) {
-        //how to parse the given data to your model
-        $this->modelField = $data['apiField'];
-        $this->anotherModelField = $data['anotherApiField'];
-    }
-    
-    //if you have models like teachers or something in your model you might wanna 
-    //search for properties of the model, for this you will need this get() method
-    //because it is used by the recursive search
-    public function get($key) {
-        //do something
-    }
-    //please write getter and setter for the Model fields, or i will be sad :(
-}
+```shell
+php vendor/tfranek/webuntis/bin/console.php webuntis:generate:model
 ```
 
-which Interface you implement is important f.e. if you implement
+follow the instruction in the console.
 
-```php
-class YourModel extends AbstractModel implements CachableModelInterface {
-    //your code
-}
-```
+##Types
 
-Your custom Model will be cached.
+For the models there are different types and these are defined as types, types that are integrated in the core are:
 
-if you implement
+* int - resembles the int type
+* string - is a string
+* date - is a \DateTime that consist of on date
+* mergeTimeAndDate - is a type that merges time and date to one \DateTime
+* model - is an subordinate object that need parameter to find it in the api
+* modelCollection - is an collection of subordinate objects
 
-```php
-class YourModel extends AbstractModel implements AdministrativeModelInterface {
-    //your code
-}
-```
+##YML Configuration
 
-Then your Model can only be executed with admin rights so the ExecutionHandler executes the API Request with your admin configuration that you added at the [beginning](/docs/BasicUsage/Configuration.md).
-
-## Adding your custom Model to the existing ones
-
-you just have to add you custom Model to the Query constructor like this:
-
-```php
-$query = new Query([
-    'ModelName' => \Your\Model::class
-])
-```
+All your configuration that you set(fieldnames, custom repos) are saved in .yml files with these files the class can automatically generate a parse() function to assign the right api value to the right model values.
 
 # Adding an custom Instance
 
@@ -182,3 +160,79 @@ $yourConfigObj->addConfig([
 ```
 
 now everytime you execute a query with your model this instance will be used.
+
+# Adding an custom Type
+
+By adding an custom type you can influence how the model handles certain values.
+
+First you have to create an type class that implements TypeInterface, like this:
+
+```php
+class YourType implements TypeInterface {
+
+    /**
+     * executes an certain parsing part
+     * @param AbstractModel $model
+     * @param $data
+     * @param $field
+     */
+    public static function execute(AbstractModel &$model, $data, $field) {
+        //todo code
+    }
+
+    /**
+     * asks for the params according to the type and return an array with the field information
+     * @param OutputInterface $output
+     * @param InputInterface $input
+     * @param $helper
+     * @return array
+     */
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) {
+        //todo code
+    }
+
+    /**
+     * return name of the type
+     * @return string
+     */
+    public static function getName() {
+        //todo code
+    }
+
+    /**
+     * return type of the Type Class
+     * @return string
+     */
+    public static function getType() {
+        //todo code
+    }
+}
+```
+
+you have to add and also code these methods, because there are used to handle the things for the models.
+
+the execute() method takes a model, data and field properties with that information the method() sets an model value with the right value from the data array, these relations between the data array and the model are defined in the yml configuration
+
+the generateTypeWithConsole() return an array that resembles your yml configuration for that type
+
+getName() and getType() return the type f.e \DateTime::class and the name f.e. 'date'
+
+to add the type to the existing one you have to add it to the certain yml configuration of the model like this:
+
+```yml
+Webuntis\Models\Classes:
+    repositoryClass: null
+    fields:
+        name:
+            type: string
+            api:
+                name: name
+        fullName:
+            type: string
+            api:
+                name: longName
+    additionalTypes:
+        yourtypename: Your\Namespace\To\The\Class
+```
+
+after this you can start using that custom Type

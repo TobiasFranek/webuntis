@@ -2,14 +2,12 @@
 
 Creating a custom Repository, so you can have custom query methods is pretty simple.
 
-first you have to make a Repository Class which inherits the default Repository Class, like this:
+first you have to make a Repository Class like this:
 
-```php
-class YourRepository extends Repository {
-	//you custom repository code and methods
-}
+```shell
+php vendor/tfranek/webuntis/bin/console.php webuntis:generate:repository [optional path to the model]
 ```
-you still can use the default methods like findBy() and findAll().
+you can still use the default methods like findBy() and findAll().
 
 there are also function like parse() and find() to make the creation of an custom Repository easier.
 

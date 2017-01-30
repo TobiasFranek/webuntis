@@ -7,3 +7,4 @@
   * [Creating an custom Repository](AdvancedUsage/CreatingAnCustomRepository.md)
   * [Creating an custom Model](AdvancedUsage/CreatingAnCustomModel.md)
   * [Adding an custom instance](AdvancedUsage/AddingAnCustomInstance.md)
+  * [Adding an custom type](AdvancedUsage/AddingAnCustomType.md)
