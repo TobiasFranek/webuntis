@@ -26,6 +26,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Webuntis\Configuration\YAMLConfiguration;
+use Webuntis\Exceptions\ModelException;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\TypeHandler;
 
@@ -72,6 +73,7 @@ class CreateModelCommand extends Command {
         foreach ($allTypes as $key => $value) {
             $types .= ' ' . $key;
         }
+        $models = [];
         $output->writeln('<info>Available Types: ' . $types . '</info>');
         $question = new Question('Name of the attribute you want to add [enter if finished]: ');
         $name = $helper->ask($input, $output, $question);
@@ -105,6 +107,9 @@ class CreateModelCommand extends Command {
                 $setter->setPhpdoc($phpDoc);
                 $object->addMethod($setter);
                 $ymlConfig[$object->getFullyQualifiedName()]['fields'][$name] = $allTypes[$attribute]::generateTypeWithConsole($output, $input, $helper);
+                if($attribute == 'model' || $attribute == 'modelCollection') {
+                    $models[] = $name;
+                }
             } else {
                 $output->writeln('<error>Type does not exist</error>');
             }
@@ -143,6 +148,9 @@ class CreateModelCommand extends Command {
                     $setter->setPhpdoc($phpDoc);
                     $object->addMethod($setter);
                     $ymlConfig[$object->getFullyQualifiedName()]['fields'][$name] = $allTypes[$attribute]::generateTypeWithConsole($output, $input, $helper);
+                    if($attribute == 'model' || $attribute == 'modelCollection') {
+                        $models[] = $name;
+                    }
                 } else {
                     $output->writeln('<error>Type does not exist</error>');
                 }
@@ -158,11 +166,26 @@ class CreateModelCommand extends Command {
         $set->setPhpdoc($phpDoc);
         $object->addMethod($set);
 
+        if(!empty($models)) {
+            $file->addFullyQualifiedName(new FullyQualifiedName(ModelException::class));
+            $getBody = '        switch ($key) {';
+            foreach($models as $value) {
+                $getBody .= "\n            case '" . $value . "':\n" . '                return $this->' . $value . ";";
+            }
+            $getBody .= "\n" . '            default:' . "\n" . '                throw new ModelException("array of objects $key doesn\'t exist");' . "\n" . '        }';
+            $getArgument1 = Argument::make('mixed', 'key');
+            $get = Method::make('get')->addArgument($getArgument1)->setBody($getBody);
+            $phpDoc = new MethodPhpdoc();
+            $phpDoc->setDescription(new Description('return the children by given key'));
+            $phpDoc->addParameterTag(new ParameterTag('string', 'key'));
+            $phpDoc->setReturnTag(new ReturnTag('AbstractModel[]'));
+            $get->setPhpdoc($phpDoc);
+            $object->addMethod($get);
+        }
         $file->setStructure($object);
         $prettyPrinter = Build::prettyPrinter();
         $generatedCode = $prettyPrinter->generateCode($file);
         $fs = new Filesystem();
-        umask(0002);
 
         $fs->dumpFile($fullPath, $generatedCode);
         $fs->dumpFile($fullPathYML, Yaml::dump($ymlConfig, 6));
