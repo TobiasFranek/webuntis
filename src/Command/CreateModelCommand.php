@@ -57,6 +57,7 @@ class CreateModelCommand extends Command {
         $file = new File($fullPath);
         $object = new Object($namespace . "\\" . $modelname);
         $ymlConfig = [$object->getFullyQualifiedName() => [
+            'repositoryClass' => null,
             'fields' => [
 
             ]
@@ -147,6 +148,16 @@ class CreateModelCommand extends Command {
                 }
             }
         }
+        $setArgument1 = Argument::make('mixed', 'field');
+        $setArgument2 = Argument::make('mixed', 'value');
+        $set = Method::make('set')->addArgument($setArgument1)->addArgument($setArgument2)->setBody('        $this->$field = $value;');
+        $phpDoc = new MethodPhpdoc();
+        $phpDoc->setDescription(new Description('sets an given field'));
+        $phpDoc->addParameterTag(new ParameterTag('mixed', 'field'));
+        $phpDoc->addParameterTag(new ParameterTag('mixed', 'value'));
+        $set->setPhpdoc($phpDoc);
+        $object->addMethod($set);
+
         $file->setStructure($object);
         $prettyPrinter = Build::prettyPrinter();
         $generatedCode = $prettyPrinter->generateCode($file);
