@@ -75,9 +75,8 @@ class CreateRepositoryCommand extends Command {
                         $object->extend($extend);
                         $file->addFullyQualifiedName($extendFullyQualifiedName);
                         $content = Yaml::parse(file_get_contents($path));
-                        foreach($content as $key => $value) {
-                            $content[$key]['repositoryClass'] = $object->getFullyQualifiedName();
-                        }
+                        $content[array_keys($content)[0]]['repositoryClass'] = $object->getFullyQualifiedName();
+
                         $file->setStructure($object);
                         $prettyPrinter = Build::prettyPrinter();
                         $generatedCode = $prettyPrinter->generateCode($file);
@@ -117,9 +116,8 @@ class CreateRepositoryCommand extends Command {
                             $object->extend($extend);
                             $file->addFullyQualifiedName($extendFullyQualifiedName);
                             $content = Yaml::parse(file_get_contents($path));
-                            foreach($content as $key => $value) {
-                                $content[$key]['repositoryClass'] = $object->getFullyQualifiedName();
-                            }
+                            $content[array_keys($content)[0]]['repositoryClass'] = $object->getFullyQualifiedName();
+
                             $file->setStructure($object);
                             $prettyPrinter = Build::prettyPrinter();
                             $generatedCode = $prettyPrinter->generateCode($file);
