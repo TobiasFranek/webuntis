@@ -127,7 +127,20 @@ class YAMLConfiguration {
      * loads all webuntis.yml config files
      */
     public function load() {
-        self::$files = $this->rglob('*.webuntis.yml');
+        $explodedPath = explode('/', __DIR__);
+        if(in_array('vendor', $explodedPath)) {
+            $path = '';
+            foreach($explodedPath as $value) {
+                if($value == 'vendor') {
+                    break;
+                }
+                $path .= $value . '/';
+            }
+            self::$files = glob($path . '*.webuntis.yml');
+        } else {
+            self::$files = $this->rglob('*.webuntis.yml');
+        }
+
         $parsedFiles = [];
         foreach(self::$files as $value) {
             $parsedFiles[] = Yaml::parse(file_get_contents($value));
