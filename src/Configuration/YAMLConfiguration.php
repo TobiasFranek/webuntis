@@ -136,7 +136,7 @@ class YAMLConfiguration {
                 }
                 $path .= $value . '/';
             }
-            self::$files = glob($path . '*.webuntis.yml');
+            self::$files = $this->rglob($path . '*.webuntis.yml');
         } else {
             self::$files = $this->rglob('*.webuntis.yml');
         }
