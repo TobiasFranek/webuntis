@@ -19,6 +19,8 @@
 namespace Webuntis\Types\Interfaces;
 
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Webuntis\Models\AbstractModel;
 
 /**
@@ -46,5 +48,14 @@ interface TypeInterface {
      * @param $data
      * @param $field
      */
-    public static function execute(AbstractModel &$model, $data, $field) ;
+    public static function execute(AbstractModel &$model, $data, $field);
+
+    /**
+     * asks for the params according to the type and return an array with the field information
+     * @param OutputInterface $output
+     * @param InputInterface $input
+     * @param $helper
+     * @return array
+     */
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper);
 }

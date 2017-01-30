@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
 use Webuntis\Configuration\YAMLConfiguration;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\TypeHandler;
@@ -49,9 +50,17 @@ class CreateModelCommand extends Command {
         $namespace = $helper->ask($input, $output, $question);
         $question = new Question('Path to the generated Model[src]: ', 'src');
         $pathToPHPFile = $helper->ask($input, $output, $question);
+        $question = new Question('Path to the generated Model[src/Resources/config]: ', 'src/Resources/config');
+        $pathToYMLConfig = $helper->ask($input, $output, $question);
+        $fullPathYML = $pathToYMLConfig . '/' . $modelname . '.webuntis.yml';
         $fullPath = $pathToPHPFile . '/' . $modelname . '.php';
         $file = new File($fullPath);
         $object = new Object($namespace . "\\" . $modelname);
+        $ymlConfig = [$object->getFullyQualifiedName() => [
+            'fields' => [
+
+            ]
+        ]];
         $extendFullyQualifiedName = new FullyQualifiedName(AbstractModel::class);
         $extend = new Object(AbstractModel::class);
         $object->extend($extend);
@@ -94,6 +103,7 @@ class CreateModelCommand extends Command {
                 $phpDoc->addParameterTag(new ParameterTag($allTypes[$attribute]::getType(), $name));
                 $setter->setPhpdoc($phpDoc);
                 $object->addMethod($setter);
+                $ymlConfig[$object->getFullyQualifiedName()]['fields'][$name] = $allTypes[$attribute]::generateTypeWithConsole($output, $input, $helper);
             } else {
                 $output->writeln('<error>Type does not exist</error>');
             }
@@ -131,6 +141,7 @@ class CreateModelCommand extends Command {
                     $phpDoc->addParameterTag(new ParameterTag($allTypes[$attribute]::getType(), $name));
                     $setter->setPhpdoc($phpDoc);
                     $object->addMethod($setter);
+                    $ymlConfig[$object->getFullyQualifiedName()]['fields'][$name] = $allTypes[$attribute]::generateTypeWithConsole($output, $input, $helper);
                 } else {
                     $output->writeln('<error>Type does not exist</error>');
                 }
@@ -139,11 +150,10 @@ class CreateModelCommand extends Command {
         $file->setStructure($object);
         $prettyPrinter = Build::prettyPrinter();
         $generatedCode = $prettyPrinter->generateCode($file);
-//        $output->writeln($generatedCode);
         $fs = new Filesystem();
         umask(0002);
 
         $fs->dumpFile($fullPath, $generatedCode);
-//        $output->writeln('Path to the generated PHP File["/src"]:' . $input->getArgument('path_to_php_file'));
+        $fs->dumpFile($fullPathYML, Yaml::dump($ymlConfig, 6));
     }
 }

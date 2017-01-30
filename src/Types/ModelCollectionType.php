@@ -19,6 +19,9 @@
 namespace Webuntis\Types;
 
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Query\Query;
 use Webuntis\Types\Interfaces\TypeInterface;
@@ -50,6 +53,35 @@ class ModelCollectionType implements TypeInterface {
             }
         }
 
+    }
+
+    /**
+     * asks for the params according to the type and return an array with the field information
+     * @param OutputInterface $output
+     * @param InputInterface $input
+     * @param $helper
+     * @return array
+     */
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) {
+        $question = new Question('API key for the data array: ');
+        $name = $helper->ask($input, $output, $question);
+        $question = new Question('key that should be searched for in the API data array: ');
+        $searchkey = $helper->ask($input, $output, $question);
+        $question = new Question('Model name: ');
+        $modelName = $helper->ask($input, $output, $question);
+        $question = new Question('key that should be searched for in the Model (the searchkey from the api should somehow be connected): ');
+        $modelSearchkey = $helper->ask($input, $output, $question);
+        return [
+            'type' => self::getName(),
+            'api' => [
+                'name' => $name,
+                'searchkey' => $searchkey
+            ],
+            'model' => [
+                'name' => $modelName,
+                'searchkey' => $modelSearchkey
+            ]
+        ];
     }
 
     /**

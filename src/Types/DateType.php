@@ -18,6 +18,10 @@
 
 namespace Webuntis\Types;
 
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
 
@@ -39,6 +43,25 @@ class DateType implements TypeInterface {
             $model->set($fieldName, new \DateTime($data[$field[$fieldName]['api']['name']]));
         }
     }
+
+    /**
+     * asks for the params according to the type and return an array with the field information
+     * @param OutputInterface $output
+     * @param InputInterface $input
+     * @param $helper
+     * @return array
+     */
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) {
+        $question = new Question('API name: ');
+        $apiName = $helper->ask($input, $output, $question);
+        return [
+            'type' => self::getName(),
+            'api' => [
+                'name' => $apiName
+            ]
+        ];
+    }
+
     /**
      * return name of the type
      * @return string

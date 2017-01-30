@@ -19,6 +19,9 @@
 namespace Webuntis\Types;
 
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
 
@@ -45,6 +48,27 @@ class MergeTimeAndDateType implements TypeInterface {
                 $model->set($fieldName, new \DateTime($data[$fieldValues['api']['date']] . ' ' . substr($data[$fieldValues['api']['time']], 0, 2) . ':' . substr($data[$fieldValues['api']['time']], strlen($data[$fieldValues['api']['time']]) - 2, strlen($data[$fieldValues['api']['time']]))));
             }
         }
+    }
+
+    /**
+     * asks for the params according to the type and return an array with the field information
+     * @param OutputInterface $output
+     * @param InputInterface $input
+     * @param $helper
+     * @return array
+     */
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) {
+        $question = new Question('API key for the time: ');
+        $time = $helper->ask($input, $output, $question);
+        $question = new Question('API key for the date: ');
+        $date = $helper->ask($input, $output, $question);
+        return [
+            'type' => self::getName(),
+            'api' => [
+                'time' => $time,
+                'date' => $date
+            ]
+        ];
     }
 
     /**
