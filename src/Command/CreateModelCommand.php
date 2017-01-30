@@ -21,6 +21,8 @@ namespace Webuntis\Command;
 
 use Memio\Memio\Config\Build;
 use Memio\Model\Argument;
+use Memio\Model\Constant;
+use Memio\Model\Contract;
 use Memio\Model\File;
 use Memio\Model\FullyQualifiedName;
 use Memio\Model\Method;
@@ -42,6 +44,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Webuntis\Exceptions\ModelException;
 use Webuntis\Models\AbstractModel;
+use Webuntis\Models\Interfaces\AdministrativeModelInterface;
+use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Types\TypeHandler;
 
 /**
@@ -86,6 +90,22 @@ class CreateModelCommand extends Command {
         $extend = new Object(AbstractModel::class);
         $object->extend($extend);
         $file->addFullyQualifiedName($extendFullyQualifiedName);
+        $question = new ConfirmationQuestion('Is your model cachable?[Y/N]: ', false);
+        if ($helper->ask($input, $output, $question)) {
+            $object->implement(new Contract(CachableModelInterface::class));
+            $file->addFullyQualifiedName(new FullyQualifiedName(CachableModelInterface::class));
+            $question = new Question('how long should your cache life time be [0]: ', 0);
+            $cacheLifetime = intval($helper->ask($input, $output, $question));
+            $object->addConstant(new Constant('CACHE_LIFE_TIME', $cacheLifetime));
+        }
+        $question = new ConfirmationQuestion('Can your model only be executed with special rights?[Y/N]: ', false);
+        if ($helper->ask($input, $output, $question)) {
+            $object->implement(new Contract(AdministrativeModelInterface::class));
+            $file->addFullyQualifiedName(new FullyQualifiedName(AdministrativeModelInterface::class));
+        }
+        $question = new Question('What is the corresponding API method: ');
+        $method = $helper->ask($input, $output, $question);
+        $object->addConstant(new Constant('METHOD', '"' . $method . '"'));
         $output->writeln('<comment>Now you can add some fields</comment>');
         $types = '';
         $allTypes = TypeHandler::getAllTypes();
