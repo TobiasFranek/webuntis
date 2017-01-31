@@ -18,7 +18,6 @@
 
 namespace Webuntis;
 
-use Doctrine\Common\Cache\ApcuCache;
 use JsonRPC\Client;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Query\Query;
@@ -83,9 +82,6 @@ class Webuntis {
      */
     public function authenticate($username, $password) {
         $result = $this->client->execute('authenticate', [$username, $password, rand(1, 4000)]);
-
-        $cache = new ApcuCache();
-        $cache->save('session', $result['sessionId']);
 
         $this->currentUserId = $result['personId'];
         $this->currentUserType = $result['personType'];

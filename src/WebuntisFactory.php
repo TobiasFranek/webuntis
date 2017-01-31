@@ -19,7 +19,6 @@
 namespace Webuntis;
 
 
-use Doctrine\Common\Cache\ApcuCache;
 use Webuntis\Models\Interfaces\ConfigurationModelInterface;
 
 /**
