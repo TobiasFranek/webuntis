@@ -7,6 +7,8 @@ if(file_exists(__DIR__.'/../../../../vendor/autoload.php')) {
 
 }
 
+set_time_limit(100000);
+
 use Symfony\Component\Console\Application;
 use Webuntis\Command\CreateModelCommand;
 use Webuntis\Command\CreateRepositoryCommand;
