@@ -47,7 +47,7 @@ class Repository {
     /**
      * @var MemcachedCache
      */
-    protected $cache;
+    protected static $cache;
 
     /**
      * @var bool
@@ -61,7 +61,9 @@ class Repository {
     public function __construct($model) {
         $this->model = $model;
         $this->instance = WebuntisFactory::create($model);
-        $this->cache = $this->initMemcached();
+        if(!self::$cache) {
+            self::$cache = self::initMemcached();
+        }
     }
 
     /**
@@ -240,18 +242,37 @@ class Repository {
 
     /**
      * returns the Memcache instance
-     * @param string $host
-     * @param int $port
      * @return Memcached
      */
-    public function initMemcached($host = 'localhost', $port = 11211) {
+    protected static function initMemcached() {
+        if(self::$cache) {
+            return self::$cache;
+        }
         $cacheDriver = new Memcached();
         if (self::$disabledCache == false && extension_loaded('memcached')) {
+            $config = WebuntisFactory::getConfig();
+            if(!$host = $config['memcached']['host']){
+                $host = 'localhost';
+            }
+            if(!$port = $config['memcached']['port']) {
+                $port = 11211;
+            }
             $memcached = new \Memcached();
             $memcached->addServer($host, $port);
             $cacheDriver->setMemcached($memcached);
         }
         return $cacheDriver;
+    }
+
+    /**
+     * @return MemcachedCache|Memcached
+     */
+    public static function getCache() {
+        if(self::$cache) {
+            return self::$cache;
+        }else {
+            return self::initMemcached();
+        }
     }
 
     /**
