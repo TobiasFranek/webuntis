@@ -252,11 +252,15 @@ class Repository {
         $cacheDriver = new Memcached();
         if (self::$disabledCache == false && extension_loaded('memcached')) {
             $config = WebuntisConfiguration::getConfig();
-            if(!$host = $config['memcached']['host']){
-                $host = 'localhost';
-            }
-            if(!$port = $config['memcached']['port']) {
-                $port = 11211;
+            $host = 'localhost';
+            $port = 11211;
+            if(isset($config['memcached'])) {
+                if(isset($config['memcached']['host'])) {
+                    $host = $config['memcached']['host'];
+                }
+                if(isset($config['memcached']['port'])) {
+                    $port = $config['memcached']['port'];
+                }
             }
             $memcached = new \Memcached();
             $memcached->addServer($host, $port);
