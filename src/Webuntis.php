@@ -20,8 +20,10 @@ namespace Webuntis;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use JsonRPC\Client;
+use JsonRPC\HttpClient;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Query\Query;
+use Webuntis\Repositories\Repository;
 
 /**
  * Class Webuntis
@@ -53,6 +55,11 @@ class Webuntis {
     /**
      * @var string
      */
+    private $session;
+
+    /**
+     * @var string
+     */
     const PATH_SCHEME = 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school=';
 
     /**
@@ -70,9 +77,20 @@ class Webuntis {
         $this->user['username'] = $config['username'];
         $this->user['password'] = $config['password'];
 
-        $this->client = new Client($this->path);
 
-        $this->authenticate($this->user['username'], $this->user['password']);
+        $cache = Repository::getCache();
+
+        if($cache->contains($config['username'])) {
+            $this->currentUserId = $cache->fetch($config['username'])['userId'];
+            $this->currentUserType = $cache->fetch($config['username'])['userType'];
+            $this->session = $cache->fetch($config['username'])['session'];
+            $httpClient = new HttpClient($this->path);
+            $httpClient->withCookies(['JSESSIONID' => $this->session]);
+            $this->client = new Client($this->path, false, $httpClient);
+        }else {
+            $this->client = new Client($this->path);
+            $this->authenticate($this->user['username'], $this->user['password']);
+        }
     }
 
     /**
@@ -86,6 +104,15 @@ class Webuntis {
 
         $this->currentUserId = $result['personId'];
         $this->currentUserType = $result['personType'];
+
+        $cache = Repository::getCache();
+        $cache->save($username, [
+            'session' => $result['sessionId'],
+            'userId' => $this->currentUserId,
+            'userType' => $this->currentUserType
+        ]);
+
+        $this->session = $result['sessionId'];
 
         return $result;
     }
@@ -154,5 +181,19 @@ class Webuntis {
         $this->client = $client;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSession() {
+        return $this->session;
+    }
+
+    /**
+     * @param string $session
+     */
+    public function setSession($session) {
+        $this->session = $session;
     }
 }
