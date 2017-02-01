@@ -19,6 +19,7 @@
 namespace Webuntis\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,7 +44,9 @@ class CacheBuildCommand extends Command{
             ->addArgument('adminusername', InputArgument::OPTIONAL, 'the admin username')
             ->addArgument('adminpassword', InputArgument::OPTIONAL, 'the admin password')
             ->addArgument('defaultusername', InputArgument::OPTIONAL, 'the default username')
-            ->addArgument('defaultpassword', InputArgument::OPTIONAL, 'the default password');
+            ->addArgument('defaultpassword', InputArgument::OPTIONAL, 'the default password')
+            ->addArgument('memcachedhost', InputArgument::OPTIONAL, 'the memcached host')
+            ->addArgument('memcachedport', InputArgument::OPTIONAL, 'the memcached port');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
@@ -51,6 +54,7 @@ class CacheBuildCommand extends Command{
             $output->writeln('<error>extension memcached not found</error>');
             return;
         }
+
         $helper = $this->getHelper('question');
         if(!$server = $input->getArgument('server')) {
             $question = new Question('Server of the school: ');
@@ -78,6 +82,25 @@ class CacheBuildCommand extends Command{
             $question = new Question('User password: ');
             $user['password'] = $helper->ask($input, $output, $question);
         }
+        if(!$memcachedPort = $input->getArgument('memcachedport')) {
+            $question = new Question('Memcached host[11211]: ', 11211);
+            $memcachedPort = $helper->ask($input, $output, $question);
+        }
+        if(!$memcachedHost = $input->getArgument('memcachedhost')) {
+            $question = new Question('Memcached host[localhost]: ', 'localhost');
+            $memcachedHost = $helper->ask($input, $output, $question);
+        }
+        $command = $this->getApplication()->find('webuntis:cache:clear');
+
+        $arguments = [
+            'host' => $memcachedHost,
+            'port' => $memcachedPort
+        ];
+
+        $argumentInput = new ArrayInput($arguments);
+
+        $returnCode = $command->run($argumentInput, $output);
+
         $config = new WebuntisConfiguration([
             'default' => [
                 'server' => $server,
@@ -97,10 +120,12 @@ class CacheBuildCommand extends Command{
 
         $ymlConfig = new YAMLConfiguration();
 
-        $models = $ymlConfig;
+        $models = $ymlConfig->getModels();
 
         foreach($models as $key => $value) {
-            if($value instanceof CachableModelInterface) {
+            $interfaces = class_implements($value);
+            if(isset($interfaces[CachableModelInterface::class]) || $key == 'Exams') {
+                $output->writeln($key);
                 $query->get($key)->findAll();
             }
         }
