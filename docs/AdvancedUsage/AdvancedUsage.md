@@ -54,26 +54,6 @@ the params are:
 * Instance ($this->instance is already defined if you inherit the default Repository Class)
 * The last Parameter are the Parameters that get passed to the api method
 
-## Adding your custom Repository to the existing ones
-
-you just have to add you custom Repository to the Query constructor like this:
-
-```php
-$query = new Query([], [
-    'ModelName' => \Your\RepoClass::class
-])
-```
-
-the 'ModelName' is the name of the Model you want for your Repository f.e. 'Subjects'
-
-now everytime you call:
-
-```php
-$query->get('ModelName')->yourMethod();
-```
-
-your Repository gets executed.
-
 ## Caching 
 
 If you want to cache data in your repository. To get the Memcached Service call:

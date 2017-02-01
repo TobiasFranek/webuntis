@@ -21,6 +21,7 @@ namespace Webuntis\Models;
 
 use Webuntis\Exceptions\ModelException;
 use Webuntis\Query\Query;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class ClassHasTeachers
@@ -34,6 +35,7 @@ class ClassHasTeachers extends AbstractModel {
     private $name;
 
     /**
+     * @SerializedName("fullName")
      * @var string
      */
     private $fullName;

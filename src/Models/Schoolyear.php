@@ -19,7 +19,7 @@
 namespace Webuntis\Models;
 
 use Webuntis\Models\Interfaces\CachableModelInterface;
-
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class Schoolyears
@@ -31,11 +31,15 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
      * @var string
      */
     private $name;
+
     /**
+     * @SerializedName("startDate")
      * @var \DateTime
      */
     private $startDate;
+
     /**
+     * @SerializedName("endDate")
      * @var \DateTime
      */
     private $endDate;

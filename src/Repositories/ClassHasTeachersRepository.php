@@ -21,7 +21,7 @@ class ClassHasTeachersRepository extends Repository {
      * @return array
      */
     public function findAll(array $sort = [], $limit = null) {
-        $cache = $this->initMemcached();
+        $cache = self::getCache();
         $classesHaveTeachers = [];
         if ($cache->contains('ClassesHaveTeachers')) {
             $classesHaveTeachers = $cache->fetch('ClassesHaveTeachers');

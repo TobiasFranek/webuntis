@@ -42,7 +42,7 @@ class ExecutionHandler {
     public static function execute(Repository $repository, array $params) {
         $model = $repository->getModel();
         $interfaces = class_implements($model);
-        $cacheDriver = $repository->initMemcached();
+        $cacheDriver = $repository::getCache();
         if ($cacheDriver->contains($model::METHOD) && isset($interfaces[CachableModelInterface::class])) {
             $data = $cacheDriver->fetch($model::METHOD);
         } else {

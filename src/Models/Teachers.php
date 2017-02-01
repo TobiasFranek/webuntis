@@ -20,6 +20,8 @@ namespace Webuntis\Models;
 
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use Webuntis\Models\Interfaces\CachableModelInterface;
+use JMS\Serializer\Annotation\SerializedName;
+
 
 /**
  * Class Teachers
@@ -33,11 +35,13 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
     private $name;
 
     /**
+     * @SerializedName("firstName")
      * @var string
      */
     private $firstName;
 
     /**
+     * @SerializedName("lastName")
      * @var string
      */
     private $lastName;
