@@ -52,7 +52,7 @@ if you want to turn off caching (which is not recommended) take this configurati
     'disableCache' => true
 ```
 
-if you dont want the default memcached(port=11211, host=localhost) server use:
+if you don't want the default memcached(port=11211, host=localhost) server use:
 
 ```php
  'default' => [

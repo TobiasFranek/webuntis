@@ -51,6 +51,28 @@ if you want to turn off caching (which is not recommended) take this configurati
     ],
     'disableCache' => true
 ```
+if you don't want the default memcached(port=11211, host=localhost) server use:
+
+```php
+ 'default' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'yourusername',
+        'password' => 'yourpassword'
+    ],
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ],
+    'memcached' => [
+        'host' => 'yourhost',
+        'port' => 'yourport
+    ]
+```
 
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
 
