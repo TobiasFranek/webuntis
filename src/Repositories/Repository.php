@@ -20,6 +20,7 @@ namespace Webuntis\Repositories;
 
 use Doctrine\Common\Cache\MemcachedCache;
 use Webuntis\Cache\Memcached;
+use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Exceptions\RepositoryException;
 use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Util\ExecutionHandler;
@@ -250,7 +251,7 @@ class Repository {
         }
         $cacheDriver = new Memcached();
         if (self::$disabledCache == false && extension_loaded('memcached')) {
-            $config = WebuntisFactory::getConfig();
+            $config = WebuntisConfiguration::getConfig();
             if(!$host = $config['memcached']['host']){
                 $host = 'localhost';
             }
