@@ -18,6 +18,7 @@
 namespace Webuntis\Models;
 
 use Webuntis\Models\Interfaces\CachableModelInterface;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class Classes
@@ -27,11 +28,13 @@ use Webuntis\Models\Interfaces\CachableModelInterface;
 class Classes extends AbstractModel implements CachableModelInterface {
 
     /**
+     * @SerializedName("name")
      * @var string
      */
     private $name;
 
     /**
+     * @SerializedName("fullName")
      * @var string
      */
     private $fullName;

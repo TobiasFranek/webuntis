@@ -22,6 +22,7 @@ namespace Webuntis\Models;
 use Webuntis\Exceptions\ModelException;
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use Webuntis\Query\Query;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class Exams
@@ -51,11 +52,13 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     private $subject = [];
 
     /**
+     * @SerializedName("startDate")
      * @var \DateTime
      */
     private $startDate;
 
     /**
+     * @SerializedName("endDate")
      * @var \DateTime
      */
     private $endDate;

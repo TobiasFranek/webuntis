@@ -20,6 +20,7 @@ namespace Webuntis\Models;
 
 use Webuntis\Exceptions\ModelException;
 use Webuntis\Query\Query;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class Period
@@ -29,11 +30,13 @@ use Webuntis\Query\Query;
 class Period extends AbstractModel {
 
     /**
+     * @SerializedName("startTime")
      * @var \DateTime
      */
     private $startTime;
 
     /**
+     * @SerializedName("startTime")
      * @var \DateTime
      */
     private $endTime;

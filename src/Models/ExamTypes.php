@@ -21,6 +21,7 @@ namespace Webuntis\Models;
 
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use Webuntis\Models\Interfaces\CachableModelInterface;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Class ExamTypes
@@ -40,6 +41,7 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
     private $name;
 
     /**
+     * @SerializedName("longName")
      * @var string
      */
     private $longName;
