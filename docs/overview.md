@@ -8,3 +8,4 @@
   * [Creating an custom Model](AdvancedUsage/CreatingAnCustomModel.md)
   * [Adding an custom instance](AdvancedUsage/AddingAnCustomInstance.md)
   * [Adding an custom type](AdvancedUsage/AddingAnCustomType.md)
+  * [Caching](AdvancedUsage/Caching.md)

@@ -54,16 +54,35 @@ the params are:
 * Instance ($this->instance is already defined if you inherit the default Repository Class)
 * The last Parameter are the Parameters that get passed to the api method
 
+## Adding your custom Repository to the existing ones
+
+you just have to add you custom Repository to the Query constructor like this:
+
+```php
+$query = new Query([], [
+    'ModelName' => \Your\RepoClass::class
+])
+```
+
+the 'ModelName' is the name of the Model you want for your Repository f.e. 'Subjects'
+
+now everytime you call:
+
+```php
+$query->get('ModelName')->yourMethod();
+```
+
+your Repository gets executed.
+
 ## Caching 
 
 If you want to cache data in your repository. To get the Memcached Service call:
 
 ```php
-$this->initMemcached($host, $port); //parameter are optional
+self::getCache();
 ```
 
 this will return an doctrine MemcachedCache object. How to use this MemcachedCache object is documented [here](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/caching.html).
-
 
 # Creating an custom Model
 
@@ -216,3 +235,28 @@ Webuntis\Models\Classes:
 ```
 
 after this you can start using that custom Type
+
+# Caching 
+
+There are some things to know about caching the caching instance you cann simply access with:
+
+```php
+self::getCache();
+```
+
+with this caching instance you can do everything the [doctrine MemcachedCache](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/caching.html) class can 
+
+there are 2 console command that affect the cache:
+
+```shell
+php vendor/tfranek/webuntis/bin/console.php webuntis:cache:clear [optional port for the memcached server] [optional host for the memcached server]
+```
+
+follow the instructions and you can easy clear the cache.
+
+```shell
+php vendor/tfranek/webuntis/bin/console.php webuntis:cache:build [<server>] [<school>] [<adminusername>] [<adminpassword>] [<defaultusername>] [<defaultpassword>] [<memcachedhost>] [<memcachedport>] these are optional
+```
+
+with this command you can build the cache so that the user doesn't have to do it.
+follow the instructions and you can easy build the cache.
