@@ -266,7 +266,8 @@ class Repository {
             $memcached->addServer($host, $port);
             $cacheDriver->setMemcached($memcached);
         }
-        return $cacheDriver;
+        self::$cache = $cacheDriver;
+        return self::$cache;
     }
 
     /**
