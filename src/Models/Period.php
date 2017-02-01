@@ -30,13 +30,11 @@ use JMS\Serializer\Annotation\SerializedName;
 class Period extends AbstractModel {
 
     /**
-     * @SerializedName("startTime")
      * @var \DateTime
      */
     private $startTime;
 
     /**
-     * @SerializedName("startTime")
      * @var \DateTime
      */
     private $endTime;

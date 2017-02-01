@@ -41,7 +41,6 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
     private $name;
 
     /**
-     * @SerializedName("longName")
      * @var string
      */
     private $longName;

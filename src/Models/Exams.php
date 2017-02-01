@@ -52,13 +52,11 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     private $subject = [];
 
     /**
-     * @SerializedName("startDate")
      * @var \DateTime
      */
     private $startDate;
 
     /**
-     * @SerializedName("endDate")
      * @var \DateTime
      */
     private $endDate;

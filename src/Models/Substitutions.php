@@ -42,13 +42,11 @@ class Substitutions extends AbstractModel {
     private $lesson;
 
     /**
-     * @SerializedName("startTime")
      * @var \DateTime
      */
     private $startTime;
 
     /**
-     * @SerializedName("endTime")
      * @var \DateTime
      */
     private $endTime;

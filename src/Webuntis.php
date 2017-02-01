@@ -18,6 +18,7 @@
 
 namespace Webuntis;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use JsonRPC\Client;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Query\Query;

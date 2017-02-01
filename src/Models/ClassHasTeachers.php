@@ -35,7 +35,6 @@ class ClassHasTeachers extends AbstractModel {
     private $name;
 
     /**
-     * @SerializedName("fullName")
      * @var string
      */
     private $fullName;

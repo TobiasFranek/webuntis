@@ -35,19 +35,16 @@ class Holidays extends AbstractModel implements CachableModelInterface {
     private $name;
 
     /**
-     * @SerializedName("fullName")
      * @var string
      */
     private $fullName;
 
     /**
-     * @SerializedName("startDate")
      * @var \DateTime
      */
     private $startDate;
 
     /**
-     * @SerializedName("endDate")
      * @var \DateTime
      */
     private $endDate;

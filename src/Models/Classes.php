@@ -28,13 +28,11 @@ use JMS\Serializer\Annotation\SerializedName;
 class Classes extends AbstractModel implements CachableModelInterface {
 
     /**
-     * @SerializedName("name")
      * @var string
      */
     private $name;
 
     /**
-     * @SerializedName("fullName")
      * @var string
      */
     private $fullName;
