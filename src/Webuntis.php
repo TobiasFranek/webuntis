@@ -85,7 +85,16 @@ class Webuntis {
             $this->currentUserType = $cache->fetch($config['username'])['userType'];
             $this->session = $cache->fetch($config['username'])['session'];
             $httpClient = new HttpClient($this->path);
-            $httpClient->withCookies(['JSESSIONID' => $this->session]);
+            $date = new \DateTime();
+            $newDate = $date->add(new \DateInterval('PT1209600S'));
+            $httpClient->withCookies([
+                'JSESSIONID' => $this->session,
+                'Path' => '/WebUntis',
+                'Version' => '1',
+                'Max-Age' => 1209600,
+                'Expires' => $newDate->format('D, d-M-Y H:i:s ') . 'GMT'
+
+            ]);
             $this->client = new Client($this->path, false, $httpClient);
         }else {
             $this->client = new Client($this->path);
