@@ -33,6 +33,7 @@ class Classes extends AbstractModel implements CachableModelInterface {
     private $name;
 
     /**
+     * @SerializedName("fullName")
      * @var string
      */
     private $fullName;

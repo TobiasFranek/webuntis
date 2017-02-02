@@ -35,11 +35,13 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
     private $name;
 
     /**
+     * @SerializedName("firstName")
      * @var string
      */
     private $firstName;
 
     /**
+     * @SerializedName("lastName")
      * @var string
      */
     private $lastName;

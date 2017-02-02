@@ -33,11 +33,13 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
     private $name;
 
     /**
+     * @SerializedName("startDate")
      * @var \DateTime
      */
     private $startDate;
 
     /**
+     * @SerializedName("endDate")
      * @var \DateTime
      */
     private $endDate;

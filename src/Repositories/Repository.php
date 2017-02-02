@@ -62,6 +62,7 @@ class Repository {
     public function __construct($model) {
         $this->model = $model;
         $this->instance = WebuntisFactory::create($model);
+        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
         if(!self::$cache) {
             self::$cache = self::initMemcached();
         }
