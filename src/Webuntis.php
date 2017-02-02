@@ -85,8 +85,7 @@ class Webuntis {
             $this->currentUserType = $cache->fetch($config['username'])['userType'];
             $this->session = $cache->fetch($config['username'])['session'];
             $httpClient = new HttpClient($this->path);
-            $date = new \DateTime();
-            $newDate = $date->add(new \DateInterval('PT1209600S'));
+            $newDate = $cache->fetch($config['tokenCreatedAt'])->add(new \DateInterval('PT1200000S'));
             $httpClient->withCookies([
                 'JSESSIONID' => $this->session,
                 'Path' => '/WebUntis',
@@ -118,7 +117,8 @@ class Webuntis {
         $cache->save($username, [
             'session' => $result['sessionId'],
             'userId' => $this->currentUserId,
-            'userType' => $this->currentUserType
+            'userType' => $this->currentUserType,
+            'tokenCreatedAt' => new \DateTime()
         ]);
 
         $this->session = $result['sessionId'];
