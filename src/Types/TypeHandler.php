@@ -57,6 +57,10 @@ class TypeHandler {
         }
     }
 
+    /**
+     * returns all available Types
+     * @return Interfaces\TypeInterface[]
+     */
     public static function getAllTypes() {
         $additionalTypes = YAMLConfiguration::getAdditionalTypes();
         foreach ($additionalTypes as $key => $value) {
@@ -65,6 +69,12 @@ class TypeHandler {
         return self::$types;
     }
 
+    /**
+     * handles the parse request from the AbstractModel
+     * @param AbstractModel $model
+     * @param $data
+     * @param $fields
+     */
     public function handle(AbstractModel &$model, $data, $fields) {
         foreach($fields as $key => $value) {
             $implements = class_implements(self::$types[$value['type']]);
