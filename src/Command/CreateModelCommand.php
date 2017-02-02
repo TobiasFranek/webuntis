@@ -116,47 +116,7 @@ class CreateModelCommand extends Command {
         $output->writeln('<info>Available Types: ' . $types . '</info>');
         $question = new Question('Name of the attribute you want to add [enter if finished]: ');
         $name = $helper->ask($input, $output, $question);
-        if($name) {
-            $question = new Question('Type of ' . $name . ': ');
-            $attribute = $helper->ask($input, $output, $question);
-            if (isset($allTypes[$attribute])) {
-                $property = new Property($name);
-                $phpDoc = new PropertyPhpdoc();
-                $phpDoc->setVariableTag(new VariableTag($allTypes[$attribute]::getType()));
-                $property->setPhpdoc($phpDoc);
-                $object->addProperty($property);
-                if(!in_array(FullyQualifiedName::make($allTypes[$attribute]::getType()), $file->allFullyQualifiedNames()) && $allTypes[$attribute]::getName() != 'model' && $allTypes[$attribute]::getName() != 'modelCollection') {
-                    $file->addFullyQualifiedName(FullyQualifiedName::make($allTypes[$attribute]::getType()));
-                }
-                $getter = Method::make('get' . ucfirst($name))->setBody('        return $this->' . $name . ';');
-                $phpDoc = new MethodPhpdoc();
-                $phpDoc->setDescription(new Description('Getter for ' . $name));
-                $phpDoc->setReturnTag(new ReturnTag($allTypes[$attribute]::getType(), $name));
-                $getter->setPhpdoc($phpDoc);
-                $object->addMethod($getter);
-                if(!strpos($allTypes[$attribute]::getType(), '[]')) {
-                    $setterArgument = Argument::make($allTypes[$attribute]::getType(), $name);
-                }else {
-                    $setterArgument = Argument::make('array', $name);
-                }
-                $setter = Method::make('set' . ucfirst($name))->addArgument($setterArgument)->setBody('        $this->' . $name . ' = $' . $name . ';');
-                $phpDoc = new MethodPhpdoc();
-                $phpDoc->setDescription(new Description('Setter for ' . $name));
-                $phpDoc->addParameterTag(new ParameterTag($allTypes[$attribute]::getType(), $name));
-                $setter->setPhpdoc($phpDoc);
-                $object->addMethod($setter);
-                $ymlConfig[$object->getFullyQualifiedName()]['fields'][$name] = $allTypes[$attribute]::generateTypeWithConsole($output, $input, $helper);
-                if($attribute == 'model' || $attribute == 'modelCollection') {
-                    $models[] = $name;
-                }
-            } else {
-                $output->writeln('<error>Type does not exist</error>');
-            }
-        }
-
         while ($name) {
-            $question = new Question('Name of the attribute you want to add [enter if finished]: ');
-            $name = $helper->ask($input, $output, $question);
             if($name) {
                 $question = new Question('Type of ' . $name . ': ');
                 $attribute = $helper->ask($input, $output, $question);
@@ -194,6 +154,8 @@ class CreateModelCommand extends Command {
                     $output->writeln('<error>Type does not exist</error>');
                 }
             }
+            $question = new Question('Name of the attribute you want to add [enter if finished]: ');
+            $name = $helper->ask($input, $output, $question);
         }
         $setArgument1 = Argument::make('mixed', 'field');
         $setArgument2 = Argument::make('mixed', 'value');
