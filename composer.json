@@ -20,9 +20,9 @@
     "fguillot/json-rpc": "@stable",
     "doctrine/cache": "^1.6",
     "jms/serializer": "^1.4",
-    "symfony/yaml": "^3.2",
-    "symfony/console": "^3.2",
-    "symfony/filesystem": "^3.2",
+    "symfony/yaml": "^2.8",
+    "symfony/console": "^2.8",
+    "symfony/filesystem": "^2.8",
     "memio/memio": "^1.1"
 
   },
