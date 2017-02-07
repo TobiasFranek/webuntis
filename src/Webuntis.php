@@ -126,7 +126,7 @@ class Webuntis {
             'userId' => $this->currentUserId,
             'userType' => $this->currentUserType,
             'tokenCreatedAt' => new \DateTime()
-        ]);
+        ], 86400);
 
         $this->session = $result['sessionId'];
 
