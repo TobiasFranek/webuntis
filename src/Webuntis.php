@@ -81,11 +81,18 @@ class Webuntis {
         $cache = Repository::getCache();
 
         if($cache->contains($config['username'])) {
-            $this->currentUserId = $cache->fetch($config['username'])['userId'];
-            $this->currentUserType = $cache->fetch($config['username'])['userType'];
-            $this->session = $cache->fetch($config['username'])['session'];
+            $data = $cache->fetch($config['username']);
+            $this->currentUserId = -1;
+            if(isset($data['userId'])){
+                $this->currentUserId = $cache->fetch($config['username'])['userId'];
+            }
+            $this->currentUserType = 0;
+            if(isset($data['userType'])) {
+                $this->currentUserType = $cache->fetch($config['username'])['userType'];
+            }
+            $this->session = $data['session'];
             $httpClient = new HttpClient($this->path);
-            $newDate = $cache->fetch($config['tokenCreatedAt'])->add(new \DateInterval('PT1200000S'));
+            $newDate = $data['tokenCreatedAt']->add(new \DateInterval('PT1200000S'));
             $httpClient->withCookies([
                 'JSESSIONID' => $this->session,
                 'Path' => '/WebUntis',
