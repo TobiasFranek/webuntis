@@ -4,7 +4,7 @@ Webuntis\Models\Exams:
         startDate:
             type: mergeTimeAndDate
             api:
-                time: startDate
+                time: startTime
                 date: date
         endDate:
             type: mergeTimeAndDate
