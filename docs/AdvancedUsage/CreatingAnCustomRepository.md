@@ -28,6 +28,8 @@ $searchedForObjects = $this->sort($parsedObjects, $field, $sortingOrder);
 ```
 * parse()the parse method parses an result automatically to the right model
 
+Note: The ExecutionHandler also parses the result, so you dont really have to do it
+
 Usage:
 
 ```php
@@ -46,12 +48,11 @@ just write this:
 $result = ExecutionHandler::execute($this, []);
 ```
 
-this method return the result of the api request as an array.
+this method returns the result of the api request as an array of the parsed objects.
 
 the params are:
 
-* Model ($this->model is already defined if you inherit the default Repository Class)
-* Instance ($this->instance is already defined if you inherit the default Repository Class)
+* the current repository
 * The last Parameter are the Parameters that get passed to the api method
 
 ## Adding your custom Repository to the existing ones
