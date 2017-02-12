@@ -57,23 +57,7 @@ the params are:
 
 ## Adding your custom Repository to the existing ones
 
-you just have to add you custom Repository to the Query constructor like this:
-
-```php
-$query = new Query([], [
-    'ModelName' => \Your\RepoClass::class
-])
-```
-
-the 'ModelName' is the name of the Model you want for your Repository f.e. 'Subjects'
-
-now everytime you call:
-
-```php
-$query->get('ModelName')->yourMethod();
-```
-
-your Repository gets executed.
+you just have to add it into the yml config of the model you want that repo for
 
 ## Caching 
 
