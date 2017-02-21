@@ -43,8 +43,6 @@ class CacheBuildCommand extends Command{
             ->addArgument('school', InputArgument::OPTIONAL, 'school')
             ->addArgument('adminusername', InputArgument::OPTIONAL, 'the admin username')
             ->addArgument('adminpassword', InputArgument::OPTIONAL, 'the admin password')
-            ->addArgument('defaultusername', InputArgument::OPTIONAL, 'the default username')
-            ->addArgument('defaultpassword', InputArgument::OPTIONAL, 'the default password')
             ->addArgument('memcachedhost', InputArgument::OPTIONAL, 'the memcached host')
             ->addArgument('memcachedport', InputArgument::OPTIONAL, 'the memcached port');
     }
@@ -73,15 +71,6 @@ class CacheBuildCommand extends Command{
             $question = new Question('Admin password: ');
             $admin['password'] = $helper->ask($input, $output, $question);
         }
-        $user = [];
-        if(!$user['username'] = $input->getArgument('defaultusername')) {
-            $question = new Question('User username: ');
-            $user['username'] = $helper->ask($input, $output, $question);
-        }
-        if(!$user['password'] = $input->getArgument('defaultpassword')) {
-            $question = new Question('User password: ');
-            $user['password'] = $helper->ask($input, $output, $question);
-        }
         if(!$memcachedPort = $input->getArgument('memcachedport')) {
             $question = new Question('Memcached host[11211]: ', 11211);
             $memcachedPort = $helper->ask($input, $output, $question);
@@ -102,18 +91,13 @@ class CacheBuildCommand extends Command{
         $returnCode = $command->run($argumentInput, $output);
 
         $config = new WebuntisConfiguration([
-            'default' => [
-                'server' => $server,
-                'school' => $school,
-                'username' => $user['username'],
-                'password' => $user['password']
-            ],
             'admin' => [
                 'server' => $server,
                 'school' => $school,
                 'username' => $admin['username'],
                 'password' => $admin['password']
-            ]
+            ],
+            'only_admin' => true
         ]);
 
         $query = new Query();
