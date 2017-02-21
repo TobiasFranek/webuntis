@@ -55,6 +55,8 @@ class WebuntisFactory {
 
             if (isset($interfaces[ConfigurationModelInterface::class])) {
                 $config = $model::CONFIG_NAME;
+            } else if (isset(static::$config['only_admin']) && static::$config['only_admin']){
+                $config = 'admin';
             } else {
                 $config = 'default';
             }
