@@ -75,6 +75,17 @@ if you don't want the default memcached(port=11211, host=localhost) server use:
     ]
 ```
 
+if you want to execute all models with the admin instance
+```php
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ],
+    'only_admin' => true
+```
 
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
 
