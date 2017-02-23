@@ -194,8 +194,8 @@ class Repository {
     }
 
     private function validateDate($date) {
-        $d = DateTime::createFromFormat('Y-m-d', $date);
-        $d2 = DateTime::createFromFormat('Y-m-d H:i', $date);
+        $d = \DateTime::createFromFormat('Y-m-d', $date);
+        $d2 = \DateTime::createFromFormat('Y-m-d H:i', $date);
         return $d && $d->format('Y-m-d') === $date || $d2 && $d2->format('Y-m-d H:i') === $date;
     }
 
