@@ -63,7 +63,7 @@ class Repository {
         $this->model = $model;
         $this->instance = WebuntisFactory::create($model);
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
-        if(!self::$cache) {
+        if (!self::$cache) {
             self::$cache = self::initMemcached();
         }
     }
@@ -152,30 +152,51 @@ class Repository {
                                 if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
                                     $temp[] = $value2;
                                 }
-                            } else if ($value2->serialize()[$key] == $value) {
-                                $temp[] = $value2;
-                            } else if ($this->endsWith($value, '%') && $this->startsWith($value, '%')) {
-                                if ($this->contains($value2->serialize()[$key], substr($value, 1, strlen($value) - 2))) {
-                                    $temp[] = $value2;
+                            } else {
+                                if ($this->validateDate(substr($value, 1))) {
+                                    if ($this->startsWith($value, '<')) {
+                                        if (new \DateTime($value2->serialize()[$key]) <= new \DateTime(substr($value, 1))) {
+                                            $temp[] = $value2;
+                                        }
+                                    } else if ($this->startsWith($value, '>')) {
+                                        if (new \DateTime($value2->serialize()[$key]) >= new \DateTime(substr($value, 1))) {
+                                            $temp[] = $value2;
+                                        }
+                                    } else {
+                                        throw new RepositoryException('wrong date format');
+                                    }
                                 }
-                            } else if ($this->startsWith($value, '%')) {
-                                if ($this->startsWith($value2->serialize()[$key], substr($value, 1, strlen($value)))) {
+                                if ($value2->serialize()[$key] == $value) {
                                     $temp[] = $value2;
-                                }
-                            } else if ($this->endsWith($value, '%')) {
-                                if ($this->endsWith($value2->serialize()[$key], substr($value, 0, strlen($value) - 1))) {
-                                    $temp[] = $value2;
+                                } else if ($this->endsWith($value, '%') && $this->startsWith($value, '%')) {
+                                    if ($this->contains($value2->serialize()[$key], substr($value, 1, strlen($value) - 2))) {
+                                        $temp[] = $value2;
+                                    }
+                                } else if ($this->startsWith($value, '%')) {
+                                    if ($this->startsWith($value2->serialize()[$key], substr($value, 1, strlen($value)))) {
+                                        $temp[] = $value2;
+                                    }
+                                } else if ($this->endsWith($value, '%')) {
+                                    if ($this->endsWith($value2->serialize()[$key], substr($value, 0, strlen($value) - 1))) {
+                                        $temp[] = $value2;
+                                    }
                                 }
                             }
                         }
-                        $data = $temp;
-                    } else {
-                        throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
                     }
+                    $data = $temp;
+                } else {
+                    throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
                 }
             }
         }
         return $data;
+    }
+
+    private function validateDate($date) {
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        $d2 = DateTime::createFromFormat('Y-m-d H:i', $date);
+        return $d && $d->format('Y-m-d') === $date || $d2 && $d2->format('Y-m-d H:i') === $date;
     }
 
     /**
@@ -247,7 +268,7 @@ class Repository {
      * @return Memcached
      */
     protected static function initMemcached() {
-        if(self::$cache) {
+        if (self::$cache) {
             return self::$cache;
         }
         $cacheDriver = new Memcached();
@@ -255,11 +276,11 @@ class Repository {
             $config = WebuntisConfiguration::getConfig();
             $host = 'localhost';
             $port = 11211;
-            if(isset($config['memcached'])) {
-                if(isset($config['memcached']['host'])) {
+            if (isset($config['memcached'])) {
+                if (isset($config['memcached']['host'])) {
                     $host = $config['memcached']['host'];
                 }
-                if(isset($config['memcached']['port'])) {
+                if (isset($config['memcached']['port'])) {
                     $port = $config['memcached']['port'];
                 }
             }
@@ -275,9 +296,9 @@ class Repository {
      * @return MemcachedCache|Memcached
      */
     public static function getCache() {
-        if(self::$cache) {
+        if (self::$cache) {
             return self::$cache;
-        }else {
+        } else {
             return self::initMemcached();
         }
     }
@@ -296,6 +317,9 @@ class Repository {
         return $this->model;
     }
 
+    /**
+     * @return bool
+     */
     public function checkIfCachingIsDisabled() {
         return self::$disabledCache;
     }
