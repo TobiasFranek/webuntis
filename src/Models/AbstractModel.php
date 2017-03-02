@@ -81,7 +81,11 @@ abstract class AbstractModel implements ModelInterface {
      * @param $data
      */
     protected function parse($data) {
-        $this->setId($data['id']);
+        if(isset($data['id'])) {
+            $this->setId($data['id']);
+        }else {
+            $this->setId(rand(0, getrandmax()));
+        }
         $fields = YAMLConfiguration::getFields(get_class($this));
         $typeHandler = new TypeHandler();
 
