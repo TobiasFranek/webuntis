@@ -79,8 +79,8 @@ class Webuntis {
 
 
         $cache = Repository::getCache();
-
-        if($cache->contains($config['username'])) {
+        $generalConfig = WebuntisFactory::getConfig();
+        if($cache->contains($config['username']) && (!isset($generalConfig['only_admin']) || $generalConfig['only_admin'] == false)) {
             $data = $cache->fetch($config['username']);
             $this->currentUserId = -1;
             if(isset($data['userId'])){
