@@ -103,7 +103,6 @@ class Repository {
      */
     public function findAll(array $sort = [], $limit = null) {
         $data = ExecutionHandler::execute($this, []);
-
         if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
@@ -287,6 +286,8 @@ class Repository {
             $memcached = new \Memcached();
             $memcached->addServer($host, $port);
             $cacheDriver->setMemcached($memcached);
+        } else {
+            return false;
         }
         self::$cache = $cacheDriver;
         return self::$cache;

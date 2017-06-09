@@ -80,7 +80,7 @@ class Webuntis {
 
         $cache = Repository::getCache();
         $generalConfig = WebuntisFactory::getConfig();
-        if($cache->contains($config['username']) && (!isset($generalConfig['only_admin']) || $generalConfig['only_admin'] == false)) {
+        if ($cache && $cache->contains($config['username']) && (!isset($generalConfig['only_admin']) || $generalConfig['only_admin'] == false)) {
             $data = $cache->fetch($config['username']);
             $this->currentUserId = -1;
             if(isset($data['userId'])){
@@ -121,12 +121,14 @@ class Webuntis {
         $this->currentUserType = $result['personType'];
 
         $cache = Repository::getCache();
-        $cache->save($username, [
-            'session' => $result['sessionId'],
-            'userId' => $this->currentUserId,
-            'userType' => $this->currentUserType,
-            'tokenCreatedAt' => new \DateTime()
-        ], 86400);
+        if ($cache) {
+            $cache->save($username, [
+                'session' => $result['sessionId'],
+                'userId' => $this->currentUserId,
+                'userType' => $this->currentUserType,
+                'tokenCreatedAt' => new \DateTime()
+            ], 86400);
+        }
 
         $this->session = $result['sessionId'];
 
