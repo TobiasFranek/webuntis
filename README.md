@@ -14,6 +14,9 @@ These instructions will show you how to get this package up and running.
 ### Requirements
 
 * php 5.6 or higher 
+
+Memcached is not required but I strongly recommend it.
+
 * php memcached
 
 ### Installation
