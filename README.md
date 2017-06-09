@@ -18,6 +18,8 @@ These instructions will show you how to get this package up and running.
 
 ### Installation
 
+make sure you have [composer](https://getcomposer.org/doc/00-intro.md)composer installed and type this command.
+
 ```
 composer require tfranek/webuntis
 ```
