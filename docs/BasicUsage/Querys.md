@@ -5,6 +5,8 @@ Now to the important part, the data fetching.
 You just have to create a new Query object.
 
 ```php
+use Webuntis\Query\Query;
+
 $query = new Query();
 ```
 
