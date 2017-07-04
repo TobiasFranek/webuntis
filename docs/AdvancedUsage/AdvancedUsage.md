@@ -43,6 +43,8 @@ to execute your own api request in you custom Repository is pretty easy.
 just write this:
 
 ```php
+use Webuntis\Util\ExecutionHandler;
+
 $result = ExecutionHandler::execute($this, []);
 ```
 
