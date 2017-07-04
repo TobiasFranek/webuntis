@@ -28,6 +28,8 @@ $searchedForObjects = $this->sort($parsedObjects, $field, $sortingOrder);
 ```
 * parse()the parse method parses an result automatically to the right model
 
+Note: The ExecutionHandler also parses the result, so you dont really have to do it
+
 Usage:
 
 ```php
@@ -48,34 +50,21 @@ use Webuntis\Util\ExecutionHandler;
 $result = ExecutionHandler::execute($this, []);
 ```
 
-this method return the result of the api request as an array.
+this method returns the result of the api request as an array of the parsed objects.
 
 the params are:
 
-* Model ($this->model is already defined if you inherit the default Repository Class)
-* Instance ($this->instance is already defined if you inherit the default Repository Class)
+* the current repository
 * The last Parameter are the Parameters that get passed to the api method
 
 ## Adding your custom Repository to the existing ones
 
-you just have to add you custom Repository to the Query constructor like this:
+you just have to add a line into the yml config of the model you want that repo for.
 
-```php
-$query = new Query([], [
-    'ModelName' => \Your\RepoClass::class
-])
+with that line:
+```yml
+repositoryClass: Your\Path\Repository
 ```
-
-the 'ModelName' is the name of the Model you want for your Repository f.e. 'Subjects'
-
-now everytime you call:
-
-```php
-$query->get('ModelName')->yourMethod();
-```
-
-your Repository gets executed.
-
 ## Caching 
 
 If you want to cache data in your repository. To get the Memcached Service call:
@@ -85,6 +74,7 @@ self::getCache();
 ```
 
 this will return an doctrine MemcachedCache object. How to use this MemcachedCache object is documented [here](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/caching.html).
+
 
 # Creating an custom Model
 
