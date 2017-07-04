@@ -57,7 +57,11 @@ the params are:
 
 ## Adding your custom Repository to the existing ones
 
-you just have to add it into the yml config of the model you want that repo for
+you just have to add a line into the yml config of the model you want that repo for.
+
+with that line:
+
+repositoryClass: Your\Path\Repository
 
 ## Caching 
 
