@@ -100,7 +100,7 @@ php vendor/tfranek/webuntis/bin/console.php webuntis:generate:model
 
 follow the instruction in the console.
 
-##Types
+## Types
 
 For the models there are different types and these are defined as types, types that are integrated in the core are:
 
@@ -111,7 +111,7 @@ For the models there are different types and these are defined as types, types t
 * model - is an subordinate object that need parameter to find it in the api
 * modelCollection - is an collection of subordinate objects
 
-##YML Configuration
+## YML Configuration
 
 All your configuration that you set(fieldnames, custom repos) are saved in .yml files with these files the class can automatically generate a parse() function to assign the right api value to the right model values.
 
