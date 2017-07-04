@@ -88,6 +88,8 @@ if you want to execute all models with the admin instance
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
 
 ```php
+use Webuntis\Configuration\WebuntisConfiguration;
+
 $config = new WebuntisConfiguration(
 'default' => [
        //f.e. thalia, cissa etc.
@@ -113,6 +115,8 @@ Now to the important part, the data fetching.
 You just have to create a new Query object.
 
 ```php
+use Webuntis\Query\Query;
+
 $query = new Query();
 ```
 
