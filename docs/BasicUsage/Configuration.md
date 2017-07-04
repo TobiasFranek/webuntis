@@ -90,6 +90,8 @@ if you want to execute all models with the admin instance
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
 
 ```php
+use Webuntis\Configuration\WebuntisConfiguration
+
 $config = new WebuntisConfiguration( 
 'default' => [
        //f.e. thalia, cissa etc.
