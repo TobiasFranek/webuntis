@@ -90,7 +90,7 @@ To apply the configuration you have to simply create a new WebuntisConfiguration
 ```php
 use Webuntis\Configuration\WebuntisConfiguration;
 
-$config = new WebuntisConfiguration(
+$config = new WebuntisConfiguration([ 
 'default' => [
        //f.e. thalia, cissa etc.
         'server' => 'yourserver',
@@ -105,7 +105,7 @@ $config = new WebuntisConfiguration(
         'username' => 'youradminusername',
         'password' => 'youradminpassword'
     ]
-  )
+ ]);
 ```
 
 # Querys 
