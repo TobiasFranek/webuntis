@@ -116,11 +116,12 @@ class Webuntis {
 
     /**
      * authenticates the given user
-     * @param $username
-     * @param $password
-     * @return mixed
+     * @param string $username
+     * @param string $password
+     * @return array
      */
-    public function authenticate($username, $password) {
+    public function authenticate(string $username, string $password) : array 
+    {
         $result = $this->client->execute('authenticate', [$username, $password, rand(1, 4000)]);
 
         $this->currentUserId = $result['personId'];
@@ -145,7 +146,8 @@ class Webuntis {
      * return the User thats is currently logged in with this instance
      * @return AbstractModel
      */
-    public function getCurrentUser() {
+    public function getCurrentUser() : object 
+    {
         $query = new Query();
         if($this->currentUserType == 5) {
             return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
@@ -158,14 +160,16 @@ class Webuntis {
      * return the current user type (5 = student, 2 = teacher)
      * @return int
      */
-    public function getCurrentUserType() {
+    public function getCurrentUserType() : int 
+    {
         return $this->currentUserType;
     }
 
     /**
      * logs the user that is currently logged in in this instance out
      */
-    public function logout() {
+    public function logout() : void 
+    {
         $this->client->execute('logout', []);
     }
 
@@ -173,16 +177,17 @@ class Webuntis {
      * returns the path
      * @return string
      */
-    public function getPath() {
+    public function getPath() : string 
+    {
         return $this->path;
     }
 
     /**
      * sets the path
      * @param string $path
-     * @return Webuntis $this
+     * @return Webuntis
      */
-    public function setPath($path) {
+    public function setPath(string $path) : self {
         $this->path = $path;
 
         return $this;
@@ -192,16 +197,17 @@ class Webuntis {
      * returns the client
      * @return Client
      */
-    public function getClient() {
+    public function getClient() : object 
+    {
         return $this->client;
     }
 
     /**
      * sets the client
      * @param Client $client
-     * @return Webuntis $this
+     * @return Webuntis
      */
-    public function setClient(Client $client) {
+    public function setClient(Client $client) : self {
         $this->client = $client;
 
         return $this;
@@ -210,14 +216,18 @@ class Webuntis {
     /**
      * @return string
      */
-    public function getSession() {
+    public function getSession() : string {
         return $this->session;
     }
 
     /**
      * @param string $session
+     * @return Webuntis
      */
-    public function setSession($session) {
+    public function setSession(string $session) : self
+    {
         $this->session = $session;
+
+        return $this;
     }
 }

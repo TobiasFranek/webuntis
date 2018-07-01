@@ -49,7 +49,8 @@ class WebuntisFactory {
      * @param string $model
      * @return Webuntis
      */
-    public static function create($model = null) {
+    public static function create(string $model = null) : object 
+    {
         if($model !=  null) {
             $interfaces = class_implements($model);
 
@@ -76,7 +77,8 @@ class WebuntisFactory {
      * @param string $name
      * @param array $config
      */
-    public static function addConfig($name, array $config) {
+    public static function addConfig(string $name, array $config) : void 
+    {
         static::$config[$name] = $config;
     }
 
@@ -84,7 +86,8 @@ class WebuntisFactory {
      * set the current config new
      * @param array $config
      */
-    public static function setConfig(array $config) {
+    public static function setConfig(array $config) : void 
+    {
         static::$config = $config;
     }
 
@@ -92,7 +95,8 @@ class WebuntisFactory {
      * return the current configuration
      * @return array
      */
-    public static function getConfig() {
+    public static function getConfig() : array 
+    {
         return static::$config;
     }
 

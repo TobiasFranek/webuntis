@@ -48,8 +48,10 @@ class Query {
      * gets the right repository to the right model
      * @param string $className
      * @return Repository
+     * @throws QueryException
      */
-    public function get($className) {
+    public function get(string $className) : object 
+    {
         if($className == 'User') {
             if (!isset(static::$cachedRepositories[$className])) {
                 static::$cachedRepositories[$className] = new $this->repositories[$className]();

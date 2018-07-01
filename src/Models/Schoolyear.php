@@ -56,10 +56,11 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
 
     /**
      * sets name
-     * @param $name
-     * @return $this
+     * @param string $name
+     * @return Schoolyear
      */
-    public function setName($name) {
+    public function setName(string $name) : self 
+    {
         $this->name = $name;
 
         return $this;
@@ -69,16 +70,18 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
      * return the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
     /**
      * set the startDate
      * @param \DateTime $startDate
-     * @return $this
+     * @return Schoolyear
      */
-    public function setStartDate(\DateTime $startDate) {
+    public function setStartDate(\DateTime $startDate) : self 
+    {
         $this->startDate = $startDate;
 
         return $this;
@@ -88,16 +91,18 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
      * return the startDate
      * @return \DateTime
      */
-    public function getStartDate() {
+    public function getStartDate() : \DateTime 
+    {
         return $this->startDate;
     }
 
     /**
      * sets the endDate
      * @param \DateTime $endDate
-     * @return $this
+     * @return Schoolyear
      */
-    public function setEndDate(\DateTime $endDate) {
+    public function setEndDate(\DateTime $endDate) : self
+    {
         $this->endDate = $endDate;
 
         return $this;
@@ -107,16 +112,21 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
      * returns the endDate
      * @return \DateTime
      */
-    public function getEndDate() {
+    public function getEndDate() : \DateTime 
+    {
         return $this->endDate;
     }
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Schoolyear
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

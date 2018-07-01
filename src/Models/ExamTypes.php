@@ -59,50 +59,69 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
     /**
      * @return int
      */
-    public function getType() {
+    public function getType() : int 
+    {
         return $this->type;
     }
 
     /**
      * @param int $type
+     * @return ExamTypes
      */
-    public function setType($type) {
+    public function setType(int $type) : self 
+    {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getLongName() {
+    public function getLongName() : string
+    {
         return $this->longName;
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
     /**
      * @param string $longName
+     * @return ExamTypes
      */
-    public function setLongName($longName) {
+    public function setLongName(string $longName) : self 
+    {
         $this->longName = $longName;
+
+        return $this;
     }
 
     /**
      * @param string $name
+     * @return ExamTypes
      */
-    public function setName($name) {
+    public function setName(string $name) : self
+    {
         $this->name = $name;
+
+        return $this;
     }
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return ExamTypes
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

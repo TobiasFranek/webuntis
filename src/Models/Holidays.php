@@ -66,16 +66,18 @@ class Holidays extends AbstractModel implements CachableModelInterface {
      * returns the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
     /**
      * sets the name
      * @param string $name
-     * @return $this
+     * @return Holidays
      */
-    public function setName($name) {
+    public function setName(string $name) : self
+    {
         $this->name = $name;
 
         return $this;
@@ -85,16 +87,18 @@ class Holidays extends AbstractModel implements CachableModelInterface {
      * returns the fullName
      * @return string
      */
-    public function getFullName() {
+    public function getFullName() : string 
+    {
         return $this->fullName;
     }
 
     /**
      * set the fullName
      * @param string $fullName
-     * @return Holidays $this
+     * @return Holidays
      */
-    public function setFullName($fullName) {
+    public function setFullName(string $fullName) : self 
+    {
         $this->fullName = $fullName;
 
         return $this;
@@ -104,16 +108,18 @@ class Holidays extends AbstractModel implements CachableModelInterface {
      * return the startDate
      * @return \DateTime
      */
-    public function getStartDate() {
+    public function getStartDate() : \DateTime 
+    {
         return $this->startDate;
     }
 
     /**
      * sets the startDate
      * @param \DateTime $date
-     * @return Holidays $this
+     * @return Holidays
      */
-    public function setStartDate(\DateTime $date) {
+    public function setStartDate(\DateTime $date) : self 
+    {
         $this->startDate = $date;
 
         return $this;
@@ -123,25 +129,32 @@ class Holidays extends AbstractModel implements CachableModelInterface {
      * return the endDate
      * @return \DateTime
      */
-    public function getEndDate() {
+    public function getEndDate() : \DateTime 
+    {
         return $this->endDate;
     }
 
     /**
      * sets the endDate
      * @param \DateTime $date
-     * @return Holidays $this
+     * @return Holidays
      */
-    public function setEndDate(\DateTime $date) {
+    public function setEndDate(\DateTime $date) : self 
+    {
         $this->endDate = $date;
+
         return $this;
     }
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Holidays
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

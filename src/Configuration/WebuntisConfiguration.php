@@ -40,7 +40,8 @@ class WebuntisConfiguration {
      * adds config f.e. another instance to the WebuntisFactry
      * @param array $config
      */
-    public static function addConfig(array $config) {
+    public static function addConfig(array $config) : void
+    {
         $newConfig = array_merge(self::getConfig(), $config);
 
         WebuntisFactory::setConfig($newConfig);
@@ -50,7 +51,8 @@ class WebuntisConfiguration {
      * gets the current config
      * @return array
      */
-    public static function getConfig() {
+    public static function getConfig() : array
+    {
         return WebuntisFactory::getConfig();
     }
 
@@ -59,7 +61,8 @@ class WebuntisConfiguration {
      * @param array $config
      * @return WebuntisConfiguration $this
      */
-    public static function setConfig(array $config) {
+    public static function setConfig(array $config) : void
+    {
         if(isset($config['disableCache'])) {
             if(extension_loaded('memcached') == false) {
                 Repository::$disabledCache = true;

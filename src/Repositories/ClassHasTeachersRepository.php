@@ -17,10 +17,11 @@ class ClassHasTeachersRepository extends Repository {
 
     /**
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @return array
      */
-    public function findAll(array $sort = [], $limit = null) {
+    public function findAll(array $sort = [], ?int $limit = null) : array 
+    {
         $cache = self::getCache();
         $classesHaveTeachers = [];
         if ($cache && $cache->contains('ClassesHaveTeachers')) {

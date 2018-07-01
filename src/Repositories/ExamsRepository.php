@@ -33,10 +33,11 @@ class ExamsRepository extends Repository {
 
     /**
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [], $limit = null) {
+    public function findAll(array $sort = [], ?int $limit = null) : array
+    {
         $query = new Query();
         $cache = self::getCache();
         if ($cache && $cache->contains('Exams')) {

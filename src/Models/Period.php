@@ -80,16 +80,18 @@ class Period extends AbstractModel {
      * return the startTime
      * @return \DateTime
      */
-    public function getStartTime() {
+    public function getStartTime() : \DateTime 
+    {
         return $this->startTime;
     }
 
     /**
      * sets the startTime
      * @param \DateTime $startTime
-     * @return Period $this
+     * @return Period
      */
-    public function setStartTime(\DateTime $startTime) {
+    public function setStartTime(\DateTime $startTime) : self 
+    {
         $this->startTime = $startTime;
 
         return $this;
@@ -99,16 +101,18 @@ class Period extends AbstractModel {
      * return the endTime
      * @return \DateTime
      */
-    public function getEndTime() {
+    public function getEndTime() : \DateTime 
+    {
         return $this->endTime;
     }
 
     /**
      * sets the endTime
      * @param \DateTime $endTime
-     * @return Period $this
+     * @return Period
      */
-    public function setEndTime(\DateTime $endTime) {
+    public function setEndTime(\DateTime $endTime) : self 
+    {
         $this->endTime = $endTime;
 
         return $this;
@@ -118,16 +122,18 @@ class Period extends AbstractModel {
      * return the classes
      * @return Classes[]
      */
-    public function getClasses() {
+    public function getClasses() : array 
+    {
         return $this->classes;
     }
 
     /**
      * sets the classes
      * @param Classes[] $classes
-     * @return Period $this
+     * @return Period
      */
-    public function setClasses(array $classes) {
+    public function setClasses(array $classes) : self 
+    {
         $this->classes = $classes;
 
         return $this;
@@ -137,16 +143,18 @@ class Period extends AbstractModel {
      * return the teachers
      * @return Teachers[]
      */
-    public function getTeachers() {
+    public function getTeachers() : array 
+    {
         return $this->teachers;
     }
 
     /**
      * sets the teachers
      * @param Teachers[] $teachers
-     * @return Period $this
+     * @return Period
      */
-    public function setTeachers(array $teachers) {
+    public function setTeachers(array $teachers)  : self 
+    {
         $this->teachers = $teachers;
 
         return $this;
@@ -156,16 +164,18 @@ class Period extends AbstractModel {
      * returns the subjects
      * @return Subjects[]
      */
-    public function getSubjects() {
+    public function getSubjects()  : array 
+    {
         return $this->subjects;
     }
 
     /**
      * sets the subjects
      * @param Subjects[] $subjects
-     * @return Period $this
+     * @return Period
      */
-    public function setSubjects(array $subjects) {
+    public function setSubjects(array $subjects) : self 
+    {
         $this->subjects = $subjects;
 
         return $this;
@@ -175,54 +185,68 @@ class Period extends AbstractModel {
      * return the rooms
      * @return Rooms[]
      */
-    public function getRooms() {
+    public function getRooms() : array 
+    {
         return $this->rooms;
     }
 
     /**
      * sets the rooms
      * @param Rooms[] $rooms
-     * @return Period $this
+     * @return Period
      */
-    public function setRooms(array $rooms) {
+    public function setRooms(array $rooms) : self 
+    {
         $this->rooms = $rooms;
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCode() {
+    public function getCode() : string 
+    {
         return $this->code;
     }
 
     /**
-     * @param mixed $code
+     * @param string $code
+     * @return Period
      */
-    public function setCode($code) {
+    public function setCode(string $code) : self 
+    {
         $this->code = $code;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getType() {
+    public function getType() : string 
+    {
         return $this->type;
     }
 
     /**
      * @param string $type
+     * @return Period
      */
-    public function setType($type) {
+    public function setType(string $type) : self 
+    {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return Classes[]|Rooms[]|Subjects[]|Teachers[]
+     * @throws ModelException
      */
-    public function get($key) {
+    public function get(string $key) : array
+    {
         switch ($key) {
             case 'teachers':
                 return $this->teachers;
@@ -239,10 +263,14 @@ class Period extends AbstractModel {
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Period
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

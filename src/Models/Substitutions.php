@@ -21,6 +21,7 @@ namespace Webuntis\Models;
 
 use Webuntis\Exceptions\ModelException;
 use Webuntis\Query\Query;
+use Webuntis\Models\Period;
 use JMS\Serializer\Annotation\SerializedName;
 
 
@@ -86,134 +87,179 @@ class Substitutions extends AbstractModel {
     /**
      * @return string
      */
-    public function getType() {
+    public function getType() : string 
+    {
         return $this->type;
     }
 
     /**
      * @return Classes[]
      */
-    public function getClasses() {
+    public function getClasses() : array 
+    {
         return $this->classes;
     }
 
     /**
      * @return \DateTime
      */
-    public function getEndTime() {
+    public function getEndTime() : \DateTime 
+    {
         return $this->endTime;
     }
 
     /**
      * @return Period
      */
-    public function getLesson() {
+    public function getLesson() : Period 
+    {
         return $this->lesson;
     }
 
     /**
      * @return Rooms[]
      */
-    public function getRooms() {
+    public function getRooms() : array 
+    {
         return $this->rooms;
     }
 
     /**
      * @return \DateTime
      */
-    public function getStartTime() {
+    public function getStartTime() : \DateTime 
+    {
         return $this->startTime;
     }
 
     /**
      * @return Subjects[]
      */
-    public function getSubjects() {
+    public function getSubjects() : array 
+    {
         return $this->subjects;
     }
 
     /**
      * @return Teachers[]
      */
-    public function getTeachers() {
+    public function getTeachers() : array 
+    {
         return $this->teachers;
     }
 
     /**
      * @return string
      */
-    public function getText() {
+    public function getText() : string 
+    {
         return $this->text;
     }
 
     /**
      * @param string $type
+     * @return Substitutions
      */
-    public function setType($type) {
+    public function setType(string $type) : self 
+    {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
      * @param Classes[] $classes
+     * @return Substitutions
      */
-    public function setClasses($classes) {
+    public function setClasses(array $classes) :self 
+    {
         $this->classes = $classes;
+
+        return $this;
     }
 
     /**
      * @param \DateTime $endTime
+     * @return Substitutions
      */
-    public function setEndTime($endTime) {
+    public function setEndTime(\DateTime $endTime) : self 
+    {
         $this->endTime = $endTime;
+
+        return $this;
     }
 
     /**
      * @param Period $lesson
+     * @return Substitutions
      */
-    public function setLesson($lesson) {
+    public function setLesson(Period $lesson) : self 
+    {
         $this->lesson = $lesson;
+
+        return $this;
     }
 
     /**
      * @param Rooms[] $rooms
+     * @return Substitutions
      */
-    public function setRooms($rooms) {
+    public function setRooms(array $rooms) : self {
         $this->rooms = $rooms;
+
+        return $this;
     }
 
     /**
      * @param \DateTime $startTime
+     * @return Substitutions
      */
-    public function setStartTime($startTime) {
+    public function setStartTime(\DateTime $startTime) : self
+    {
         $this->startTime = $startTime;
+    
+        return $this;
     }
 
     /**
      * @param Subjects[] $subjects
+     * @return Substitutions
      */
-    public function setSubjects($subjects) {
+    public function setSubjects(array $subjects) : self
+    {
         $this->subjects = $subjects;
+
+        return $this;
     }
 
     /**
      * @param Teachers[] $teachers
+     * @return Substitutions
      */
-    public function setTeachers($teachers) {
+    public function setTeachers(array $teachers) : self 
+    {
         $this->teachers = $teachers;
+
+        return $this;
     }
 
     /**
      * @param string $text
+     * @return Substitutions
      */
-    public function setText($text) {
+    public function setText(string $text) : self 
+    {
         $this->text = $text;
+
+        return $this;
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return Classes[]|Rooms[]|Subjects[]|Teachers[]
+     * @throws ModelException
      */
-    public function get($key) {
+    public function get(string $key) : array {
         switch ($key) {
             case 'teachers':
                 return $this->teachers;
@@ -230,10 +276,14 @@ class Substitutions extends AbstractModel {
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Substitutions
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

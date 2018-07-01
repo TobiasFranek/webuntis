@@ -34,21 +34,21 @@ interface TypeInterface {
      * returns the name of the Type
      * @return string
      */
-    public static function getName();
+    public static function getName() : string;
 
     /**
      * returns type of the class
      * @return string
      */
-    public static function getType();
+    public static function getType() : string;
 
     /**
      * executes an certain parsing part
      * @param AbstractModel $model
-     * @param $data
-     * @param $field
+     * @param array $data
+     * @param array $field
      */
-    public static function execute(AbstractModel &$model, $data, $field);
+    public static function execute(AbstractModel &$model, array $data, array $field);
 
     /**
      * asks for the params according to the type and return an array with the field information
@@ -57,5 +57,5 @@ interface TypeInterface {
      * @param $helper
      * @return array
      */
-    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper);
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) : array;
 }

@@ -33,15 +33,15 @@ class SubstitutionsRepository extends Repository {
      * gets the period object from the current day or the given date and can be filtered
      * @param array $params
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @param int $department
-     * @param null $startDate
-     * @param null $endDate
+     * @param string $startDate
+     * @param string $endDate
      * @return AbstractModel[]
-     * @internal param null $id
-     * @internal param null $type
+     * @throws RepositoryException
      */
-    public function findBy(array $params, array $sort = [], $limit = null, $department = 0, $startDate, $endDate) {
+    public function findBy(array $params, array $sort = [], int $limit = null, int $department = 0, string $startDate, string $endDate) : array 
+    {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
@@ -72,15 +72,16 @@ class SubstitutionsRepository extends Repository {
     /**
      * gets the period object from the current day or from the given date
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @param int $department
-     * @param null $startDate
-     * @param null $endDate
+     * @param string $startDate
+     * @param string $endDate
      * @return AbstractModel[]
      * @internal param null $id
      * @internal param null $type
      */
-    public function findAll(array $sort = [], $limit = null, $department = 0, $startDate, $endDate) {
+    public function findAll(array $sort = [], int $limit = null, int $department = 0, string $startDate, string $endDate) : array 
+    {
         if ($startDate && $endDate) {
             $startDate = new \DateTime($startDate);
             $endDate = new \DateTime($endDate);

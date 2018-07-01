@@ -37,7 +37,8 @@ class ExecutionHandler {
      * @param array $params
      * @return AbstractModel[]
      */
-    public static function execute(Repository $repository, array $params) {
+    public static function execute(Repository $repository, array $params) : array 
+    {
         $model = $repository->getModel();
         $interfaces = class_implements($model);
         $cacheDriver = $repository::getCache();

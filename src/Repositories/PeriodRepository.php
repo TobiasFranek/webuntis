@@ -33,14 +33,16 @@ class PeriodRepository extends Repository {
      * gets the period object from the current day or the given date and can be filtered
      * @param array $params
      * @param array $sort
-     * @param null $limit
-     * @param null $id
-     * @param null $type
-     * @param null $startDate
-     * @param null $endDate
+     * @param int $limit
+     * @param int $id
+     * @param int $type
+     * @param string $startDate
+     * @param string $endDate
      * @return AbstractModel[]
+     * @throws RepositoryException
      */
-    public function findBy(array $params, array $sort = [],$limit = null, $id = null, $type = null, $startDate = null, $endDate = null) {
+    public function findBy(array $params, array $sort = [], int $limit = null, int $id = null, int $type = null, string $startDate = null, string $endDate = null) : array
+    {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
@@ -79,14 +81,15 @@ class PeriodRepository extends Repository {
     /**
      * gets the period object from the current day or from the given date
      * @param array $sort
-     * @param null $limit
-     * @param null $id
-     * @param null $type
-     * @param null $startDate
-     * @param null $endDate
+     * @param int $limit
+     * @param int $id
+     * @param int $type
+     * @param string $startDate
+     * @param string $endDate
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [],$limit = null, $id = null, $type = null, $startDate = null, $endDate = null) {
+    public function findAll(array $sort = [], int $limit = null, int $id = null, int $type = null, string $startDate = null, string $endDate = null) : array 
+    {
         if ($type == null) {
             $type = $this->instance->getCurrentUserType();
         }

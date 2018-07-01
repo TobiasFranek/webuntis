@@ -71,16 +71,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * return the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
     /**
      * sets the name
      * @param string $name
-     * @return Students $this
+     * @return Students
      */
-    public function setName($name) {
+    public function setName(string $name) : self 
+    {
         $this->name = $name;
 
         return $this;
@@ -90,16 +92,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * return the firstName
      * @return string
      */
-    public function getFirstName() {
+    public function getFirstName() : string 
+    {
         return $this->firstName;
     }
 
     /**
      * set the firstName
      * @param string $firstName
-     * @return Students $this
+     * @return Students
      */
-    public function setFirstName($firstName) {
+    public function setFirstName(string $firstName) : self 
+    {
         $this->firstName = $firstName;
 
         return $this;
@@ -109,16 +113,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * get the lastName
      * @return string
      */
-    public function getLastName() {
+    public function getLastName() : string 
+    {
         return $this->lastName;
     }
 
     /**
      * sets the lastName
      * @param string $lastName
-     * @return Students $this
+     * @return Students 
      */
-    public function setLastName($lastName) {
+    public function setLastName(string $lastName) : self
+    {
         $this->lastName = $lastName;
 
         return $this;
@@ -128,16 +134,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * returns the gender
      * @return string
      */
-    public function getGender() {
+    public function getGender() : string 
+    {
         return $this->gender;
     }
 
     /**
      * sets the gender
      * @param string $gender
-     * @return Students $this
+     * @return Students
      */
-    public function setGender($gender) {
+    public function setGender(string $gender) : self 
+    {
         $this->gender = $gender;
 
         return $this;
@@ -147,16 +155,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * returns the key
      * @return string
      */
-    public function getKey() {
+    public function getKey() : string 
+    {
         return $this->key;
     }
 
     /**
      * sets the key
      * @param string $key
-     * @return Students $this
+     * @return Students
      */
-    public function setKey($key) {
+    public function setKey(string $key) : self 
+    {
         $this->key = $key;
 
         return $this;
@@ -164,10 +174,13 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Students
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self {
         $this->$field = $value;
+
+        return $this;
     }
 }

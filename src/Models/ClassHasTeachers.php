@@ -48,7 +48,7 @@ class ClassHasTeachers extends AbstractModel {
      * returns the Teachers
      * @return Teachers[]
      */
-    public function getTeachers() {
+    public function getTeachers() : array{
         return $this->teachers;
     }
 
@@ -57,7 +57,8 @@ class ClassHasTeachers extends AbstractModel {
      * @param Teachers[] $teachers
      * @return $this
      */
-    public function setTeachers(array $teachers) {
+    public function setTeachers(array $teachers) : self 
+    {
         $this->teachers = $teachers;
 
         return $this;
@@ -66,7 +67,8 @@ class ClassHasTeachers extends AbstractModel {
      * returns the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
@@ -75,7 +77,8 @@ class ClassHasTeachers extends AbstractModel {
      * @param string $name
      * @return ClassHasTeachers $this
      */
-    public function setName($name) {
+    public function setName(string $name) : self 
+    {
         $this->name = $name;
 
         return $this;
@@ -85,7 +88,8 @@ class ClassHasTeachers extends AbstractModel {
      * returns the fullName
      * @return string
      */
-    public function getFullName() {
+    public function getFullName() : string 
+     {
         return $this->fullName;
     }
 
@@ -94,7 +98,8 @@ class ClassHasTeachers extends AbstractModel {
      * @param string $fullName
      * @return ClassHasTeachers $this
      */
-    public function setFullName($fullName) {
+    public function setFullName(string $fullName) : self 
+    {
         $this->fullName = $fullName;
 
         return $this;
@@ -105,7 +110,8 @@ class ClassHasTeachers extends AbstractModel {
      * @param $key
      * @return AbstractModel[]
      */
-    public function get($key) {
+    public function get(string $key) : array
+    {
         switch ($key) {
             case 'teachers':
                 return $this->teachers;
@@ -115,10 +121,14 @@ class ClassHasTeachers extends AbstractModel {
     }
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return ClassHasTeachers
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

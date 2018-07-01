@@ -50,7 +50,8 @@ class TypeHandler {
     /**
      * loads the additonal custom types
      */
-    private function loadCustomTypes() {
+    private function loadCustomTypes() : void 
+    {
         $additionalTypes = YAMLConfiguration::getAdditionalTypes();
         foreach ($additionalTypes as $key => $value) {
             self::$types[$key] = $value;
@@ -61,7 +62,8 @@ class TypeHandler {
      * returns all available Types
      * @return Interfaces\TypeInterface[]
      */
-    public static function getAllTypes() {
+    public static function getAllTypes() : array 
+    {
         $additionalTypes = YAMLConfiguration::getAdditionalTypes();
         foreach ($additionalTypes as $key => $value) {
             self::$types[$key] = $value;
@@ -72,10 +74,12 @@ class TypeHandler {
     /**
      * handles the parse request from the AbstractModel
      * @param AbstractModel $model
-     * @param $data
-     * @param $fields
+     * @param array $data
+     * @param array $fields
+     * @throws TypeException
      */
-    public function handle(AbstractModel &$model, $data, $fields) {
+    public function handle(AbstractModel &$model, array $data, array $fields) : void 
+    {
         foreach($fields as $key => $value) {
             $implements = class_implements(self::$types[$value['type']]);
             if(isset($implements[TypeInterface::class])) {

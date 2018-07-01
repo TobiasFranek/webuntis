@@ -57,9 +57,9 @@ class Repository {
 
     /**
      * Repository constructor.
-     * @param $model
+     * @param string $model
      */
-    public function __construct($model) {
+    public function __construct(string $model) {
         $this->model = $model;
         $this->instance = WebuntisFactory::create($model);
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
@@ -72,10 +72,12 @@ class Repository {
      * return all objects that have been searched for
      * @param array $params
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @return AbstractModel[]
+     * @throws RepositoryException
      */
-    public function findBy(array $params, array $sort = [], $limit = null) {
+    public function findBy(array $params, array $sort = [], int $limit = null) : array 
+    {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
@@ -98,10 +100,11 @@ class Repository {
     /**
      * returns all objects it could find
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [], $limit = null) {
+    public function findAll(array $sort = [], int $limit = null) : array 
+    {
         $data = ExecutionHandler::execute($this, []);
         if (!empty($sort)) {
             $field = array_keys($sort)[0];
@@ -119,7 +122,8 @@ class Repository {
      * @param array $result
      * @return AbstractModel[]
      */
-    public function parse($result) {
+    public function parse(array $result) : array
+    {
         $data = [];
         foreach ($result as $key => $value) {
             /** @var AbstractModel $newObj */
@@ -134,8 +138,10 @@ class Repository {
      * @param AbstractModel[] $data
      * @param array $params
      * @return AbstractModel[]
+     * @throws RepositoryException
      */
-    protected function find($data, $params) {
+    protected function find(array $data, array $params) : array 
+    {
         if (!empty($data)) {
             foreach ($params as $key => $value) {
                 $temp = [];
@@ -192,7 +198,13 @@ class Repository {
         return $data;
     }
 
-    private function validateDate($date) {
+    /**
+     * validates the given date
+     * @param string $data
+     * @return bool
+     */
+    private function validateDate(string $date) : bool 
+    {
         $d = \DateTime::createFromFormat('Y-m-d', $date);
         $d2 = \DateTime::createFromFormat('Y-m-d H:i', $date);
         return $d && $d->format('Y-m-d') === $date || $d2 && $d2->format('Y-m-d H:i') === $date;
@@ -200,23 +212,25 @@ class Repository {
 
     /**
      * sort the given data array, that contains of AbstractModels
-     * @param $data
-     * @param $field
-     * @param $sortingOrder
+     * @param array $data
+     * @param string $field
+     * @param string $sortingOrder
      * @return AbstractModel[]
      */
-    public function sort($data, $field, $sortingOrder) {
+    public function sort(array $data, string $field, string $sortingOrder) : array 
+    {
         usort($data, $this->sortingAlgorithm($field, $sortingOrder));
         return $data;
     }
 
     /**
      * generates the right sorting lambda for the usort() method
-     * @param $key
-     * @param $sortingOrder
+     * @param string $key
+     * @param string $sortingOrder
      * @return \Closure
      */
-    private function sortingAlgorithm($key, $sortingOrder) {
+    private function sortingAlgorithm(string $key, string $sortingOrder) : callable 
+    {
         $keys = explode(':', $key);
         $offset = null;
         if (count($keys) > 1) {
@@ -296,7 +310,8 @@ class Repository {
     /**
      * @return MemcachedCache|Memcached
      */
-    public static function getCache() {
+    public static function getCache() 
+    {
         if (self::$cache) {
             return self::$cache;
         } else {
@@ -307,48 +322,54 @@ class Repository {
     /**
      * @return Webuntis
      */
-    public function getInstance() {
+    public function getInstance() : object 
+    {
         return $this->instance;
     }
 
     /**
      * @return string
      */
-    public function getModel() {
+    public function getModel() : string 
+    {
         return $this->model;
     }
 
     /**
      * @return bool
      */
-    public function checkIfCachingIsDisabled() {
+    public function checkIfCachingIsDisabled() : bool 
+    {
         return self::$disabledCache;
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return bool
      */
-    protected function startsWith($haystack, $needle) {
+    protected function startsWith(string $haystack, string $needle) : bool 
+    {
         return substr($haystack, 0, strlen($needle)) == $needle;
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return bool
      */
-    protected function endsWith($haystack, $needle) {
+    protected function endsWith(string $haystack, string $needle) : bool 
+    {
         return substr($haystack, strlen($haystack) - strlen($needle), strlen($haystack)) == $needle;
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return bool
      */
-    protected function contains($haystack, $needle) {
+    protected function contains(string $haystack, string $needle) : bool 
+    {
         return strpos($haystack, $needle) != false;
     }
 }

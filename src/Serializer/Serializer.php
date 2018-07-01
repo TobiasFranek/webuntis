@@ -38,7 +38,7 @@ class Serializer {
      * @param $format
      * @return mixed|string
      */
-    public static function serialize($data, $format = null) {
+    public static function serialize($data, string $format = null) {
         if(!$format) {
             return json_decode(self::getSerializer()->serialize($data, 'json'), true);
         }else {
@@ -50,7 +50,8 @@ class Serializer {
      * return a serializer
      * @return \JMS\Serializer\Serializer
      */
-    private static function getSerializer() {
+    private static function getSerializer() : object 
+    {
         if(!self::$serializer) {
             self::$serializer = SerializerBuilder::create()->build();
             return self::$serializer;

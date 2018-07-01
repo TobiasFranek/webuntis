@@ -71,93 +71,125 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     /**
      * @return Classes[]
      */
-    public function getClasses() {
+    public function getClasses() : array 
+    {
         return $this->classes;
     }
 
     /**
      * @return \DateTime
      */
-    public function getEndDate() {
+    public function getEndDate() : \DateTime
+    {
         return $this->endDate;
     }
 
     /**
      * @return Students[]
      */
-    public function getStudents() {
+    public function getStudents() : array 
+    {
         return $this->students;
     }
 
     /**
      * @return \DateTime
      */
-    public function getStartDate() {
+    public function getStartDate() : \DateTime 
+    {
         return $this->startDate;
     }
 
     /**
      * @return Teachers[]
      */
-    public function getTeachers() {
+    public function getTeachers() : array 
+    {
         return $this->teachers;
     }
 
     /**
      * @return Subjects[]
      */
-    public function getSubject() {
+    public function getSubject() : array 
+    {
         return $this->subject;
     }
 
     /**
      * @param Classes[] $classes
+     * @return Exams
      */
-    public function setClasses($classes) {
+    public function setClasses(array $classes) : self 
+    {
         $this->classes = $classes;
+
+        return $this;
     }
 
     /**
      * @param \DateTime $endDate
+     * @return Exams
      */
-    public function setEndDate($endDate) {
+    public function setEndDate(\DateTime $endDate) : self 
+    {
         $this->endDate = $endDate;
+        
+        return $this; 
     }
 
     /**
      * @param \DateTime $startDate
+     * @return Exams
      */
-    public function setStartDate($startDate) {
+    public function setStartDate(\DateTime $startDate) : self 
+    {
         $this->startDate = $startDate;
+
+        return $this;
     }
 
     /**
      * @param Students[] $students
+     * @return Exams
      */
-    public function setStudents($students) {
+    public function setStudents(array $students) : self 
+    {
         $this->students = $students;
+    
+        return $this;
     }
 
     /**
      * @param Subjects[] $subject
+     * @return Exams
      */
-    public function setSubject($subject) {
+    public function setSubject(array $subject) : self 
+    {
         $this->subject = $subject;
+    
+        return $this;
     }
 
     /**
      * @param Teachers[] $teachers
+     * @return Exams
      */
-    public function setTeachers($teachers) {
+    public function setTeachers(array $teachers) : self 
+    {
         $this->teachers = $teachers;
+    
+        return $this;
     }
 
     /**
      * return the children by given id
-     * @param $key
+     * @param string $key
      * @return AbstractModel[]
+     * @throws ModelException
      */
-    public function get($key) {
+    public function get(string $key) : array 
+    {
         switch ($key) {
             case 'teachers':
                 return $this->teachers;
@@ -173,10 +205,14 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     }
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Exams
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

@@ -31,7 +31,8 @@ class UserRepository {
      * return the current logged in User of the default instance
      * @return \Webuntis\Models\AbstractModel
      */
-    public function getCurrentUser() {
+    public function getCurrentUser() : object 
+    {
         $instance = WebuntisFactory::create();
         return $instance->getCurrentUser();
     }
@@ -40,7 +41,8 @@ class UserRepository {
      * returns the current user type of the currently logged in User of the default instance
      * @return int
      */
-    public function getCurrentUserType() {
+    public function getCurrentUserType() : int 
+    {
         $instance = WebuntisFactory::create();
         return $instance->getCurrentUserType();
     }

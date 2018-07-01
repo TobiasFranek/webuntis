@@ -52,7 +52,8 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * returns the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string
+    {
         return $this->name;
     }
 
@@ -61,7 +62,8 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * @param string $name
      * @return Classes $this
      */
-    public function setName($name) {
+    public function setName(string $name) : self
+    {
         $this->name = $name;
 
         return $this;
@@ -71,7 +73,8 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * returns the fullName
      * @return string
      */
-    public function getFullName() {
+    public function getFullName() : string 
+    {
         return $this->fullName;
     }
 
@@ -80,7 +83,8 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * @param string $fullName
      * @return Classes $this
      */
-    public function setFullName($fullName) {
+    public function setFullName(string $fullName) : self
+    {
         $this->fullName = $fullName;
 
         return $this;
@@ -88,10 +92,14 @@ class Classes extends AbstractModel implements CachableModelInterface {
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Classes
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

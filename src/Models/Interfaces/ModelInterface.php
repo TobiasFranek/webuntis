@@ -18,6 +18,8 @@
 
 namespace Webuntis\Models\Interfaces;
 
+use Webuntis\Models\AbstractModel;
+
 /**
  * Interface ModelInterface
  * @package Webuntis\Models\Interfaces
@@ -27,17 +29,17 @@ interface ModelInterface {
     /**
      * @return int
      */
-    public function getId();
+    public function getId() : int;
 
     /**
-     * @param $id
-     * @return int
+     * @param int $id
+     * @return AbstractModel
      */
-    public function setId($id);
+    public function setId(int $id) : AbstractModel;
 
     /**
-     * @param $format
+     * @param string $format
      * @return array
      */
-    public function serialize($format);
+    public function serialize(?string $format);
 }

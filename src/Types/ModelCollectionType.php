@@ -36,10 +36,11 @@ class ModelCollectionType implements TypeInterface {
     /**
      * executes an certain parsing part
      * @param AbstractModel $model
-     * @param $data
-     * @param $field
+     * @param array $data
+     * @param array $field
      */
-    public static function execute(AbstractModel &$model, $data, $field) {
+    public static function execute(AbstractModel &$model, array $data, array $field) : void 
+    {
         $fieldName = array_keys($field)[0];
         $fieldValues = $field[$fieldName];
         $query = new Query();
@@ -69,7 +70,8 @@ class ModelCollectionType implements TypeInterface {
      * @param $helper
      * @return array
      */
-    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) {
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) : array 
+    {
         $question = new Question('API key for the data array: ');
         $name = $helper->ask($input, $output, $question);
         $question = new Question('key that should be searched for in the API data array: ');
@@ -95,7 +97,8 @@ class ModelCollectionType implements TypeInterface {
      * return name of the type
      * @return string
      */
-    public static function getName() {
+    public static function getName() : string 
+    {
         return 'modelCollection';
     }
 
@@ -103,7 +106,8 @@ class ModelCollectionType implements TypeInterface {
      * return type of the Type Class
      * @return string
      */
-    public static function getType() {
+    public static function getType() : string 
+    {
         return '\\' . AbstractModel::class . '[]';
     }
 }

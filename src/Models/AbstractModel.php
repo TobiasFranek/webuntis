@@ -52,16 +52,18 @@ abstract class AbstractModel implements ModelInterface {
      * returns the id
      * @return int
      */
-    public function getId() {
+    public function getId() : int 
+    {
         return $this->id;
     }
 
     /**
      * set the id
-     * @param $id
+     * @param int $id
      * @return AbstractModel $this
      */
-    public function setId($id) {
+    public function setId(int $id) : self
+    {
         $this->id = $id;
 
         return $this;
@@ -70,17 +72,18 @@ abstract class AbstractModel implements ModelInterface {
     /**
      * serializes the object and returns an array with the objects values
      * @param $format
-     * @return array
+     * @return array|string
      */
-    public function serialize($format = null) {
+    public function serialize(?string $format = null) {
         return Serializer::serialize($this, $format);
     }
 
     /**
      * parses the given data from the json rpc api to the right format for the object
-     * @param $data
+     * @param array $data
      */
-    protected function parse($data) {
+    protected function parse(array $data) : void 
+    {
         if(isset($data['id'])) {
             $this->setId($data['id']);
         }else {

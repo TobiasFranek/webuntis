@@ -35,10 +35,11 @@ class IntType implements TypeInterface {
     /**
      * executes an certain parsing part
      * @param AbstractModel $model
-     * @param $data
-     * @param $field
+     * @param array $data
+     * @param array $field
      */
-    public static function execute(AbstractModel &$model, $data, $field) {
+    public static function execute(AbstractModel &$model, array $data, array $field) : void 
+    {
         $fieldName = array_keys($field)[0];
         if(isset($data[$field[$fieldName]['api']['name']])) {
             $model->set($fieldName, intval($data[$field[$fieldName]['api']['name']]));
@@ -52,7 +53,8 @@ class IntType implements TypeInterface {
      * @param $helper
      * @return array
      */
-    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) {
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) : array 
+    {
         $question = new Question('API name: ');
         $apiName = $helper->ask($input, $output, $question);
         return [
@@ -67,7 +69,8 @@ class IntType implements TypeInterface {
      * return name of the type
      * @return string
      */
-    public static function getName() {
+    public static function getName() : string 
+    {
         return 'int';
     }
 
@@ -75,7 +78,8 @@ class IntType implements TypeInterface {
      * return type of the Type Class
      * @return string
      */
-    public static function getType() {
+    public static function getType() : string 
+    {
         return 'int';
     }
 }

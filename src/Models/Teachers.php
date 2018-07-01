@@ -60,16 +60,18 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
      * return the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
     /**
      * sets the name
      * @param string $name
-     * @return Teachers $this
+     * @return Teachers
      */
-    public function setName($name) {
+    public function setName(string $name) : self 
+    {
         $this->name = $name;
 
         return $this;
@@ -79,16 +81,18 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
      * returns the firstName
      * @return string
      */
-    public function getFirstName() {
+    public function getFirstName() : string 
+    {
         return $this->firstName;
     }
 
     /**
      * sets the firstName
      * @param string $firstName
-     * @return Teachers $this
+     * @return Teachers
      */
-    public function setFirstName($firstName) {
+    public function setFirstName(string $firstName) : self 
+    {
         $this->firstName = $firstName;
 
         return $this;
@@ -98,16 +102,18 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
      * return the lastName
      * @return string
      */
-    public function getLastName() {
+    public function getLastName() : string 
+    {
         return $this->lastName;
     }
 
     /**
      * sets the lastName
      * @param string $lastName
-     * @return Teachers $this
+     * @return Teachers
      */
-    public function setLastName($lastName) {
+    public function setLastName(string $lastName) : self 
+    {
         $this->lastName = $lastName;
 
         return $this;
@@ -115,10 +121,14 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Teachers
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }
