@@ -32,6 +32,29 @@ The recommended configuration is when you have an default and an admin configura
     ]
 ```
 
+if you want to change the path schme, for example if your domain is not webuntis.com you can use this config. The keywords {school} and {server} will be replaced with the server name and school, you can also leave them out if you don't have such a thing. In summary you can build your own domain/url.
+
+```php
+ 'default' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'yourusername',
+        'password' => 'yourpassword',
+        //this is the default path scheme
+        'path_scheme' => 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school={school}'
+    ],
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword',
+        //this is the default path scheme
+        'path_scheme' => 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school={school}'
+    ]
+```
+
 if you want to turn off caching (which is not recommended) take this configuration:
 
 ```php

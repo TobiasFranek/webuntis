@@ -60,7 +60,7 @@ class Webuntis {
     /**
      * @var string
      */
-    const PATH_SCHEME = 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school=';
+    const DEFAULT_PATH_SCHEME = 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school={school}';
 
     /**
      * @var array
@@ -72,7 +72,13 @@ class Webuntis {
      * @param array $config
      */
     public function __construct(array $config) {
-        $this->path = str_replace('{server}', $config['server'], static::PATH_SCHEME) . $config['school'];
+
+        $pathScheme = static::DEFAULT_PATH_SCHEME;
+
+        if(isset($config['path_scheme'])) {
+            $pathScheme = $config['path_scheme'];
+        }
+        $this->path = str_replace(['{server}', '{school}'], [$config['server'], $config['school']], $pathScheme);
 
         $this->user['username'] = $config['username'];
         $this->user['password'] = $config['password'];
