@@ -22,3 +22,9 @@ php vendor/tfranek/webuntis/bin/console.php webuntis:cache:build [<server>] [<sc
 
 with this command you can build the cache so that the user doesn't have to do it.
 follow the instructions and you can easy build the cache.
+
+with the option --exclude you can exclude multiple Models like this:
+
+```shell
+php vendor/tfranek/webuntis/bin/console.php webuntis:cache:build --exclude=Students --exclude=Teachers
+```
