@@ -110,6 +110,18 @@ if you want to execute all models with the admin instance
     'only_admin' => true
 ```
 
+if you have changed the vendor dir in the composer.json config you can add this parameter
+```php
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ],
+    'vendorDir' => 'lib'
+```
+
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
 
 ```php

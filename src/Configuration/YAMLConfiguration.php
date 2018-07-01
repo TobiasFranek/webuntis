@@ -41,6 +41,11 @@ class YAMLConfiguration {
     private $models = [];
 
     /**
+     * @var string
+     */
+    private $vendorDir = 'vendor';
+
+    /**
      * @var array
      */
     private $repositories = [
@@ -49,6 +54,12 @@ class YAMLConfiguration {
     ];
 
     public function __construct() {
+        
+        $config = WebuntisConfiguration::getConfig();
+
+        if(isset($config['vendorDir'])) {
+            $this->vendorDir = $config['vendorDir'];
+        }
         if(empty(self::$files)) {
             $this->load();
         }
@@ -128,10 +139,10 @@ class YAMLConfiguration {
      */
     public function load() {
         $explodedPath = explode('/', __DIR__);
-        if(in_array('vendor', $explodedPath)) {
+        if(in_array($this->vendorDir, $explodedPath)) {
             $path = '';
             foreach($explodedPath as $value) {
-                if($value == 'vendor') {
+                if($value == $this->vendorDir) {
                     break;
                 }
                 $path .= $value . '/';
