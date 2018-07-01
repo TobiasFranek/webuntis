@@ -23,7 +23,7 @@ namespace Webuntis\Command;
 use Memio\Memio\Config\Build;
 use Memio\Model\File;
 use Memio\Model\FullyQualifiedName;
-use Memio\Model\Object;
+use Memio\Model\Objekt;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

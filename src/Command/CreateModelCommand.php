@@ -26,7 +26,7 @@ use Memio\Model\Contract;
 use Memio\Model\File;
 use Memio\Model\FullyQualifiedName;
 use Memio\Model\Method;
-use Memio\Model\Object;
+use Memio\Model\Objekt;
 use Memio\Model\Phpdoc\Description;
 use Memio\Model\Phpdoc\MethodPhpdoc;
 use Memio\Model\Phpdoc\ParameterTag;

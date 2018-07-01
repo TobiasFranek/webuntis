@@ -23,7 +23,7 @@
     "symfony/yaml": "^2.8",
     "symfony/console": "^2.8",
     "symfony/filesystem": "^2.8",
-    "memio/memio": "^1.1"
+    "memio/memio": "^2.0"
 
   },
   "suggest": {
