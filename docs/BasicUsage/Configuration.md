@@ -122,6 +122,18 @@ if you have changed the vendor dir in the composer.json config you can add this 
     'vendorDir' => 'lib'
 ```
 
+if you want to use another SecurityManager you can use this config
+```php
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ],
+    'security_manager' => 'Your\Namespace\Manager'
+```
+
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
 
 ```php

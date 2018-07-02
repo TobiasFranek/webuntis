@@ -26,6 +26,8 @@ use JsonRPC\HttpClient;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Query\Query;
 use Webuntis\Repositories\Repository;
+use Webuntis\Security\WebuntisSecurityManager;
+use Webuntis\Configuration\WebuntisConfiguration;
 
 /**
  * Class Webuntis
@@ -57,7 +59,7 @@ class Webuntis {
     /**
      * @var string
      */
-    private $session;
+    const DEFAULT_SECURITY_MANAGER = WebuntisSecurityManager::class;
 
     /**
      * @var string
@@ -65,15 +67,11 @@ class Webuntis {
     const DEFAULT_PATH_SCHEME = 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school={school}';
 
     /**
-     * @var array
-     */
-    private $user = [];
-
-    /**
      * Webuntis constructor.
      * @param array $config
+     * @param string $context
      */
-    public function __construct(array $config) {
+    public function __construct(array $config, string $context) {
 
         $pathScheme = static::DEFAULT_PATH_SCHEME;
 
@@ -82,66 +80,17 @@ class Webuntis {
         }
         $this->path = str_replace(['{server}', '{school}'], [$config['server'], $config['school']], $pathScheme);
 
-        $this->user['username'] = $config['username'];
-        $this->user['password'] = $config['password'];
+        $managerClass = static::DEFAULT_SECURITY_MANAGER;
 
+        if(isset(WebuntisConfiguration::getConfig()['security_manager'])) {
+            $managerClass = WebuntisConfiguration::getConfig()['security_manager'];
+        } 
+        $manager = new $managerClass($this->path, $config, $context);
 
-        $cache = Repository::getCache();
-        $generalConfig = WebuntisFactory::getConfig();
-        if ($cache && $cache->contains($config['username']) && (!isset($generalConfig['only_admin']) || $generalConfig['only_admin'] == false)) {
-            $data = $cache->fetch($config['username']);
-            $this->currentUserId = -1;
-            if(isset($data['userId'])){
-                $this->currentUserId = $cache->fetch($config['username'])['userId'];
-            }
-            $this->currentUserType = 0;
-            if(isset($data['userType'])) {
-                $this->currentUserType = $cache->fetch($config['username'])['userType'];
-            }
-            $this->session = $data['session'];
-            $httpClient = new HttpClient($this->path);
-            $newDate = $data['tokenCreatedAt']->add(new \DateInterval('PT1200000S'));
-            $httpClient->withCookies([
-                'JSESSIONID' => $this->session,
-                'Path' => '/WebUntis',
-                'Version' => '1',
-                'Max-Age' => 1209600,
-                'Expires' => $newDate->format('D, d-M-Y H:i:s ') . 'GMT'
-
-            ]);
-            $this->client = new Client($this->path, false, $httpClient);
-        }else {
-            $this->client = new Client($this->path);
-            $this->authenticate($this->user['username'], $this->user['password']);
-        }
-    }
-
-    /**
-     * authenticates the given user
-     * @param string $username
-     * @param string $password
-     * @return array
-     */
-    public function authenticate(string $username, string $password) : array 
-    {
-        $result = $this->client->execute('authenticate', [$username, $password, rand(1, 4000)]);
-
-        $this->currentUserId = $result['personId'];
-        $this->currentUserType = $result['personType'];
-
-        $cache = Repository::getCache();
-        if ($cache) {
-            $cache->save($username, [
-                'session' => $result['sessionId'],
-                'userId' => $this->currentUserId,
-                'userType' => $this->currentUserType,
-                'tokenCreatedAt' => new \DateTime()
-            ], 86400);
-        }
-
-        $this->session = $result['sessionId'];
-
-        return $result;
+        $this->client = $manager->getClient();
+        $this->currentUserId = $manager->getCurrentUserId();
+        $this->currentUserType = $manager->getCurrentUserType();
+       
     }
 
     /**
@@ -165,14 +114,6 @@ class Webuntis {
     public function getCurrentUserType() : int 
     {
         return $this->currentUserType;
-    }
-
-    /**
-     * logs the user that is currently logged in in this instance out
-     */
-    public function logout() : void 
-    {
-        $this->client->execute('logout', []);
     }
 
     /**
@@ -211,24 +152,6 @@ class Webuntis {
      */
     public function setClient(Client $client) : self {
         $this->client = $client;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSession() : string {
-        return $this->session;
-    }
-
-    /**
-     * @param string $session
-     * @return Webuntis
-     */
-    public function setSession(string $session) : self
-    {
-        $this->session = $session;
 
         return $this;
     }

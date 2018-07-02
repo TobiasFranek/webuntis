@@ -69,7 +69,7 @@ class WebuntisFactory {
 
 
         if (!isset(static::$instances[$config])) {
-            static::$instances[$config] = new Webuntis(static::$config[$config]);
+            static::$instances[$config] = new Webuntis(static::$config[$config], $config);
         }
         return static::$instances[$config];
     }
