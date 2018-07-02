@@ -33,5 +33,8 @@
     "psr-4": {
       "Webuntis\\": "src"
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "7"
   }
 }
