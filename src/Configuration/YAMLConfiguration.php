@@ -59,8 +59,8 @@ class YAMLConfiguration {
         
         $config = WebuntisConfiguration::getConfig();
 
-        if(isset($config['vendorDir'])) {
-            $this->vendorDir = $config['vendorDir'];
+        if(isset($config['vendor_dir'])) {
+            $this->vendorDir = $config['vendor_dir'];
         }
         if(empty(self::$files)) {
             $this->load();

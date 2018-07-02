@@ -119,7 +119,7 @@ if you have changed the vendor dir in the composer.json config you can add this 
         'username' => 'youradminusername',
         'password' => 'youradminpassword'
     ],
-    'vendorDir' => 'lib'
+    'vendor_dir' => 'lib'
 ```
 
 if you want to use another SecurityManager you can use this config
