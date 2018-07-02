@@ -160,13 +160,13 @@ class Repository {
                                     $temp[] = $value2;
                                 }
                             } else {
-                                if ($this->validateDate(substr($value, 1))) {
+                                if ($this->validateDate(substr(strval($value), 1))) {
                                     if ($this->startsWith($value, '<')) {
-                                        if (new \DateTime($value2->serialize()[$key]) <= new \DateTime(substr($value, 1))) {
+                                        if (new \DateTime($value2->serialize()[$key]) <= new \DateTime(substr(strval($value), 1))) {
                                             $temp[] = $value2;
                                         }
                                     } else if ($this->startsWith($value, '>')) {
-                                        if (new \DateTime($value2->serialize()[$key]) >= new \DateTime(substr($value, 1))) {
+                                        if (new \DateTime($value2->serialize()[$key]) >= new \DateTime(substr(strval($value), 1))) {
                                             $temp[] = $value2;
                                         }
                                     } else {
@@ -175,16 +175,16 @@ class Repository {
                                 }
                                 if ($value2->serialize()[$key] == $value) {
                                     $temp[] = $value2;
-                                } else if ($this->endsWith($value, '%') && $this->startsWith($value, '%')) {
-                                    if ($this->contains($value2->serialize()[$key], substr($value, 1, strlen($value) - 2))) {
+                                } else if ($this->endsWith(strval($value), '%') && $this->startsWith(strval($value), '%')) {
+                                    if ($this->contains($value2->serialize()[$key], substr(strval($value), 1, strlen(strval($value)) - 2))) {
                                         $temp[] = $value2;
                                     }
-                                } else if ($this->startsWith($value, '%')) {
-                                    if ($this->startsWith($value2->serialize()[$key], substr($value, 1, strlen($value)))) {
+                                } else if ($this->startsWith(strval($value), '%')) {
+                                    if ($this->startsWith(strval($value2->serialize()[$key]), substr(strval($value), 1, strlen(strval($value))))) {
                                         $temp[] = $value2;
                                     }
-                                } else if ($this->endsWith($value, '%')) {
-                                    if ($this->endsWith($value2->serialize()[$key], substr($value, 0, strlen($value) - 1))) {
+                                } else if ($this->endsWith(strval($value), '%')) {
+                                    if ($this->endsWith(strval($value2->serialize()[$key]), substr(strval($value), 0, strlen(strval($value)) - 1))) {
                                         $temp[] = $value2;
                                     }
                                 }
