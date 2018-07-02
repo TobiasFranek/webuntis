@@ -46,8 +46,10 @@ abstract class AbstractModel implements ModelInterface {
      * Model constructor.
      * @param array $data
      */
-    public function __construct(array $data) {
-        $this->parse($data);
+    public function __construct(?array $data = []) {
+        if(!empty($data)) {
+            $this->parse($data);
+        }
     }
 
     /**
