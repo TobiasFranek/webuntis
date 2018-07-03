@@ -17,18 +17,19 @@ declare(strict_types=1);
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
-namespace Webuntis\Util;
+namespace Webuntis\Handler;
 
 use Webuntis\Models\AbstractModel;
 use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Repositories\Repository;
+use Webuntis\Handler\Interfaces\ExecutionHandlerInterface;
 
 /**
  * Class ExecutionHandler
- * @package Webuntis\Util
+ * @package Webuntis\handler
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class ExecutionHandler {
+class ExecutionHandler implements ExecutionHandlerInterface {
 
     private function __construct() {
     }

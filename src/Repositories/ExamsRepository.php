@@ -24,7 +24,7 @@ use Webuntis\Models\AbstractModel;
 use Webuntis\Models\Exams;
 use Webuntis\Models\ExamTypes;
 use Webuntis\Query\Query;
-use Webuntis\Util\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandler;
 
 /**
  * Class ExamsRepository
@@ -45,11 +45,11 @@ class ExamsRepository extends Repository {
         if ($cache && $cache->contains('Exams')) {
             $data = $cache->fetch('Exams');
         } else {
-            $examTypes = ExecutionHandler::execute(new Repository(ExamTypes::class), []);
+            $examTypes = $this->executionHandler::execute(new Repository(ExamTypes::class), []);
             $exams = [];
             $schoolyear = $query->get('Schoolyear')->findAll();
             foreach ($examTypes as $value) {
-                $exams[] = ExecutionHandler::execute($this, ['examTypeId' => $value->serialize()['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
+                $exams[] = $this->executionHandler::execute($this, ['examTypeId' => $value->serialize()['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
             }
             $result = [];
             foreach ($exams as $value) {

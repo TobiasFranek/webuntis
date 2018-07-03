@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Webuntis\Repositories;
 use Webuntis\Models\Schoolyears;
 use Webuntis\Models\CurrentSchoolyear;
-use Webuntis\Util\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandler;
 
 /**
  * Class SchoolyearsRepository
@@ -46,7 +46,7 @@ class SchoolyearsRepository extends Repository {
     public function getCurrentSchoolyear() {
         $this->model = CurrentSchoolyear::class;
 
-        $data = ExecutionHandler::execute($this, []);
+        $data = $this->executionHandler::execute($this, []);
 
         return $data[0];
     }

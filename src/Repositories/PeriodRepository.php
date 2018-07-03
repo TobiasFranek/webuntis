@@ -22,7 +22,7 @@ declare(strict_types=1);
 namespace Webuntis\Repositories;
 
 use Webuntis\Exceptions\RepositoryException;
-use Webuntis\Util\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandler;
 use Webuntis\Models\AbstractModel;
 
 /**
@@ -60,11 +60,11 @@ class PeriodRepository extends Repository {
             $endDate = new \DateTime($endDate);
             $startDate = date_format($startDate, 'Ymd');
             $endDate = date_format($endDate, 'Ymd');
-            $data = ExecutionHandler::execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
+            $data = $this->executionHandler::execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
         }else if ($startDate || $endDate) {
             throw new RepositoryException('missing parameter endDate or startDate');
         }else {
-            $data = ExecutionHandler::execute($this, ['id' => $id, 'type' => $type]);
+            $data = $this->executionHandler::execute($this, ['id' => $id, 'type' => $type]);
         }
 
         if(!empty($sort)) {
@@ -104,11 +104,11 @@ class PeriodRepository extends Repository {
             $endDate = new \DateTime($endDate);
             $startDate = date_format($startDate, 'Ymd');
             $endDate = date_format($endDate, 'Ymd');
-            $data = ExecutionHandler::execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
+            $data = $this->executionHandler::execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
         }else if ($startDate || $endDate){
             throw new RepositoryException('missing parameter endDate or startDate');
         }else {
-            $data = ExecutionHandler::execute($this, ['id' => $id, 'type' => $type]);
+            $data = $this->executionHandler::execute($this, ['id' => $id, 'type' => $type]);
         }
         if(!empty($sort)) {
             $field = array_keys($sort)[0];

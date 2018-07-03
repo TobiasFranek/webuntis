@@ -25,7 +25,8 @@ use Webuntis\Cache\Memcached;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Exceptions\RepositoryException;
 use Webuntis\Models\Interfaces\CachableModelInterface;
-use Webuntis\Util\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandlerInterface;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Webuntis;
 use Webuntis\WebuntisFactory;
@@ -58,11 +59,21 @@ class Repository {
     public static $disabledCache;
 
     /**
+     * @var ExecutionHandlerInterface
+     */
+    protected $executionHandler;
+
+    /**
      * Repository constructor.
      * @param string $model
      */
-    public function __construct(string $model) {
+    public function __construct(string $model, ExecutionHanderInterface $executionHandler = null) {
         $this->model = $model;
+        if($executionHandler) {
+            $this->executionHandler = $executionHandler;
+        } else {
+            $this->executionHandler = ExecutionHandler::class;
+        }
         $this->instance = WebuntisFactory::create($model);
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
         if (!self::$cache) {
@@ -107,7 +118,7 @@ class Repository {
      */
     public function findAll(array $sort = [], int $limit = null) : array 
     {
-        $data = ExecutionHandler::execute($this, []);
+        $data = $this->executionHandler::execute($this, []);
         if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];

@@ -22,7 +22,7 @@ namespace Webuntis\Repositories;
 
 use Webuntis\Models\Classes;
 use Webuntis\Query\Query;
-use Webuntis\Util\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandler;
 
 /**
  * Class ClassHasTeachersRepository
@@ -45,7 +45,7 @@ class ClassHasTeachersRepository extends Repository {
         } else {
             $query = new Query();
 
-            $classes = ExecutionHandler::execute(new Repository(Classes::class), []);
+            $classes = $this->executionHandler::execute(new Repository(Classes::class), []);
 
             foreach ($classes as $class) {
                 $class = $class->serialize();
