@@ -35,5 +35,5 @@ interface ExecutionHandlerInterface {
      * @param array $params
      * @return AbstractModel[]
      */
-    public static function execute(Repository $repository, array $params) : array;
+    public function execute(Repository $repository, array $params) : array;
 }

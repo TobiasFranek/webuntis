@@ -52,7 +52,7 @@ class SubstitutionsRepository extends Repository {
             $endDate = new \DateTime($endDate);
             $startDate = date_format($startDate, 'Ymd');
             $endDate = date_format($endDate, 'Ymd');
-            $data = $this->executionHandler::execute($this, ['departmentId' => $department, 'startDate' => $startDate, 'endDate' => $endDate]);
+            $data = $this->executionHandler->execute($this, ['departmentId' => $department, 'startDate' => $startDate, 'endDate' => $endDate]);
         } else {
             throw new RepositoryException('missing parameter endDate or startDate');
         }
@@ -89,7 +89,7 @@ class SubstitutionsRepository extends Repository {
             $endDate = new \DateTime($endDate);
             $startDate = date_format($startDate, 'Ymd');
             $endDate = date_format($endDate, 'Ymd');
-            $data = $this->executionHandler::execute($this, ['departmentId' => $department, 'startDate' => $startDate, 'endDate' => $endDate]);
+            $data = $this->executionHandler->execute($this, ['departmentId' => $department, 'startDate' => $startDate, 'endDate' => $endDate]);
         } else {
             throw new RepositoryException('missing parameter endDate or startDate');
         }

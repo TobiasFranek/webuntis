@@ -45,11 +45,11 @@ class ExamsRepository extends Repository {
         if ($cache && $cache->contains('Exams')) {
             $data = $cache->fetch('Exams');
         } else {
-            $examTypes = $this->executionHandler::execute(new Repository(ExamTypes::class), []);
+            $examTypes = $this->executionHandler->execute(new Repository(ExamTypes::class), []);
             $exams = [];
             $schoolyear = $query->get('Schoolyear')->findAll();
             foreach ($examTypes as $value) {
-                $exams[] = $this->executionHandler::execute($this, ['examTypeId' => $value->serialize()['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
+                $exams[] = $this->executionHandler->execute($this, ['examTypeId' => $value->serialize()['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
             }
             $result = [];
             foreach ($exams as $value) {

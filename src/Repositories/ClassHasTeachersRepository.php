@@ -45,7 +45,7 @@ class ClassHasTeachersRepository extends Repository {
         } else {
             $query = new Query();
 
-            $classes = $this->executionHandler::execute(new Repository(Classes::class), []);
+            $classes = $this->executionHandler->execute(new Repository(Classes::class), []);
 
             foreach ($classes as $class) {
                 $class = $class->serialize();

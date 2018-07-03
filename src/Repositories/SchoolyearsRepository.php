@@ -46,7 +46,7 @@ class SchoolyearsRepository extends Repository {
     public function getCurrentSchoolyear() {
         $this->model = CurrentSchoolyear::class;
 
-        $data = $this->executionHandler::execute($this, []);
+        $data = $this->executionHandler->execute($this, []);
 
         return $data[0];
     }

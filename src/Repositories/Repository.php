@@ -72,7 +72,7 @@ class Repository {
         if($executionHandler) {
             $this->executionHandler = $executionHandler;
         } else {
-            $this->executionHandler = ExecutionHandler::class;
+            $this->executionHandler = new ExecutionHandler();
         }
         $this->instance = WebuntisFactory::create($model);
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
@@ -118,7 +118,7 @@ class Repository {
      */
     public function findAll(array $sort = [], int $limit = null) : array 
     {
-        $data = $this->executionHandler::execute($this, []);
+        $data = $this->executionHandler->execute($this, []);
         if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];

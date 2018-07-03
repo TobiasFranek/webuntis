@@ -31,16 +31,13 @@ use Webuntis\Handler\Interfaces\ExecutionHandlerInterface;
  */
 class ExecutionHandler implements ExecutionHandlerInterface {
 
-    private function __construct() {
-    }
-
     /**
      * executes the given command with the right instance, model etc.
      * @param Repository $repository
      * @param array $params
      * @return AbstractModel[]
      */
-    public static function execute(Repository $repository, array $params) : array 
+    public function execute(Repository $repository, array $params) : array 
     {
         $model = $repository->getModel();
         $interfaces = class_implements($model);
