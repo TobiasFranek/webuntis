@@ -8,7 +8,7 @@ use Webuntis\Models\Classes;
 
 final class ClassesTest extends TestCase
 {
-    public function testClasses() : void
+    public function testClassesParse() : void
     {   
         $data = [
             'id' => 1,
