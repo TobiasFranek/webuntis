@@ -1,5 +1,5 @@
-Webuntis\Models\Schoolyear:
-    repositoryClass: Webuntis\Repositories\SchoolyearRepository
+Webuntis\Models\Schoolyears:
+    repositoryClass: Webuntis\Repositories\SchoolyearsRepository
     fields:
         startDate:
             type: date

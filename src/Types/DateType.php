@@ -43,7 +43,7 @@ class DateType implements TypeInterface {
     {
         $fieldName = array_keys($field)[0];
         if(isset($data[$field[$fieldName]['api']['name']])) {
-            $model->set($fieldName, new \DateTime($data[$field[$fieldName]['api']['name']]));
+            $model->set($fieldName, new \DateTime(strval($data[$field[$fieldName]['api']['name']])));
         }
     }
 

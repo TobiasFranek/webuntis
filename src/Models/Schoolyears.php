@@ -28,7 +28,7 @@ use JMS\Serializer\Annotation\SerializedName;
  * @package Webuntis\Models
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class Schoolyear extends AbstractModel implements CachableModelInterface {
+class Schoolyears extends AbstractModel implements CachableModelInterface {
     /**
      * @var string
      */
@@ -54,7 +54,7 @@ class Schoolyear extends AbstractModel implements CachableModelInterface {
     /**
      * @var string
      */
-    const METHOD = 'getCurrentSchoolyear';
+    const METHOD = 'getSchoolyears';
 
     /**
      * sets name

@@ -32,6 +32,29 @@ The recommended configuration is when you have an default and an admin configura
     ]
 ```
 
+if you want to change the path schme, for example if your domain is not webuntis.com you can use this config. The keywords {school} and {server} will be replaced with the server name and school, you can also leave them out if you don't have such a thing. In summary you can build your own domain/url.
+
+```php
+ 'default' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'yourusername',
+        'password' => 'yourpassword',
+        //this is the default path scheme
+        'path_scheme' => 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school={school}'
+    ],
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword',
+        //this is the default path scheme
+        'path_scheme' => 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school={school}'
+    ]
+```
+
 if you want to turn off caching (which is not recommended) take this configuration:
 
 ```php
@@ -51,6 +74,7 @@ if you want to turn off caching (which is not recommended) take this configurati
     ],
     'disableCache' => true
 ```
+
 if you don't want the default memcached(port=11211, host=localhost) server use:
 
 ```php
@@ -73,6 +97,7 @@ if you don't want the default memcached(port=11211, host=localhost) server use:
         'port' => 'yourport
     ]
 ```
+
 if you want to execute all models with the admin instance
 ```php
   'admin' => [
@@ -83,6 +108,30 @@ if you want to execute all models with the admin instance
         'password' => 'youradminpassword'
     ],
     'only_admin' => true
+```
+
+if you have changed the vendor dir in the composer.json config you can add this parameter
+```php
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ],
+    'vendor_dir' => 'lib'
+```
+
+if you want to use another SecurityManager you can use this config
+```php
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ],
+    'security_manager' => 'Your\Namespace\Manager'
 ```
 
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
@@ -201,6 +250,12 @@ $query->get('User')->getCurrentUser();
 $query->get('User')->getCurrentUserType();
 ```
 
+* SchoolyearsRepository has one additional method, which allows you to fetch the current schoolyear:
+
+```php
+$query->get('Schoolyears')->getCurrentSchoolyear()
+```
+
 the methods mentioned before are also working on these custom repos.
 
 ### Model Usage
@@ -218,6 +273,8 @@ These are all the model that exists in the core build:
 * ClassHasTeachers - show all teachers according to that class, be careful it is extremely slow
 * Exams - api method: getExams
 * Substitutions - api method: getSubstitutions
+* Schoolyears - api method: getSchoolyears/getCurrentSchoolyear
+* ExamTypes - api method: getExamTypes
 
 ### Serializer
 
@@ -232,7 +289,7 @@ if you want an other format(supported: json, xml, yml) you have to write this:
 
 ```php
 $user = $query->get('User')->getCurrentUser(); // returns an object
-$user = $user->serialize('json|xml|yml'); // turn the object into an array
+$user = $user->serialize('json|xml|yml'); // turn the object into one of these formats
 ```
 
 if you have an array of object you can serialize the array including the models that are in there, you have to call the Serializer Class:
@@ -242,7 +299,5 @@ $students = $query->get('Students')->findAll(); // returns an object array
 $students =  \Webuntis\Serializer\Serializer::serialize($students, 'json|xml|yml') // turn the object array into an array,
                                                                                    // if the second parameter is empty it will return an php array
 ```
-
-
 
 

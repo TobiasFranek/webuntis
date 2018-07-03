@@ -91,6 +91,12 @@ $query->get('User')->getCurrentUser();
 $query->get('User')->getCurrentUserType();
 ```
 
+* SchoolyearsRepository has one additional method, which allows you to fetch the current schoolyear:
+
+```php
+$query->get('Schoolyears')->getCurrentSchoolyear()
+```
+
 the methods mentioned before are also working on these custom repos.
 
 ### Model Usage
@@ -108,6 +114,8 @@ These are all the model that exists in the core build:
 * ClassHasTeachers - show all teachers according to that class, be careful it is extremely slow
 * Exams - api method: getExams
 * Substitutions - api method: getSubstitutions
+* Schoolyears - api method: getSchoolyears/getCurrentSchoolyear
+* ExamTypes - api method: getExamTypes
 
 ### Serializer
 
@@ -122,7 +130,7 @@ if you want an other format(supported: json, xml, yml) you have to write this:
 
 ```php
 $user = $query->get('User')->getCurrentUser(); // returns an object
-$user = $user->serialize('json|xml|yml'); // turn the object into an array
+$user = $user->serialize('json|xml|yml'); // turn the object into one of these formats
 ```
 
 if you have an array of object you can serialize the array including the models that are in there, you have to call the Serializer Class:

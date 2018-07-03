@@ -19,7 +19,8 @@ declare(strict_types=1);
  */
 
 namespace Webuntis\Repositories;
-use Webuntis\Models\Schoolyear;
+use Webuntis\Models\Schoolyears;
+use Webuntis\Models\CurrentSchoolyear;
 use Webuntis\Util\ExecutionHandler;
 
 /**
@@ -27,14 +28,39 @@ use Webuntis\Util\ExecutionHandler;
  * @package Webuntis\Repositories
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
-class SchoolyearRepository extends Repository {
+class SchoolyearsRepository extends Repository {
     /**
      * return the parsed Schoolyear object
      * @param array $result
      * @return Schoolyear
      */
-    public function parse(array $result) : object 
+    // public function parse(array $result) : object 
+    // {
+    //     return new $this->model($result);
+    // }
+
+    /**
+     * return the current Schoolyear
+     * @return object
+     */
+    public function getCurrentSchoolyear() {
+        $this->model = CurrentSchoolyear::class;
+
+        $data = ExecutionHandler::execute($this, []);
+
+        return $data[0];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parse(array $result) : array 
     {
-        return new $this->model($result);
+        $data = $result;
+        if($this->model == CurrentSchoolyear::class) {
+            $data = [$result];
+            $this->model = Schoolyears::class;
+        }
+        return parent::parse($data);
     }
 }
