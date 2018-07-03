@@ -42,7 +42,7 @@ class SubstitutionsRepository extends Repository {
      * @return AbstractModel[]
      * @throws RepositoryException
      */
-    public function findBy(array $params, array $sort = [], int $limit = null, int $department = 0, string $startDate, string $endDate) : array 
+    public function findBy(array $params, array $sort = [], int $limit = null, int $department = 0, string $startDate = null, string $endDate = null) : array 
     {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
@@ -82,7 +82,7 @@ class SubstitutionsRepository extends Repository {
      * @internal param null $id
      * @internal param null $type
      */
-    public function findAll(array $sort = [], int $limit = null, int $department = 0, string $startDate, string $endDate) : array 
+    public function findAll(array $sort = [], int $limit = null, int $department = 0, string $startDate = null, string $endDate = null) : array 
     {
         if ($startDate && $endDate) {
             $startDate = new \DateTime($startDate);
