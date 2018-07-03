@@ -20,7 +20,7 @@ final class YamlConfigurationTest extends TestCase
             'Holidays' => 'Webuntis\Models\Holidays',
             'Period' => 'Webuntis\Models\Period',
             'Rooms' => 'Webuntis\Models\Rooms',
-            'Schoolyear' => 'Webuntis\Models\Schoolyear',
+            'Schoolyears' => 'Webuntis\Models\Schoolyears',
             'Students' => 'Webuntis\Models\Students',
             'Subjects' => 'Webuntis\Models\Subjects',
             'Substitutions' => 'Webuntis\Models\Substitutions',
@@ -32,7 +32,7 @@ final class YamlConfigurationTest extends TestCase
             'ClassHasTeachers' => 'Webuntis\Repositories\ClassHasTeachersRepository',
             'Exams' => 'Webuntis\Repositories\ExamsRepository',
             'Period' => 'Webuntis\Repositories\PeriodRepository',
-            'Schoolyear' => 'Webuntis\Repositories\SchoolyearRepository',
+            'Schoolyears' => 'Webuntis\Repositories\SchoolyearsRepository',
             'Substitutions' => 'Webuntis\Repositories\SubstitutionsRepository'
         ];
         $gottenModels = $yamlConfiguration->getModels();
