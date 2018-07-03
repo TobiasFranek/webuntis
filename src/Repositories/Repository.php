@@ -26,7 +26,7 @@ use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Exceptions\RepositoryException;
 use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Handler\ExecutionHandler;
-use Webuntis\Handler\ExecutionHandlerInterface;
+use Webuntis\Handler\Interfaces\ExecutionHandlerInterface;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Webuntis;
 use Webuntis\WebuntisFactory;
