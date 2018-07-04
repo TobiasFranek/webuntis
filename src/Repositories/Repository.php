@@ -67,13 +67,9 @@ class Repository {
      * Repository constructor.
      * @param string $model
      */
-    public function __construct(string $model, ExecutionHandlerInterface $executionHandler = null) {
+    public function __construct(string $model) {
         $this->model = $model;
-        if($executionHandler) {
-            $this->executionHandler = $executionHandler;
-        } else {
-            $this->executionHandler = new ExecutionHandler();
-        }
+        
         $this->instance = WebuntisFactory::create($model);
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
         if (!self::$cache) {
