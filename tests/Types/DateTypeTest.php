@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Webuntis\Tests\Repositories;
+namespace Webuntis\Tests\Types;
 
 use PHPUnit\Framework\TestCase;
 use Webuntis\Repositories\UserRepository;
 use Webuntis\Models\Holidays;
+use Webuntis\Models\AbstractModel;
 use Webuntis\Types\DateType;
 use Webuntis\Handler\ExecutionHandler;
 use Webuntis\Configuration\WebuntisConfiguration;
@@ -39,25 +40,36 @@ final class DateTypeTest extends TestCase
 
     public function testExecute() : void
     {   
-        $repo = new UserRepository();
-
         $field = [
-            'startDate' => [
+            'dateTest' => [
                 'type' => 'date',
                 'api' => [
-                    'name' => 'startDate'
+                    'name' => 'testDate'
                 ]
             ]
         ];
         $data = [
-            'startDate' => '20180704'
+            'testDate' => '20180704'
         ];
 
-        $holiday = new Holidays();
+        $test = new class extends AbstractModel {
+            private $dateTest;
 
-        DateType::execute($holiday, $data, $field);
+            public function set(string $field, $value) 
+            {
+                $this->$field = $value;
+            }
 
-        $this->assertEquals(new \DateTime('20180704'), $holiday->getStartDate());
+            public function getDateTest() 
+            {
+                return $this->dateTest;
+            }
+        };
+
+
+        DateType::execute($test, $data, $field);
+
+        $this->assertEquals(new \DateTime('20180704'), $test->getDateTest());
     }
 
     public function testGenerateTypeWithConsole() : void
