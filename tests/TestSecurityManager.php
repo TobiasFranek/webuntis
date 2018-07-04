@@ -342,7 +342,6 @@ class TestSecurityManager implements SecurityManagerInterface {
                         'id' => 1,
                         'name' => 'Schularbeit',
                         'longName' => 'Schwere Schularbeit',
-                        'type' => 2
                     ]
                 ],
                 'getSubstitutions' => [
