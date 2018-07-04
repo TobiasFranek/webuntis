@@ -344,6 +344,66 @@ class TestSecurityManager implements SecurityManagerInterface {
                         'longName' => 'Schwere Schularbeit',
                         'type' => 2
                     ]
+                ],
+                'getSubstitutions' => [
+                    [
+                        'id' => 1,
+                        'type' => 'cancel',
+                        'lsid' => 1,
+                        'startTime' => '800',
+                        'endTime' => '850',
+                        'date' => '20180704',
+                        'kl' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'te' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'su' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'rooms' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'txt' => 'another teacher'
+                    ],
+                    [
+                        'id' => 2,
+                        'type' => 'add',
+                        'lsid' => 1,
+                        'startTime' => '900',
+                        'endTime' => '950',
+                        'date' => '20180704',
+                        'kl' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'te' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'su' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'rooms' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'txt' => 'sick teacher'
+                    ]
                 ]
             ];
 
