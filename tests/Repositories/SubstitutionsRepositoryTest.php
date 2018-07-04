@@ -1,0 +1,48 @@
+<?php
+declare(strict_types=1);
+
+namespace Webuntis\Tests\Repositories;
+
+use PHPUnit\Framework\TestCase;
+use Webuntis\Repositories\SubstitutionsRepository;
+use Webuntis\Models\Substitutions;
+use Webuntis\Handler\ExecutionHandler;
+use Webuntis\Configuration\WebuntisConfiguration;
+
+final class SubstitutionsRepositoryTest extends TestCase
+{
+    public function setUp() : void 
+    {
+        $config = new WebuntisConfiguration([ 
+            'default' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'yourusername',
+                    'password' => 'yourpassword'
+                ],
+            'admin' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'youradminusername',
+                    'password' => 'youradminpassword'
+            ],
+            'security_manager' => 'Webuntis\Tests\TestSecurityManager'
+        ]);
+    }
+    public function testfindAll() : void
+    {   
+        $repository = new SubstitutionsRepository(Substitutions::class);
+
+        $models = $repository->findAll([], null, 0, '2018-07-04', '2018-08-04');
+        
+        $this->assertEquals(2, count($models));
+
+        $this->assertArrayHasKey('teachers', $models[0]->serialize());
+        $this->assertArrayHasKey('classes', $models[0]->serialize());
+        $this->assertArrayHasKey('rooms', $models[0]->serialize());
+        $this->assertArrayHasKey('subjects', $models[0]->serialize());
+
+    }
+}
