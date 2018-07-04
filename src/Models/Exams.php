@@ -24,6 +24,7 @@ namespace Webuntis\Models;
 use Webuntis\Exceptions\ModelException;
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use Webuntis\Query\Query;
+use Webuntis\Models\Interfaces\ModelInterface;
 use JMS\Serializer\Annotation\SerializedName;
 
 /**
@@ -49,9 +50,9 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     private $students = [];
 
     /**
-     * @var Subjects[]
+     * @var Subjects
      */
-    private $subject = [];
+    private $subject;
 
     /**
      * @SerializedName("startDate")
@@ -111,9 +112,9 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     }
 
     /**
-     * @return Subjects[]
+     * @return Subjects
      */
-    public function getSubject() : array 
+    public function getSubject() : ModelInterface
     {
         return $this->subject;
     }
@@ -163,10 +164,10 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     }
 
     /**
-     * @param Subjects[] $subject
+     * @param Subjects $subject
      * @return Exams
      */
-    public function setSubject(array $subject) : self 
+    public function setSubject(ModelInterface $subject) : self 
     {
         $this->subject = $subject;
     
