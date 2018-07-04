@@ -50,34 +50,21 @@ final class ClassHasTeachersTest extends TestCase
         $this->assertInstanceOf(Teachers::class, $classHasTeachers->getTeachers()[0]);
         $this->assertEquals(1, $classHasTeachers->getTeachers()[0]->getId());
 
-        $data['fullName'] = 'teststring';
-        unset($data['longName']);
+        $expected = [
+            'id' => 1,
+            'name' => 'test',
+            'fullName' => 'teststring',
+            'teachers' => [
+                [
+                    'id' => 1,
+                    'name' => 'asdman',
+                    'firstName' => 'asd',
+                    'lastName' => 'man'
+                ]
+            ]
+        ];
 
-        $this->assertEquals([
-            'id' => 1,
-            'name' => 'test',
-            'fullName' => 'teststring',
-            'teachers' => [
-                [
-                    'id' => 1,
-                    'name' => 'asdman',
-                    'firstName' => 'asd',
-                    'lastName' => 'man'
-                ]
-            ]
-        ], $classHasTeachers->serialize());
-        $this->assertEquals(json_encode([
-            'id' => 1,
-            'name' => 'test',
-            'fullName' => 'teststring',
-            'teachers' => [
-                [
-                    'id' => 1,
-                    'name' => 'asdman',
-                    'firstName' => 'asd',
-                    'lastName' => 'man'
-                ]
-            ]
-        ]), $classHasTeachers->serialize('json'));
+        $this->assertEquals($expected, $classHasTeachers->serialize());
+        $this->assertEquals(json_encode($expected), $classHasTeachers->serialize('json'));
     }
 }
