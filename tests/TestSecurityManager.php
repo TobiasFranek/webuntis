@@ -123,35 +123,33 @@ class TestSecurityManager implements SecurityManagerInterface {
                     [
                         'id' => 2,
                         'name' => '2013/2014',
-                        'startDate' => '2013-09-09T00:00:00+0200',
-                        'endDate' => '2014-07-06T00:00:00+0200'
+                        'startDate' => '20130909',
+                        'endDate' => '20140706'
                     ],
                     [
                         'id' => 3,
                         'name' => '2014/2015',
-                        'startDate' => '2014-09-09T00:00:00+0200',
-                        'endDate' => '2015-07-06T00:00:00+0200'
+                        'startDate' => '20140909',
+                        'endDate' => '20150706'
                     ],
                     [
                         'id' => 4,
                         'name' => '2015/2016',
-                        'startDate' => '2015-09-09T00:00:00+0200',
-                        'endDate' => '2016-07-06T00:00:00+0200'
+                        'startDate' => '20150909',
+                        'endDate' => '20160706'
                     ],
                     [
                         'id' => 5,
                         'name' => '2016/2017',
-                        'startDate' => '2016-09-09T00:00:00+0200',
-                        'endDate' => '2017-07-06T00:00:00+0200'
+                        'startDate' => '20160909',
+                        'endDate' => '20170706'
                     ]
                 ],
                 'getCurrentSchoolyear' => [
-                    [
-                        'id' => 2,
-                        'name' => '2013/2014',
-                        'startDate' => '2013-09-09T00:00:00+0200',
-                        'endDate' => '2014-07-06T00:00:00+0200'
-                    ]
+                    'id' => 2,
+                    'name' => '2013/2014',
+                    'startDate' => '20130909',
+                    'endDate' => '20140706'
                 ],
                 'getTimetable' => [
                     [
@@ -291,6 +289,10 @@ class TestSecurityManager implements SecurityManagerInterface {
 
             public function execute($method) {
                 return $this->data[$method];
+            }
+
+            public function getData() {
+                return $this->data;
             }
         };
     }
