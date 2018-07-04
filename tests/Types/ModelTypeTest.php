@@ -72,8 +72,8 @@ final class ModelTypeTest extends TestCase
 
         ModelType::execute($test, $data, $field);
 
-        $this->assertInstanceOf(Teachers::class, $test->getModelTest()[0]);
-        $this->assertEquals(1, $test->getModelTest()[0]->getId());
+        $this->assertInstanceOf(Teachers::class, $test->getModelTest());
+        $this->assertEquals(1, $test->getModelTest()->getId());
     }
 
     public function testGenerateTypeWithConsole() : void

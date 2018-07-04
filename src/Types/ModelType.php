@@ -47,7 +47,7 @@ class ModelType implements TypeInterface {
         $fieldValues = $field[$fieldName];
         $query = new Query();
         if(isset($data[$fieldValues['api']['name']])) {
-            $model->set($fieldName, $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $data[$fieldValues['api']['name']]]));
+            $model->set($fieldName, $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $data[$fieldValues['api']['name']]])[0]);
         }
     }
 
