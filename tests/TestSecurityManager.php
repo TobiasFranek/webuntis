@@ -284,6 +284,66 @@ class TestSecurityManager implements SecurityManagerInterface {
                         'name' => '410',
                         'longName' => 'Fourth Floor'
                     ],
+                ],
+                'getStudents' => [
+                    [
+                        'id' => 1,
+                        'key' => 1234567,
+                        'name' => 'MüllerAle',
+                        'foreName' => 'Alexander',
+                        'longName' => 'Müller',
+                        'gender' => 'male'
+                    ],
+                    [
+                        'id' => 1,
+                        'key' => 1234567,
+                        'name' => 'SchmidAme',
+                        'foreName' => 'Amelie',
+                        'longName' => 'Schidt',
+                        'gender' => 'female'
+                    ]
+                ],
+                'getExams' => [
+                    [
+                        'id' => 1,
+                        'classes' => [
+                            1
+                        ],
+                        'teachers' => [
+                            1
+                        ],
+                        'students' => [
+                            1, 2 
+                        ],
+                        'subject' => 1,
+                        'date' => '20180704',
+                        'startTime' => '1400',
+                        'endTime' => '1450'
+                    ],
+                    [
+                        'id' => 2,
+                        'classes' => [
+                            1
+                        ],
+                        'teachers' => [
+                            1
+                        ],
+                        'students' => [
+                            1
+                        ],
+                        'subject' => 1,
+                        'date' => '20180704',
+                        'startTime' => '1500',
+                        'endTime' => '1550'
+                    ]
+                ],
+                'getExamTypes' => [
+                    [
+                        'id' => 1,
+                        'name' => 'Schularbeit',
+                        'longName' => 'Schwere Schularbeit',
+                        'type' => 2
+                    ]
                 ]
             ];
 
