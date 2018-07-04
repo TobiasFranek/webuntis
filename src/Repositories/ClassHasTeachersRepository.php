@@ -44,7 +44,7 @@ class ClassHasTeachersRepository extends Repository {
             $classesHaveTeachers = $cache->fetch('ClassesHaveTeachers');
         } else {
             $query = new Query();
-
+            
             $classes = $this->executionHandler->execute(new Repository(Classes::class), []);
 
             foreach ($classes as $class) {
@@ -52,7 +52,7 @@ class ClassHasTeachersRepository extends Repository {
                 $class['teachers'] = [];
                 $classesHaveTeachers[] = new $this->model($class);
             }
-            $schoolyear = $query->get('Schoolyear')->findAll();
+            $schoolyear = $query->get('Schoolyear')->getCurrentSchoolyear();
             foreach ($classesHaveTeachers as $key => $value) {
                 $periods = $query->get('Period')->findAll([], null, $value->getId(), 1, date_format($schoolyear->getStartDate(), 'Ymd'), date_format($schoolyear->getEndDate(), 'Ymd'));
                 $tempTeachers = [];
