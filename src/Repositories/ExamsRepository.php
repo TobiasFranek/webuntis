@@ -47,7 +47,7 @@ class ExamsRepository extends Repository {
         } else {
             $examTypes = $this->executionHandler->execute(new Repository(ExamTypes::class), []);
             $exams = [];
-            $schoolyear = $query->get('Schoolyear')->findAll();
+            $schoolyear = $query->get('Schoolyears')->getCurrentSchoolyear();
             foreach ($examTypes as $value) {
                 $exams[] = $this->executionHandler->execute($this, ['examTypeId' => $value->serialize()['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
             }
