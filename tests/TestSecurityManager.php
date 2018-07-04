@@ -70,7 +70,7 @@ class TestSecurityManager implements SecurityManagerInterface {
      * @var string
      */
     private $session;
-    
+
     /**
      * TestSecurityManager constructor.
      * @param string $path
@@ -95,8 +95,202 @@ class TestSecurityManager implements SecurityManagerInterface {
     public function getClient() : object 
     {
         return new class() {
-            public function execute() {
-                return false;
+
+            private $data = [
+                'getKlassen' => [
+                    [
+                        'id' => 1,
+                        'name' => 'test',
+                        'longName' => 'teststring'
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'sie',
+                        'longName' => 'nice'
+                    ],
+                    [
+                        'id' => 3,
+                        'name' => 'valid',
+                        'longName' => 'one'
+                    ],
+                    [
+                        'id' => 4,
+                        'name' => 'thisisastring',
+                        'longName' => 'thisisanevenlongerstring'
+                    ]
+                ],
+                'getSchoolyears' => [
+                    [
+                        'id' => 2,
+                        'name' => '2013/2014',
+                        'startDate' => '2013-09-09T00:00:00+0200',
+                        'endDate' => '2014-07-06T00:00:00+0200'
+                    ],
+                    [
+                        'id' => 3,
+                        'name' => '2014/2015',
+                        'startDate' => '2014-09-09T00:00:00+0200',
+                        'endDate' => '2015-07-06T00:00:00+0200'
+                    ],
+                    [
+                        'id' => 4,
+                        'name' => '2015/2016',
+                        'startDate' => '2015-09-09T00:00:00+0200',
+                        'endDate' => '2016-07-06T00:00:00+0200'
+                    ],
+                    [
+                        'id' => 5,
+                        'name' => '2016/2017',
+                        'startDate' => '2016-09-09T00:00:00+0200',
+                        'endDate' => '2017-07-06T00:00:00+0200'
+                    ]
+                ],
+                'getCurrentSchoolyear' => [
+                    [
+                        'id' => 2,
+                        'name' => '2013/2014',
+                        'startDate' => '2013-09-09T00:00:00+0200',
+                        'endDate' => '2014-07-06T00:00:00+0200'
+                    ]
+                ],
+                'getTimetable' => [
+                    [
+                        'id' => 1,
+                        'date' => '20180703',
+                        'startTime' => '800',
+                        'endTime' => '850',
+                        'kl' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'te' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'su' => [
+                            [
+                                'id' => 1
+                            ]
+                        ],
+                        'ro' => [
+                            [
+                                'id' => 1
+                            ]
+                        ]
+                    ],
+                    [
+                        'id' => 2,
+                        'date' => '20180703',
+                        'startTime' => '900',
+                        'endTime' => '950',
+                        'kl' => [
+                            [
+                                'id' => 2
+                            ]
+                        ],
+                        'te' => [
+                            [
+                                'id' => 2
+                            ]
+                        ],
+                        'su' => [
+                            [
+                                'id' => 2
+                            ]
+                        ],
+                        'ro' => [
+                            [
+                                'id' => 2
+                            ]
+                        ]
+                    ],
+                    [
+                        'id' => 3,
+                        'date' => '20180703',
+                        'startTime' => '1000',
+                        'endTime' => '1050',
+                        'kl' => [
+                            [
+                                'id' => 3
+                            ]
+                        ],
+                        'te' => [
+                            [
+                                'id' => 3
+                            ]
+                        ],
+                        'su' => [
+                            [
+                                'id' => 3
+                            ]
+                        ],
+                        'ro' => [
+                            [
+                                'id' => 3
+                            ]
+                        ]
+                    ]              
+                ],
+                'getTeachers' => [
+                    [
+                        'id' => 1,
+                        'name' => 'asdman',
+                        'foreName' => 'asd',
+                        'longName' => 'man'
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'sapitra',
+                        'foreName' => 'sapi',
+                        'longName' => 'tra'
+                    ],
+                    [
+                        'id' => 3,
+                        'name' => 'manamana',
+                        'foreName' => 'mana',
+                        'longName' => 'mana'
+                    ]
+                ],
+                'getSubjects' => [
+                    [
+                        'id' => 1,
+                        'name' => 'en',
+                        'longName' => 'english'
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'ger',
+                        'longName' => 'german'
+                    ],
+                    [
+                        'id' => 3,
+                        'name' => 'fr',
+                        'longName' => 'french'
+                    ],
+                ],
+                'getRooms' => [
+                    [
+                        'id' => 1,
+                        'name' => '210',
+                        'longName' => 'Second Floor'
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => '310',
+                        'longName' => 'Third Floor'
+                    ],
+                    [
+                        'id' => 3,
+                        'name' => '410',
+                        'longName' => 'Fourth Floor'
+                    ],
+                ]
+            ];
+
+            public function execute($method) {
+                return $this->data[$method];
             }
         };
     }
