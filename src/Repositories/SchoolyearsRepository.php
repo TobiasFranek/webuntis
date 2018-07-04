@@ -29,15 +29,6 @@ use Webuntis\Handler\ExecutionHandler;
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
 class SchoolyearsRepository extends Repository {
-    /**
-     * return the parsed Schoolyear object
-     * @param array $result
-     * @return Schoolyear
-     */
-    // public function parse(array $result) : object 
-    // {
-    //     return new $this->model($result);
-    // }
 
     /**
      * return the current Schoolyear
