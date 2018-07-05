@@ -70,6 +70,11 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      * @var string
      */
     private $session;
+
+    /**
+     * @var string
+     */
+    private $clientClass;
     
     /**
      * WebuntisSecurityManager constructor.
@@ -77,8 +82,14 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      * @param array $config
      * @param string $context
      */
-    public function __construct(string $path, array $config, string $context) 
+    public function __construct(string $path, array $config, string $context, $clientClass = null) 
     {
+        if($clientClass) {
+            $this->clientClass = $clientClass;
+        } else {
+            $this->clientClass = Client::class;
+        }
+
         $this->config = $config;
         $this->path = $path;
         $this->context = $context;
@@ -113,9 +124,9 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
                 'Expires' => $newDate->format('D, d-M-Y H:i:s ') . 'GMT'
 
             ]);
-            $client = new Client($this->path, false, $httpClient);
+            $client = new $this->clientClass($this->path, false, $httpClient);
         }else {
-            $client = new Client($this->path);
+            $client = new $this->clientClass($this->path);
             $this->authenticate($client);
         }
 
@@ -144,8 +155,8 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
     private function authenticate(object $client) : array 
     {
         $result = $client->execute('authenticate', [$this->config['username'], $this->config['password'], rand(1, 4000)]);
-        $this->currentUserId = $result['personId'];
-        $this->currentUserType = $result['personType'];
+        $this->currentUserId = intval($result['personId']);
+        $this->currentUserType = intval($result['personType']);
 
         if ($this->cache) {
             $this->cache->save('security.' . $this->context, [
