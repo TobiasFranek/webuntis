@@ -33,14 +33,14 @@ class Memcached extends MemcachedCache {
      * {@inheritdoc}
      */
     public function contains($id) {
-        return parent::contains($id);
+        return parent::contains('webuntis.' . $id);
     }
 
     /**
      * {@inheritdoc}
      */
     public function delete($id) {
-        return parent::delete($id);
+        return parent::delete('webuntis.' . $id);
     }
 
     /**
@@ -54,13 +54,16 @@ class Memcached extends MemcachedCache {
      * {@inheritdoc}
      */
     public function fetch($id) {
-        return parent::fetch($id);
+        return parent::fetch('webuntis.' . $id);
     }
 
     /**
      * {@inheritdoc}
      */
     public function fetchMultiple(array $keys) {
+        foreach($keys as $i => $key) {
+            $keys[i] = 'webuntis.' . $key;
+        }
         return parent::fetchMultiple($keys);
     }
 
@@ -75,13 +78,17 @@ class Memcached extends MemcachedCache {
      * {@inheritdoc}
      */
     public function save($id, $data, $lifeTime = 0) {
-        return parent::save($id, $data, $lifeTime);
+        return parent::save('webuntis.' . $id, $data, $lifeTime);
     }
 
     /**
      * {@inheritdoc}
      */
     public function saveMultiple(array $keysAndValues, $lifetime = 0) {
+        foreach($keysAndValues as $key => $value) {
+            $keysAndValues['webuntis.' . $key] = $value;
+            unset($keysAndValues[$key]);
+        }
         return parent::saveMultiple($keysAndValues, $lifetime);
     }
 }
