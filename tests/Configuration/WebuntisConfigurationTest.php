@@ -7,6 +7,11 @@ use PHPUnit\Framework\TestCase;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Repositories\Repository;
 
+/**
+ * WebuntisConfigurationTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class WebuntisConfigurationTest extends TestCase
 {
     public function testSetConfig() : void

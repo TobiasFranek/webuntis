@@ -8,6 +8,11 @@ use Webuntis\Models\Holidays;
 use Webuntis\Models\Teachers;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * HolidaysTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class HolidaysTest extends TestCase
 {
     public function setUp() : void 

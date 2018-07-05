@@ -14,7 +14,11 @@ use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Helper\QuestionHelper;
 
-
+/**
+ * StringTypeTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class StringTypeTest extends TestCase
 {
     public function setUp() : void 

@@ -6,6 +6,11 @@ namespace Webuntis\Tests\Models;
 use PHPUnit\Framework\TestCase;
 use Webuntis\Models\ExamTypes;
 
+/**
+ * ExamTypesTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class ExamTypesTest extends TestCase
 {
     public function testCreate() : void

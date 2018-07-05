@@ -15,6 +15,11 @@ use Webuntis\Models\Rooms;
 use Webuntis\Models\Subjects;
 use Webuntis\Handler\ExecutionHandler;
 
+/**
+ * ClassHasTeachersRepositoryTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class ClassHasTeachersRepositoryTest extends TestCase
 {
     public function setUp() : void 

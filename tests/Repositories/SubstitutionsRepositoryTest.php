@@ -9,6 +9,11 @@ use Webuntis\Models\Substitutions;
 use Webuntis\Handler\ExecutionHandler;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * SubstitutionsRepositoryTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class SubstitutionsRepositoryTest extends TestCase
 {
     public function setUp() : void 

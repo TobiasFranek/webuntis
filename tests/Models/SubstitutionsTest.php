@@ -11,6 +11,11 @@ use Webuntis\Models\Classes;
 use Webuntis\Models\Subjects;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * SubstitutionsTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class SubstitutionsTest extends TestCase
 {
     public function setUp() : void 

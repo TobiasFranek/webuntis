@@ -9,6 +9,11 @@ use Webuntis\Models\Period;
 use Webuntis\Handler\ExecutionHandler;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * PeriodRepositoryTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class PeriodRepositoryTest extends TestCase
 {
     public function setUp() : void 

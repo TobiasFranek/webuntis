@@ -9,6 +9,11 @@ use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Models\Teachers;
 use Webuntis\Models\Classes;
 
+/**
+ * WebuntisFactoryTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class WebuntisFactoryTest extends TestCase
 {
     public function setUp() : void 

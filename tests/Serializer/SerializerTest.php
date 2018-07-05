@@ -6,6 +6,11 @@ namespace Webuntis\Tests\Models;
 use PHPUnit\Framework\TestCase;
 use Webuntis\Serializer\Serializer;
 
+/**
+ * SerializerTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class SerializerTest extends TestCase
 {
     public function testCreate() : void

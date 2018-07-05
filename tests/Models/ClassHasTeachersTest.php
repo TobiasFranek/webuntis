@@ -8,6 +8,11 @@ use Webuntis\Models\ClassHasTeachers;
 use Webuntis\Models\Teachers;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * ClassHasTeachersTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class ClassHasTeachersTest extends TestCase
 {
     public function setUp() : void 

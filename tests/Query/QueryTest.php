@@ -21,6 +21,11 @@ use Webuntis\Repositories\SubstitutionsRepository;
 use Webuntis\Models\Substitutions;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * QueryTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class QueryTest extends TestCase
 {
     public function testGet() : void

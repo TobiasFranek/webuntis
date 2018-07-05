@@ -14,7 +14,11 @@ use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Helper\QuestionHelper;
 
-
+/**
+ * DateTypeTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class DateTypeTest extends TestCase
 {
     public function setUp() : void 

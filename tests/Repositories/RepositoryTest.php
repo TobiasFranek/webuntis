@@ -10,6 +10,11 @@ use Webuntis\Models\SchoolYears;
 use Webuntis\Handler\ExecutionHandler;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * RepositoryTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class RepositoryTest extends TestCase
 {
     public function setUp() : void 

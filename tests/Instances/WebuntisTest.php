@@ -7,6 +7,11 @@ use PHPUnit\Framework\TestCase;
 use Webuntis\Webuntis;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * WebuntisTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class WebuntisTest extends TestCase
 {
     public function setUp() : void 

@@ -9,6 +9,11 @@ use Webuntis\Models\Exams;
 use Webuntis\Handler\ExecutionHandler;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * ExamsRepositoryTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class ExamsRepositoryTest extends TestCase
 {
     public function setUp() : void 

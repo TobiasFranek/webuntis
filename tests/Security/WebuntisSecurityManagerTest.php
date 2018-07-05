@@ -7,6 +7,11 @@ use PHPUnit\Framework\TestCase;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Security\WebuntisSecurityManager;
 
+/**
+ * WebuntisSecurityManagerTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class WebuntisSecurityManagerTest extends TestCase
 {
     public function setUp() : void 

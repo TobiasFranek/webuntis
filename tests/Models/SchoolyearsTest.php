@@ -8,6 +8,11 @@ use Webuntis\Models\Schoolyears;
 use Webuntis\Models\Teachers;
 use Webuntis\Configuration\WebuntisConfiguration;
 
+/**
+ * SchoolyearsTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class SchoolyearsTest extends TestCase
 {
     public function setUp() : void 

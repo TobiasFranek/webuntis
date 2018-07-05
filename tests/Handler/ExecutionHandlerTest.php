@@ -9,6 +9,11 @@ use Webuntis\Models\Classes;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Handler\ExecutionHandler;
 
+/**
+ * ExecutionHandlerTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class ExecutionHandlerTest extends TestCase
 {
     public function setUp() : void 

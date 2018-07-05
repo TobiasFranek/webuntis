@@ -6,6 +6,11 @@ namespace Webuntis\Tests\Configuration;
 use PHPUnit\Framework\TestCase;
 use Webuntis\Configuration\YAMLConfiguration;
 
+/**
+ * YamlConfigurationTest
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 final class YamlConfigurationTest extends TestCase
 {
     public function testLoad() : void
