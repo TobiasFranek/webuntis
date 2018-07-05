@@ -30,6 +30,7 @@ use Webuntis\Handler\Interfaces\ExecutionHandlerInterface;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Webuntis;
 use Webuntis\WebuntisFactory;
+use Webuntis\CacheBuilder\CacheBuilder;
 
 /**
  * Class Repository
@@ -49,9 +50,9 @@ class Repository {
     protected $instance;
 
     /**
-     * @var MemcachedCache
+     * @var object
      */
-    protected static $cache;
+    protected $cache;
 
     /**
      * @var bool
@@ -76,11 +77,12 @@ class Repository {
             $this->executionHandler = new ExecutionHandler();
         }
 
+        $cacheBuilder = new CacheBuilder();
+
+        $this->cache = $cacheBuilder->create();
+
         $this->instance = WebuntisFactory::create($model);
         \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
-        if (!self::$cache) {
-            self::$cache = self::initMemcached();
-        }
     }
 
     /**
@@ -288,49 +290,6 @@ class Repository {
             };
         } else {
             throw new RepositoryException('sort order ' . $sortingOrder . ' does not exist');
-        }
-    }
-
-    /**
-     * returns the Memcache instance
-     * @return Memcached
-     */
-    protected static function initMemcached() {
-        if (self::$cache) {
-            return self::$cache;
-        }
-        $cacheDriver = new Memcached();
-        if (self::$disabledCache == false && extension_loaded('memcached')) {
-            $config = WebuntisConfiguration::getConfig();
-            $host = 'localhost';
-            $port = 11211;
-            if (isset($config['memcached'])) {
-                if (isset($config['memcached']['host'])) {
-                    $host = $config['memcached']['host'];
-                }
-                if (isset($config['memcached']['port'])) {
-                    $port = $config['memcached']['port'];
-                }
-            }
-            $memcached = new \Memcached();
-            $memcached->addServer($host, $port);
-            $cacheDriver->setMemcached($memcached);
-        } else {
-            return false;
-        }
-        self::$cache = $cacheDriver;
-        return self::$cache;
-    }
-
-    /**
-     * @return MemcachedCache|Memcached
-     */
-    public static function getCache() 
-    {
-        if (self::$cache) {
-            return self::$cache;
-        } else {
-            return self::initMemcached();
         }
     }
 

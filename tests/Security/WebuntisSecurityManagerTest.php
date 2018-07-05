@@ -28,7 +28,7 @@ final class WebuntisSecurityManagerTest extends TestCase
             ],
         ]);
     }
-    public function testFindAll() : void
+    public function testSecurityManager() : void
     {   
         $manager = new WebuntisSecurityManager(
             'yourserver.yourschool.com', 

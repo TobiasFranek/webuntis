@@ -23,6 +23,7 @@ use Webuntis\Repositories\Repository;
 use JsonRPC\Client;
 use JsonRPC\HttpClient;
 use Webuntis\Security\Interfaces\SecurityManagerInterface;
+use Webuntis\CacheBuilder\CacheBuilder;
 
 /**
  * Class TestSecurityManager
@@ -83,7 +84,9 @@ class TestSecurityManager implements SecurityManagerInterface {
         $this->path = $path;
         $this->context = $context;
 
-        $this->cache = Repository::getCache();
+        $cacheBuilder = new CacheBuilder();
+
+        $this->cache = $cacheBuilder->create();
     }
 
 

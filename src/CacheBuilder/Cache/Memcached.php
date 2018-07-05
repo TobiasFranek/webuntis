@@ -16,7 +16,7 @@
  * and is licensed under the MIT license.
  */
 
-namespace Webuntis\Cache;
+namespace Webuntis\CacheBuilder\Cache;
 
 
 use Doctrine\Common\Cache\MemcachedCache;
@@ -30,99 +30,58 @@ use Webuntis\Repositories\Repository;
 class Memcached extends MemcachedCache {
 
     /**
-     * @var bool
-     */
-    private $disabledCache;
-
-    public function __construct() {
-        $this->disabledCache = Repository::$disabledCache;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function contains($id) {
-        if ($this->disabledCache == false) {
-            return parent::contains($id);
-        } else {
-            return false;
-        }
+        return parent::contains($id);
     }
 
     /**
      * {@inheritdoc}
      */
     public function delete($id) {
-        if ($this->disabledCache == false) {
-            return parent::delete($id);
-        } else {
-            return false;
-        }
+        return parent::delete($id);
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteAll() {
-        if ($this->disabledCache == false) {
-            return parent::deleteAll();
-        } else {
-            return false;
-        }
+        return parent::deleteAll();
     }
 
     /**
      * {@inheritdoc}
      */
     public function fetch($id) {
-        if ($this->disabledCache == false) {
-            return parent::fetch($id);
-        } else {
-            return false;
-        }
+        return parent::fetch($id);
     }
 
     /**
      * {@inheritdoc}
      */
     public function fetchMultiple(array $keys) {
-        if ($this->disabledCache == false) {
-            return parent::fetchMultiple($keys);
-        } else {
-            return false;
-        }
+        return parent::fetchMultiple($keys);
     }
 
     /**
      * {@inheritdoc}
      */
     public function flushAll() {
-        if ($this->disabledCache == false) {
-            return parent::flushAll();
-        } else {
-            return false;
-        }
+        return parent::flushAll();
     }
 
     /**
      * {@inheritdoc}
      */
     public function save($id, $data, $lifeTime = 0) {
-        if ($this->disabledCache == false) {
-            return parent::save($id, $data, $lifeTime);
-        } else {
-            return false;
-        }
+        return parent::save($id, $data, $lifeTime);
     }
 
     /**
      * {@inheritdoc}
      */
     public function saveMultiple(array $keysAndValues, $lifetime = 0) {
-        if ($this->disabledCache == false) {
-            return parent::saveMultiple($keysAndValues, $lifetime);
-        } else {
-            return false;
-        }
+        return parent::saveMultiple($keysAndValues, $lifetime);
     }
 }

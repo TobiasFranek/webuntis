@@ -23,6 +23,7 @@ use Webuntis\Models\AbstractModel;
 use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Repositories\Repository;
 use Webuntis\Handler\Interfaces\ExecutionHandlerInterface;
+use Webuntis\CacheBuilder\CacheBuilder;
 
 /**
  * Class ExecutionHandler
@@ -30,6 +31,17 @@ use Webuntis\Handler\Interfaces\ExecutionHandlerInterface;
  * @author Tobias Franek <tobias.franek@gmail.com>
  */
 class ExecutionHandler implements ExecutionHandlerInterface {
+
+    /**
+     * @var object
+     */
+    private $cache;
+
+    public function __construct() 
+    {
+        $cacheBuilder = new CacheBuilder();
+        $this->cache = $cacheBuilder->create();
+    }
 
     /**
      * executes the given command with the right instance, model etc.
@@ -41,18 +53,17 @@ class ExecutionHandler implements ExecutionHandlerInterface {
     {
         $model = $repository->getModel();
         $interfaces = class_implements($model);
-        $cacheDriver = $repository::getCache();
-        if ($cacheDriver && $cacheDriver->contains($model::METHOD) && isset($interfaces[CachableModelInterface::class])) {
-            $data = $cacheDriver->fetch($model::METHOD);
+        if ($this->cache && $this->cache->contains($model::METHOD) && isset($interfaces[CachableModelInterface::class])) {
+            $data = $this->cache->fetch($model::METHOD);
         } else {
             $result = $repository->getInstance()->getClient()->execute($model::METHOD, $params);
             $data = $repository->parse($result);
 
-            if ($cacheDriver && isset($interfaces[CachableModelInterface::class])) {
+            if ($this->cache && isset($interfaces[CachableModelInterface::class])) {
                 if ($model::CACHE_LIFE_TIME) {
-                    $cacheDriver->save($model::METHOD, $data, $model::CACHE_LIFE_TIME);
+                    $this->cache->save($model::METHOD, $data, $model::CACHE_LIFE_TIME);
                 } else {
-                    $cacheDriver->save($model::METHOD, $data);
+                    $this->cache->save($model::METHOD, $data);
                 }
             }
         }
