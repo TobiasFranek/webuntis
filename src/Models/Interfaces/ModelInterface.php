@@ -29,15 +29,15 @@ use Webuntis\Models\AbstractModel;
  */
 interface ModelInterface {
     /**
-     * @return int
+     * @return int|string
      */
-    public function getId() : int;
+    public function getId();
 
     /**
-     * @param int $id
+     * @param int|string $id
      * @return AbstractModel
      */
-    public function setId(int $id) : AbstractModel;
+    public function setId($id) : AbstractModel;
 
     /**
      * @param string $format

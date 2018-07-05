@@ -25,6 +25,7 @@ use Webuntis\Models\Interfaces\ModelInterface;
 use Webuntis\Serializer\Serializer;
 use Webuntis\Types\StringType;
 use Webuntis\Types\TypeHandler;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Abstract Class Model
@@ -33,7 +34,7 @@ use Webuntis\Types\TypeHandler;
  */
 abstract class AbstractModel implements ModelInterface {
     /**
-     * @var int
+     * @var string|int
      */
     private $id;
 
@@ -54,19 +55,19 @@ abstract class AbstractModel implements ModelInterface {
 
     /**
      * returns the id
-     * @return int
+     * @return string|int
      */
-    public function getId() : int 
+    public function getId() 
     {
         return $this->id;
     }
 
     /**
      * set the id
-     * @param int $id
+     * @param int|string $id
      * @return AbstractModel $this
      */
-    public function setId(int $id) : self
+    public function setId($id) : self
     {
         $this->id = $id;
 
@@ -91,7 +92,8 @@ abstract class AbstractModel implements ModelInterface {
         if(isset($data['id'])) {
             $this->setId($data['id']);
         }else {
-            $this->setId(rand(0, getrandmax()));
+            $uuid = Uuid::uuid4();
+            $this->setId($uuid->toString());
         }
         $fields = YAMLConfiguration::getFields(get_class($this));
         $typeHandler = new TypeHandler();

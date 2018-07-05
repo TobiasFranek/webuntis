@@ -23,8 +23,8 @@
     "symfony/yaml": "^2.8",
     "symfony/console": "^2.8",
     "symfony/filesystem": "^2.8",
-    "memio/memio": "^2.0"
-
+    "memio/memio": "^2.0",
+    "ramsey/uuid": "^3.7"
   },
   "suggest": {
     "ext-memcached": "Required for caching"
