@@ -34,7 +34,7 @@ final class ModelTypeTest extends TestCase
                     'username' => 'youradminusername',
                     'password' => 'youradminpassword'
             ],
-            'security_manager' => 'Webuntis\Tests\TestSecurityManager'
+            'security_manager' => 'Webuntis\Tests\Util\TestSecurityManager'
         ]);
     }
 

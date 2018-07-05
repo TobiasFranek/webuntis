@@ -17,7 +17,7 @@ declare(strict_types=1);
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
-namespace Webuntis\Tests;
+namespace Webuntis\Tests\Util;
 
 use Webuntis\Repositories\Repository;
 use JsonRPC\Client;

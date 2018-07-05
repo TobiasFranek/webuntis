@@ -28,7 +28,7 @@ final class PeriodRepositoryTest extends TestCase
                     'username' => 'youradminusername',
                     'password' => 'youradminpassword'
             ],
-            'security_manager' => 'Webuntis\Tests\TestSecurityManager'
+            'security_manager' => 'Webuntis\Tests\Util\TestSecurityManager'
         ]);
     }
     public function testFindAll() : void
