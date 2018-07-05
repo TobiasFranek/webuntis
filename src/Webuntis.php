@@ -59,6 +59,11 @@ class Webuntis {
     /**
      * @var string
      */
+    private $context;
+
+    /**
+     * @var string
+     */
     const DEFAULT_SECURITY_MANAGER = WebuntisSecurityManager::class;
 
     /**
@@ -74,6 +79,7 @@ class Webuntis {
     public function __construct(array $config, string $context) {
 
         $pathScheme = static::DEFAULT_PATH_SCHEME;
+        $this->context = $context;
 
         if(isset($config['path_scheme'])) {
             $pathScheme = $config['path_scheme'];
@@ -130,7 +136,8 @@ class Webuntis {
      * @param string $path
      * @return Webuntis
      */
-    public function setPath(string $path) : self {
+    public function setPath(string $path) : self 
+    {
         $this->path = $path;
 
         return $this;
@@ -150,9 +157,19 @@ class Webuntis {
      * @param Client $client
      * @return Webuntis
      */
-    public function setClient(Client $client) : self {
+    public function setClient(Client $client) : self 
+    {
         $this->client = $client;
 
         return $this;
     }
+
+    /**
+     * return the context of the instance
+     * @return string
+     */
+    public function getContext() : string 
+    {
+        return $this->context;
+    }   
 }

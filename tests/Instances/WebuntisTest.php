@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Webuntis\Webuntis;
 use Webuntis\Configuration\WebuntisConfiguration;
 
-final class ClassesTest extends TestCase
+final class WebuntisTest extends TestCase
 {
     public function setUp() : void 
     {
@@ -53,6 +53,7 @@ final class ClassesTest extends TestCase
         $this->assertEquals($expected, $instance->getCurrentUser()->serialize());
         $this->assertEquals(2, $instance->getCurrentUserType());
         $this->assertEquals('yourserver.yourschool.com', $instance->getPath());
+        $this->assertEquals('admin', $instance->getContext());
         $this->assertTrue(method_exists($instance->getClient(), 'execute'));
     }
 }
