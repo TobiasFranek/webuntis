@@ -68,7 +68,7 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      */
     public function __construct(string $path, array $config, string $context, $clientClass = null) 
     {
-        if($clientClass) {
+        if ($clientClass) {
             $this->clientClass = $clientClass;
         } else {
             $this->clientClass = Client::class;
@@ -92,11 +92,11 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
         if ($this->cache && $this->cache->contains('security.' . $this->context)) {
             $data = $this->cache->fetch('security.' . $this->context);
             $this->currentUserId = -1;
-            if(isset($data['userId'])){
+            if (isset($data['userId'])) {
                 $this->currentUserId = $data['userId'];
             }
             $this->currentUserType = 0;
-            if(isset($data['userType'])) {
+            if (isset($data['userType'])) {
                 $this->currentUserType = $data['userType'];
             }
             $this->session = $data['session'];
@@ -104,14 +104,14 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
             
             $cookie = 'JSESSIONID=' . $this->session . '; Path=/WebUntis; Version=1; Max-Age=1209600; Expires=' . $newDate->format('D, d-M-Y H:i:s ') . 'GMT;';
 
-            if(gettype($this->clientClass) == 'object') {
+            if (gettype($this->clientClass) == 'object') {
                 $client = $this->clientClass;
             } else {
                 $client = new $this->clientClass($this->path);
                 $client->setHeader('Cookie', $cookie);
             }
-        }else {
-            if(gettype($this->clientClass) == 'object') {
+        } else {
+            if (gettype($this->clientClass) == 'object') {
                 $client = $this->clientClass;
             } else {
                 $client = new $this->clientClass($this->path);
@@ -128,7 +128,7 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      */
     public function getClient() : object 
     {
-        if(isset(self::$clients[$this->context])) {
+        if (isset(self::$clients[$this->context])) {
             return self::$clients[$this->context];
         } else {
             self::$clients[$this->context] = $this->createClient();

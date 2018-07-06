@@ -48,7 +48,7 @@ class Query {
      */
     public function get(string $className) : object 
     {
-        if($className == 'User') {
+        if ($className == 'User') {
             if (!isset(self::$cachedRepositories[$className])) {
                 self::$cachedRepositories[$className] = new $this->repositories[$className]();
             }

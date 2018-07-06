@@ -14,7 +14,7 @@ use Webuntis\CacheBuilder\Cache\Memcached;
  * @author Tobias Franek <tobias.franek@gmail.com>
  * @license MIT
  */
-class CacheClearCommand extends Command{
+class CacheClearCommand extends Command {
     protected function configure() {
         $this->setName('webuntis:cache:clear')
             ->setDescription('cleares the webuntis cache')
@@ -25,12 +25,12 @@ class CacheClearCommand extends Command{
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
-        if(!$port = $input->getArgument('port')) {
+        if (!$port = $input->getArgument('port')) {
             $question = new Question('Port [11211]: ', 11211);
             $port = $helper->ask($input, $output, $question);
 
         }
-        if(!$host = $input->getArgument('host')) {
+        if (!$host = $input->getArgument('host')) {
             $question = new Question('Host [localhost]: ', 'localhost');
             $host = $helper->ask($input, $output, $question);
         }

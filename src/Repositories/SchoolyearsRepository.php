@@ -31,7 +31,7 @@ class SchoolyearsRepository extends Repository {
     public function parse(array $result) : array 
     {
         $data = $result;
-        if($this->model == CurrentSchoolyear::class) {
+        if ($this->model == CurrentSchoolyear::class) {
             $data = [$result];
             $this->model = Schoolyears::class;
         }

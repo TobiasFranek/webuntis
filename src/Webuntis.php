@@ -64,14 +64,14 @@ class Webuntis {
         $pathScheme = static::DEFAULT_PATH_SCHEME;
         $this->context = $context;
 
-        if(isset($config['path_scheme'])) {
+        if (isset($config['path_scheme'])) {
             $pathScheme = $config['path_scheme'];
         }
         $this->path = str_replace(['{server}', '{school}'], [$config['server'], $config['school']], $pathScheme);
 
         $managerClass = static::DEFAULT_SECURITY_MANAGER;
 
-        if(isset(WebuntisConfiguration::getConfig()['security_manager'])) {
+        if (isset(WebuntisConfiguration::getConfig()['security_manager'])) {
             $managerClass = WebuntisConfiguration::getConfig()['security_manager'];
         } 
         $manager = new $managerClass($this->path, $config, $context);
@@ -90,9 +90,9 @@ class Webuntis {
     public function getCurrentUser() : object 
     {
         $query = new Query();
-        if($this->currentUserType == 5) {
+        if ($this->currentUserType == 5) {
             return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
-        }else if($this->currentUserType == 2) {
+        } else if ($this->currentUserType == 2) {
             return $query->get('Teachers')->findBy(['id' => $this->currentUserId])[0];
         } else {
             throw new ModelException('There is no Model available for the user type: "' . $this->currentUserType . '"');

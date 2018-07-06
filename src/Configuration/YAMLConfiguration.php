@@ -41,10 +41,10 @@ class YAMLConfiguration {
         
         $config = WebuntisConfiguration::getConfig();
 
-        if(isset($config['vendor_dir'])) {
+        if (isset($config['vendor_dir'])) {
             $this->vendorDir = $config['vendor_dir'];
         }
-        if(empty(self::$files)) {
+        if (empty(self::$files)) {
             $this->load();
         }
         $this->parse();
@@ -55,11 +55,11 @@ class YAMLConfiguration {
      */
     private function parse() : void
     {
-        foreach(self::$files as $value) {
+        foreach (self::$files as $value) {
             $namespace = array_keys($value)[0];
             $splittedNamespace = explode("\\", $namespace);
             $modelName = $splittedNamespace[count($splittedNamespace) - 1];
-            if($value[$namespace]['repositoryClass'] != null) {
+            if ($value[$namespace]['repositoryClass'] != null) {
                 $this->repositories[$modelName] = $value[$namespace]['repositoryClass'];
             }
             $this->models[$modelName] = $namespace;
@@ -73,8 +73,8 @@ class YAMLConfiguration {
      */
     public static function getFields(string $namespace) : array
     {
-        foreach(self::$files as $value) {
-            if(isset($value[$namespace])) {
+        foreach (self::$files as $value) {
+            if (isset($value[$namespace])) {
                 return $value[$namespace]['fields'];
             }
         }
@@ -88,7 +88,7 @@ class YAMLConfiguration {
     public static function getAllFields() : array
     {
         $result = [];
-        foreach(self::$files as $value) {
+        foreach (self::$files as $value) {
             $result[] = $value['fields'];
         }
         return $result;
@@ -101,8 +101,8 @@ class YAMLConfiguration {
     public static function getAdditionalTypes() : array
     {
         $result = [];
-        foreach(self::$files as $value) {
-            if(isset($value[array_keys($value)[0]]['additionalTypes'])) {
+        foreach (self::$files as $value) {
+            if (isset($value[array_keys($value)[0]]['additionalTypes'])) {
                 $result = array_merge($result, $value[array_keys($value)[0]]['additionalTypes']);
             }
         }
@@ -133,10 +133,10 @@ class YAMLConfiguration {
     public function load() : void
     {
         $explodedPath = explode('/', __DIR__);
-        if(in_array($this->vendorDir, $explodedPath)) {
+        if (in_array($this->vendorDir, $explodedPath)) {
             $path = '';
-            foreach($explodedPath as $value) {
-                if($value == $this->vendorDir) {
+            foreach ($explodedPath as $value) {
+                if ($value == $this->vendorDir) {
                     break;
                 }
                 $path .= $value . '/';
@@ -147,7 +147,7 @@ class YAMLConfiguration {
         }
 
         $parsedFiles = [];
-        foreach(self::$files as $value) {
+        foreach (self::$files as $value) {
             $parsedFiles[] = Yaml::parse(file_get_contents($value));
         }
         self::$files = $parsedFiles;
@@ -162,8 +162,8 @@ class YAMLConfiguration {
     private function rglob(string $pattern, int $flags = 0) : array
     {
         $files = glob($pattern, $flags);
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
-            $files = array_merge($files, $this->rglob($dir.'/'.basename($pattern), $flags));
+        foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
+            $files = array_merge($files, $this->rglob($dir . '/' . basename($pattern), $flags));
         }
         return $files;
     }

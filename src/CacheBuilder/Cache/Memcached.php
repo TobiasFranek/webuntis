@@ -44,7 +44,7 @@ class Memcached extends MemcachedCache {
      * {@inheritdoc}
      */
     public function fetchMultiple(array $keys) {
-        foreach($keys as $i => $key) {
+        foreach ($keys as $i => $key) {
             $keys[$i] = 'webuntis.' . $key;
         }
         return parent::fetchMultiple($keys);
@@ -68,7 +68,7 @@ class Memcached extends MemcachedCache {
      * {@inheritdoc}
      */
     public function saveMultiple(array $keysAndValues, $lifetime = 0) {
-        foreach($keysAndValues as $key => $value) {
+        foreach ($keysAndValues as $key => $value) {
             $keysAndValues['webuntis.' . $key] = $value;
             unset($keysAndValues[$key]);
         }
