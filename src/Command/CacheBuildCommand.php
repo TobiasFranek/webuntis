@@ -75,9 +75,9 @@ class CacheBuildCommand extends Command{
 
         $argumentInput = new ArrayInput($arguments);
 
-        $returnCode = $command->run($argumentInput, $output);
+        $command->run($argumentInput, $output);
 
-        $config = new WebuntisConfiguration([
+        new WebuntisConfiguration([
             'admin' => [
                 'server' => $server,
                 'school' => $school,

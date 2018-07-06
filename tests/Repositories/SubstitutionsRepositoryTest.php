@@ -49,5 +49,28 @@ final class SubstitutionsRepositoryTest extends TestCase
         $this->assertArrayHasKey('rooms', $models[0]->serialize());
         $this->assertArrayHasKey('subjects', $models[0]->serialize());
 
+        $this->assertEquals(2, $repository->findAll(['id' => 'DESC'], null , 0, '2018-07-04', '2018-08-04')[0]->getId());
+
+        $models = $repository->findAll([], 1, 0, '2018-07-04', '2018-08-04');
+        $this->assertEquals(1, count($models));
+    }
+
+    public function testFindBy() : void
+    {   
+        $repository = new SubstitutionsRepository(Substitutions::class);
+
+        $models = $repository->findBy(['id' => 1], [], null, 0, '2018-07-04', '2018-08-04');
+        $this->assertEquals(1, count($models));
+
+        $this->assertEquals(1, $models[0]->getId());
+        $this->assertArrayHasKey('teachers', $models[0]->serialize());
+        $this->assertArrayHasKey('classes', $models[0]->serialize());
+        $this->assertArrayHasKey('subjects', $models[0]->serialize());
+        $this->assertArrayHasKey('rooms', $models[0]->serialize());
+
+        $this->assertEquals(1, $repository->findBy(['id' => 1], ['id' => 'DESC'], null , 0, '2018-07-04', '2018-08-04')[0]->getId());
+
+        $models = $repository->findAll([], 1, 0, '2018-07-04', '2018-08-04');
+        $this->assertEquals(1, count($models));
     }
 }

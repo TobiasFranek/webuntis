@@ -4,13 +4,12 @@ declare(strict_types=1);
 namespace Webuntis;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Query\Query;
 use Webuntis\Repositories\Repository;
 use Webuntis\Security\WebuntisSecurityManager;
 use Webuntis\Configuration\WebuntisConfiguration;
+use Webuntis\Exceptions\ModelException;
 
 /**
  * Webuntis is the main instance which stores the client
@@ -86,6 +85,7 @@ class Webuntis {
     /**
      * return the User thats is currently logged in with this instance
      * @return AbstractModel
+     * @throws ModelException
      */
     public function getCurrentUser() : object 
     {
@@ -94,6 +94,8 @@ class Webuntis {
             return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
         }else if($this->currentUserType == 2) {
             return $query->get('Teachers')->findBy(['id' => $this->currentUserId])[0];
+        } else {
+            throw new ModelException('There is no Model available for the user type: "' . $this->currentUserType . '"');
         }
     }
 

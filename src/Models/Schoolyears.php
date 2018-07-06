@@ -42,7 +42,7 @@ class Schoolyears extends AbstractModel implements CachableModelInterface {
     /**
      * sets name
      * @param string $name
-     * @return Schoolyear
+     * @return Schoolyears
      */
     public function setName(string $name) : self 
     {
@@ -63,7 +63,7 @@ class Schoolyears extends AbstractModel implements CachableModelInterface {
     /**
      * set the startDate
      * @param \DateTime $startDate
-     * @return Schoolyear
+     * @return Schoolyears
      */
     public function setStartDate(\DateTime $startDate) : self 
     {
@@ -84,7 +84,7 @@ class Schoolyears extends AbstractModel implements CachableModelInterface {
     /**
      * sets the endDate
      * @param \DateTime $endDate
-     * @return Schoolyear
+     * @return Schoolyears
      */
     public function setEndDate(\DateTime $endDate) : self
     {
@@ -106,7 +106,7 @@ class Schoolyears extends AbstractModel implements CachableModelInterface {
      * sets an given field
      * @param string $field
      * @param mixed $value
-     * @return Schoolyear
+     * @return Schoolyears
      */
     public function set(string $field, $value) : self 
     {

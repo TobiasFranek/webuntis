@@ -48,6 +48,10 @@ final class PeriodRepositoryTest extends TestCase
         $this->assertArrayHasKey('subjects', $models[0]->serialize());
         $this->assertArrayHasKey('rooms', $models[0]->serialize());
 
+        $this->assertEquals(3, $repository->findAll(['id' => 'DESC'])[0]->getId());
+
+        $models = $repository->findAll([], 1);
+        $this->assertEquals(1, count($models));
     }
 
     public function testFindBy() : void
@@ -63,5 +67,9 @@ final class PeriodRepositoryTest extends TestCase
         $this->assertArrayHasKey('subjects', $models[0]->serialize());
         $this->assertArrayHasKey('rooms', $models[0]->serialize());
 
+        $this->assertEquals(1, $repository->findBy(['id' => 1], ['id' => 'DESC'])[0]->getId());
+
+        $models = $repository->findAll([], 1);
+        $this->assertEquals(1, count($models));
     }
 }

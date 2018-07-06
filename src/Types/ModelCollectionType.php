@@ -19,11 +19,11 @@ class ModelCollectionType implements TypeInterface {
 
     /**
      * executes an certain parsing part
-     * @param AbstractModel $model
+     * @param object $model
      * @param array $data
      * @param array $field
      */
-    public static function execute(AbstractModel &$model, array $data, array $field) : void 
+    public static function execute(object &$model, array $data, array $field) : void 
     {
         $fieldName = array_keys($field)[0];
         $fieldValues = $field[$fieldName];

@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Webuntis\Repositories;
 
-use Doctrine\Common\Cache\MemcachedCache;
-use Webuntis\Cache\Memcached;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Exceptions\RepositoryException;
 use Webuntis\Models\Interfaces\CachableModelInterface;
@@ -34,14 +32,9 @@ class Repository {
     protected $instance;
 
     /**
-     * @var object
+     * @var object|bool
      */
     protected $cache;
-
-    /**
-     * @var bool
-     */
-    public static $disabledCache;
 
     /**
      * @var ExecutionHandlerInterface
@@ -92,7 +85,7 @@ class Repository {
         } else {
             $data = $this->find($data, $params);
         }
-        if ($limit != null) {
+        if ($limit) {
             return array_slice($data, 0, $limit);
         }
         return $data;
@@ -112,7 +105,7 @@ class Repository {
             $sortingOrder = $sort[$field];
             $data = $this->sort($data, $field, $sortingOrder);
         }
-        if ($limit != null) {
+        if ($limit) {
             $data = array_slice($data, 0, $limit);
         }
         return $data;
@@ -136,7 +129,7 @@ class Repository {
 
     /**
      * searches the $data array with the given params
-     * @param AbstractModel[] $data
+     * @param array $data
      * @param array $params
      * @return AbstractModel[]
      * @throws RepositoryException
@@ -294,14 +287,6 @@ class Repository {
     }
 
     /**
-     * @return bool
-     */
-    public function checkIfCachingIsDisabled() : bool 
-    {
-        return self::$disabledCache;
-    }
-
-    /**
      * @param string $haystack
      * @param string $needle
      * @return bool
@@ -328,6 +313,6 @@ class Repository {
      */
     protected function contains(string $haystack, string $needle) : bool 
     {
-        return strpos($haystack, $needle) != false;
+        return strpos($haystack, $needle) !== false;
     }
 }

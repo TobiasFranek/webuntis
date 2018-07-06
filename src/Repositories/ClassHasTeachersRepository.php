@@ -57,9 +57,9 @@ class ClassHasTeachersRepository extends Repository {
         } else {
             $data = $classesHaveTeachers;
         }
-        if ($limit != null) {
+        if ($limit) {
             return array_slice($data, 0, $limit);
-        }
+        } 
         return $data;
     }
 }

@@ -45,7 +45,7 @@ class Memcached extends MemcachedCache {
      */
     public function fetchMultiple(array $keys) {
         foreach($keys as $i => $key) {
-            $keys[i] = 'webuntis.' . $key;
+            $keys[$i] = 'webuntis.' . $key;
         }
         return parent::fetchMultiple($keys);
     }

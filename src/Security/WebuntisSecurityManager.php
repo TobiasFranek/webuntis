@@ -46,7 +46,7 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
     private $context;
     
     /**
-     * @var object
+     * @var object|bool
      */
     private $cache;
 
@@ -56,7 +56,7 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
     private $session;
 
     /**
-     * @var string
+     * @var string|object
      */
     private $clientClass;
     
@@ -89,6 +89,7 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      */
     private function createClient() : object
     {
+        $client;
         if ($this->cache && $this->cache->contains('security.' . $this->context)) {
             $data = $this->cache->fetch('security.' . $this->context);
             $this->currentUserId = -1;
@@ -128,11 +129,11 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      */
     public function getClient() : object 
     {
-        if(isset(static::$clients[$this->context])) {
-            return static::$clients[$this->context];
+        if(isset(self::$clients[$this->context])) {
+            return self::$clients[$this->context];
         } else {
-            static::$clients[$this->context] = $this->createClient();
-            return static::$clients[$this->context];
+            self::$clients[$this->context] = $this->createClient();
+            return self::$clients[$this->context];
         }
     }
 
@@ -188,8 +189,8 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      */
     public function logout() : void 
     {
-        static::$clients[$this->context]->call('logout', []);
+        self::$clients[$this->context]->call('logout', []);
         $this->cache->delete('security.' . $this->context);
-        unset(static::$clients[$this->context]);
+        unset(self::$clients[$this->context]);
     }
 }

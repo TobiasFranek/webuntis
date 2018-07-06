@@ -48,7 +48,7 @@ class SubstitutionsRepository extends Repository {
         } else {
             $data = $this->find($data, $params);
         }
-        if ($limit != null) {
+        if ($limit) {
             return array_slice($data, 0, $limit);
         }
         return $data;
@@ -81,7 +81,7 @@ class SubstitutionsRepository extends Repository {
             $sortingOrder = $sort[$field];
             $data = $this->sort($data, $field, $sortingOrder);
         }
-        if ($limit != null) {
+        if ($limit) {
             $data = array_slice($data, 0, $limit);
         }
         return $data;

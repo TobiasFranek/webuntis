@@ -29,11 +29,11 @@ interface TypeInterface {
 
     /**
      * executes an certain parsing part
-     * @param AbstractModel $model
+     * @param object $model
      * @param array $data
      * @param array $field
      */
-    public static function execute(AbstractModel &$model, array $data, array $field);
+    public static function execute(object &$model, array $data, array $field);
 
     /**
      * asks for the params according to the type and return an array with the field information

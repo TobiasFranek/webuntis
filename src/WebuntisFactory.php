@@ -36,12 +36,12 @@ class WebuntisFactory {
      */
     public static function create(string $model = null) : object 
     {
-        if($model !=  null) {
+        if($model) {
             $interfaces = class_implements($model);
 
             if (isset($interfaces[ConfigurationModelInterface::class])) {
                 $config = $model::CONFIG_NAME;
-            } else if (isset(static::$config['only_admin']) && static::$config['only_admin']){
+            } else if (isset(self::$config['only_admin']) && self::$config['only_admin']){
                 $config = 'admin';
             } else {
                 $config = 'default';
@@ -51,10 +51,10 @@ class WebuntisFactory {
         }
 
 
-        if (!isset(static::$instances[$config])) {
-            static::$instances[$config] = new Webuntis(static::$config[$config], $config);
+        if (!isset(self::$instances[$config])) {
+            self::$instances[$config] = new Webuntis(self::$config[$config], $config);
         }
-        return static::$instances[$config];
+        return self::$instances[$config];
     }
 
     /**
@@ -64,7 +64,7 @@ class WebuntisFactory {
      */
     public static function addConfig(string $name, array $config) : void 
     {
-        static::$config[$name] = $config;
+        self::$config[$name] = $config;
     }
 
     /**
@@ -73,7 +73,7 @@ class WebuntisFactory {
      */
     public static function setConfig(array $config) : void 
     {
-        static::$config = $config;
+        self::$config = $config;
     }
 
     /**
@@ -82,7 +82,7 @@ class WebuntisFactory {
      */
     public static function getConfig() : array 
     {
-        return static::$config;
+        return self::$config;
     }
 
 }

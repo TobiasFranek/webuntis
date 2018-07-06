@@ -48,19 +48,6 @@ class WebuntisConfiguration {
      */
     public static function setConfig(array $config) : void
     {
-        if(isset($config['disableCache'])) {
-            if(extension_loaded('memcached') == false) {
-                Repository::$disabledCache = true;
-            }else {
-                Repository::$disabledCache = $config['disableCache'];
-            }
-        } else {
-            if(extension_loaded('memcached') == false) {
-                Repository::$disabledCache = true;
-            }else {
-                Repository::$disabledCache = false;
-            }
-        }
         WebuntisFactory::setConfig($config);
     }
 }

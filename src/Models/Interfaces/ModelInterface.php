@@ -24,7 +24,7 @@ interface ModelInterface {
 
     /**
      * @param string $format
-     * @return array
+     * @return array|string
      */
     public function serialize(?string $format);
 }

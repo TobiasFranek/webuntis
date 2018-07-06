@@ -31,10 +31,10 @@ class PeriodRepository extends Repository {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
-        if ($type == null) {
+        if (!$type) {
             $type = $this->instance->getCurrentUserType();
         }
-        if ($id == null) {
+        if (!$id) {
             $id = $this->instance->getCurrentUser()->getId();
         }
         if($startDate && $endDate) {
@@ -57,7 +57,7 @@ class PeriodRepository extends Repository {
         }else {
             $data = $this->find($data, $params);
         }
-        if($limit != null) {
+        if($limit) {
             return array_slice($data, 0, $limit);
         }
         return $data;
@@ -75,10 +75,10 @@ class PeriodRepository extends Repository {
      */
     public function findAll(array $sort = [], int $limit = null, int $id = null, int $type = null, string $startDate = null, string $endDate = null) : array 
     {
-        if ($type == null) {
+        if (!$type) {
             $type = $this->instance->getCurrentUserType();
         }
-        if ($id == null) {
+        if (!$id) {
             $id = $this->instance->getCurrentUser()->getId();
         }
         if($startDate && $endDate) {
@@ -97,7 +97,7 @@ class PeriodRepository extends Repository {
             $sortingOrder = $sort[$field];
             $data = $this->sort($data, $field, $sortingOrder);
         }
-        if($limit != null) {
+        if($limit) {
             $data = array_slice($data, 0, $limit);
         }
         return $data;

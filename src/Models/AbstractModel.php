@@ -63,7 +63,8 @@ abstract class AbstractModel implements ModelInterface {
      * @param $format
      * @return array|string
      */
-    public function serialize(?string $format = null) {
+    public function serialize(?string $format = null) 
+    {
         return Serializer::serialize($this, $format);
     }
 

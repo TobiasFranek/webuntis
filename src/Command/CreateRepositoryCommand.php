@@ -52,9 +52,9 @@ class CreateRepositoryCommand extends Command {
                         $classPath = $helper->ask($input, $output, $question);
                         $fullPath = $classPath . '/' . $name . '.php';
                         $file = new File($fullPath);
-                        $object = new Object($namespace . "\\" . $name);
+                        $object = new Objekt($namespace . "\\" . $name);
                         $extendFullyQualifiedName = new FullyQualifiedName(Repository::class);
-                        $extend = new Object(Repository::class);
+                        $extend = new Objekt(Repository::class);
                         $object->extend($extend);
                         $file->addFullyQualifiedName($extendFullyQualifiedName);
                         $content = Yaml::parse(file_get_contents($path));
@@ -71,7 +71,7 @@ class CreateRepositoryCommand extends Command {
                         $output->writeln('<error>File does not exist</error>');
                     }
                 } else {
-                    $output->writeln('<error>File is no webuntis.yml yml file</error>');
+                    $output->writeln('<error>File is no webuntis.yml file</error>');
                 }
             }else {
                 $output->writeln('<error>Something is wrong with the path it should be src/example.webuntis.yml</error>');
@@ -93,9 +93,9 @@ class CreateRepositoryCommand extends Command {
                             $classPath = $helper->ask($input, $output, $question);
                             $fullPath = $classPath . '/' . $name . '.php';
                             $file = new File($fullPath);
-                            $object = new Object($namespace . "\\" . $name);
+                            $object = new Objekt($namespace . "\\" . $name);
                             $extendFullyQualifiedName = new FullyQualifiedName(Repository::class);
-                            $extend = new Object(Repository::class);
+                            $extend = new Objekt(Repository::class);
                             $object->extend($extend);
                             $file->addFullyQualifiedName($extendFullyQualifiedName);
                             $content = Yaml::parse(file_get_contents($path));

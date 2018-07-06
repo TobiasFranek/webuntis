@@ -13,7 +13,7 @@ interface CacheBuilderRoutineInterface {
     /**
      * executes the CacheBuilderRoutine so a Caching instance can be created
      * @param array $config
-     * @return object
+     * @return object|bool
      */
     public static function execute(array $config);
 }

@@ -6,6 +6,7 @@ namespace Webuntis\Tests\Configuration;
 use PHPUnit\Framework\TestCase;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Repositories\Repository;
+use Webuntis\CacheBuilder\CacheBuilder;
 
 /**
  * WebuntisConfigurationTest
@@ -24,10 +25,12 @@ final class WebuntisConfigurationTest extends TestCase
 
         WebuntisConfiguration::setConfig([
             'test' => 'test',
-            'disableCache' => 'true'
+            'disable_cache' => 'true'
         ]);
 
-        $this->assertEquals(true, Repository::$disabledCache);
+        $cacheBuilder = new CacheBuilder();
+
+        $this->assertEquals(true, $cacheBuilder->isCacheDisabled());
     }
 
     public function testAddConfig() : void

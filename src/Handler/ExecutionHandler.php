@@ -18,7 +18,7 @@ use Webuntis\CacheBuilder\CacheBuilder;
 class ExecutionHandler implements ExecutionHandlerInterface {
 
     /**
-     * @var object
+     * @var object|bool
      */
     private $cache;
 

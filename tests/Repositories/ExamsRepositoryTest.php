@@ -48,5 +48,9 @@ final class ExamsRepositoryTest extends TestCase
         $this->assertArrayHasKey('students', $models[0]->serialize());
         $this->assertArrayHasKey('subject', $models[0]->serialize());
 
+        $this->assertEquals(2, $repository->findAll(['id' => 'DESC'])[0]->getId());
+
+        $models = $repository->findAll([], 1);
+        $this->assertEquals(1, count($models));
     }
 }

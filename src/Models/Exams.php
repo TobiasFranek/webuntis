@@ -96,7 +96,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     /**
      * @return Subjects
      */
-    public function getSubject() : ModelInterface
+    public function getSubject() : Subjects
     {
         return $this->subject;
     }
@@ -149,7 +149,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
      * @param Subjects $subject
      * @return Exams
      */
-    public function setSubject(ModelInterface $subject) : self 
+    public function setSubject(Subjects $subject) : self 
     {
         $this->subject = $subject;
     
@@ -170,7 +170,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     /**
      * return the children by given id
      * @param string $key
-     * @return AbstractModel[]
+     * @return AbstractModel[]|Subjects
      * @throws ModelException
      */
     public function get(string $key) : array 

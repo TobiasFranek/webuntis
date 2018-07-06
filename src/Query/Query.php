@@ -21,6 +21,16 @@ class Query {
     private static $cachedRepositories = [];
 
     /**
+     * @var array
+     */
+    private $model = [];
+
+    /**
+     * @var array
+     */
+    private $repositories = [];
+
+    /**
      * Query constructor.
      */
     public function __construct() {
@@ -39,10 +49,10 @@ class Query {
     public function get(string $className) : object 
     {
         if($className == 'User') {
-            if (!isset(static::$cachedRepositories[$className])) {
-                static::$cachedRepositories[$className] = new $this->repositories[$className]();
+            if (!isset(self::$cachedRepositories[$className])) {
+                self::$cachedRepositories[$className] = new $this->repositories[$className]();
             }
-            return static::$cachedRepositories[$className];
+            return self::$cachedRepositories[$className];
         }
         if (isset($this->models[$className])) {
             if (isset($this->repositories[$className])) {
@@ -50,10 +60,10 @@ class Query {
             } else {
                 $name = 'Default';
             }
-            if (!isset(static::$cachedRepositories[$className])) {
-                static::$cachedRepositories[$className] = new $this->repositories[$name]($this->models[$className]);
+            if (!isset(self::$cachedRepositories[$className])) {
+                self::$cachedRepositories[$className] = new $this->repositories[$name]($this->models[$className]);
             }
-            return static::$cachedRepositories[$className];
+            return self::$cachedRepositories[$className];
         }
         throw new QueryException('Model ' . $className . ' not found');
     }

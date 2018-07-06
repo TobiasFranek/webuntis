@@ -50,7 +50,7 @@ class CacheBuilder  {
         $this->cacheType = self::DEFAULT;
 
         if(isset($config['disable_cache'])) {
-            $this->cacheDisabled = $config['disable_cache'];
+            $this->cacheDisabled = boolval($config['disable_cache']);
         }
         if(isset($config['cache'])) {
             if(isset($config['cache']['routines'])) {
@@ -77,5 +77,14 @@ class CacheBuilder  {
         } else {
             return false;
         }
+    }
+
+    /**
+     * returns if the cache is disabled 
+     * @return bool
+     */
+    public function isCacheDisabled() : bool
+    {
+        return $this->cacheDisabled;
     }
 }

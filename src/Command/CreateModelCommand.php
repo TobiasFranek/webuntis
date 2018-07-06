@@ -62,7 +62,7 @@ class CreateModelCommand extends Command {
         $fullPathYML = $pathToYMLConfig . '/' . $modelname . '.webuntis.yml';
         $fullPath = $pathToPHPFile . '/' . $modelname . '.php';
         $file = new File($fullPath);
-        $object = new Object($namespace . "\\" . $modelname);
+        $object = new Objekt($namespace . "\\" . $modelname);
         $ymlConfig = [$object->getFullyQualifiedName() => [
             'repositoryClass' => null,
             'fields' => [
@@ -70,7 +70,7 @@ class CreateModelCommand extends Command {
             ]
         ]];
         $extendFullyQualifiedName = new FullyQualifiedName(AbstractModel::class);
-        $extend = new Object(AbstractModel::class);
+        $extend = new Objekt(AbstractModel::class);
         $object->extend($extend);
         $file->addFullyQualifiedName($extendFullyQualifiedName);
         $question = new ConfirmationQuestion('Is your model cachable?[Y/N]: ', false);
@@ -108,22 +108,24 @@ class CreateModelCommand extends Command {
                     $phpDoc = new PropertyPhpdoc();
                     $phpDoc->setVariableTag(new VariableTag($allTypes[$attribute]::getType()));
                     $property->setPhpdoc($phpDoc);
-                    if(!in_array(FullyQualifiedName::make($allTypes[$attribute]::getType()), $file->allFullyQualifiedNames())  && $allTypes[$attribute]::getName() != 'model' && $allTypes[$attribute]::getName() != 'modelCollection') {
-                        $file->addFullyQualifiedName(FullyQualifiedName::make($allTypes[$attribute]::getType()));
+                    if(!in_array(new FullyQualifiedName($allTypes[$attribute]::getType()), $file->allFullyQualifiedNames())  && $allTypes[$attribute]::getName() != 'model' && $allTypes[$attribute]::getName() != 'modelCollection') {
+                        $file->addFullyQualifiedName(new FullyQualifiedName($allTypes[$attribute]::getType()));
                     }
                     $object->addProperty($property);
-                    $getter = Method::make('get' . ucfirst($name))->setBody('        return $this->' . $name . ';');
+                    $getter = new Method('get' . ucfirst($name));
+                    $getter->setBody('        return $this->' . $name . ';');
                     $phpDoc = new MethodPhpdoc();
                     $phpDoc->setDescription(new Description('Getter for ' . $name));
-                    $phpDoc->setReturnTag(new ReturnTag($allTypes[$attribute]::getType(), $name));
+                    $phpDoc->setReturnTag(new ReturnTag($allTypes[$attribute]::getType()));
                     $getter->setPhpdoc($phpDoc);
                     $object->addMethod($getter);
                     if(!strpos($allTypes[$attribute]::getType(), '[]')) {
-                        $setterArgument = Argument::make($allTypes[$attribute]::getType(), $name);
+                        $setterArgument = new Argument($allTypes[$attribute]::getType(), $name);
                     }else {
-                        $setterArgument = Argument::make('array', $name);
+                        $setterArgument = new Argument('array', $name);
                     }
-                    $setter = Method::make('set' . ucfirst($name))->addArgument($setterArgument)->setBody('        $this->' . $name . ' = $' . $name . ';');
+                    $setter = new Method('set' . ucfirst($name));
+                    $setter->addArgument($setterArgument)->setBody('        $this->' . $name . ' = $' . $name . ';');
                     $phpDoc = new MethodPhpdoc();
                     $phpDoc->setDescription(new Description('Setter for ' . $name));
                     $phpDoc->addParameterTag(new ParameterTag($allTypes[$attribute]::getType(), $name));
@@ -140,9 +142,10 @@ class CreateModelCommand extends Command {
             $question = new Question('Name of the attribute you want to add [enter if finished]: ');
             $name = $helper->ask($input, $output, $question);
         }
-        $setArgument1 = Argument::make('mixed', 'field');
-        $setArgument2 = Argument::make('mixed', 'value');
-        $set = Method::make('set')->addArgument($setArgument1)->addArgument($setArgument2)->setBody('        $this->$field = $value;');
+        $setArgument1 = new Argument('mixed', 'field');
+        $setArgument2 = new Argument('mixed', 'value');
+        $set = new Method('set');
+        $set->addArgument($setArgument1)->addArgument($setArgument2)->setBody('        $this->$field = $value;');
         $phpDoc = new MethodPhpdoc();
         $phpDoc->setDescription(new Description('sets an given field'));
         $phpDoc->addParameterTag(new ParameterTag('mixed', 'field'));
@@ -157,8 +160,9 @@ class CreateModelCommand extends Command {
                 $getBody .= "\n            case '" . $value . "':\n" . '                return $this->' . $value . ";";
             }
             $getBody .= "\n" . '            default:' . "\n" . '                throw new ModelException("array of objects $key doesn\'t exist");' . "\n" . '        }';
-            $getArgument1 = Argument::make('mixed', 'key');
-            $get = Method::make('get')->addArgument($getArgument1)->setBody($getBody);
+            $getArgument1 = new Argument('mixed', 'key');
+            $get = new Method('get');
+            $get->addArgument($getArgument1)->setBody($getBody);
             $phpDoc = new MethodPhpdoc();
             $phpDoc->setDescription(new Description('return the children by given key'));
             $phpDoc->addParameterTag(new ParameterTag('string', 'key'));
@@ -186,6 +190,6 @@ class CreateModelCommand extends Command {
 
         $argumentInput = new ArrayInput($arguments);
 
-        $returnCode = $command->run($argumentInput, $output);
+        $command->run($argumentInput, $output);
     }
 }
