@@ -74,7 +74,7 @@ class ClassHasTeachers extends AbstractModel {
      * @return string
      */
     public function getFullName() : string 
-     {
+    {
         return $this->fullName;
     }
 
