@@ -59,6 +59,6 @@ final class WebuntisTest extends TestCase
         $this->assertEquals(2, $instance->getCurrentUserType());
         $this->assertEquals('yourserver.yourschool.com', $instance->getPath());
         $this->assertEquals('admin', $instance->getContext());
-        $this->assertTrue(method_exists($instance->getClient(), 'execute'));
+        $this->assertTrue(method_exists($instance->getClient(), 'call'));
     }
 }

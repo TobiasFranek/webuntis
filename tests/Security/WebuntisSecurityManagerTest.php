@@ -6,6 +6,7 @@ namespace Webuntis\Tests\Repositories;
 use PHPUnit\Framework\TestCase;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Security\WebuntisSecurityManager;
+use Webuntis\Client\Client;
 
 /**
  * WebuntisSecurityManagerTest
@@ -35,6 +36,16 @@ final class WebuntisSecurityManagerTest extends TestCase
     }
     public function testSecurityManager() : void
     {   
+
+        $clientMock = $this->createMock(Client::class);
+
+        $clientMock->method('call')
+               ->willReturn([
+                'sessionId' => '644AFBF2C1B592B68C6B04938BD26965',
+                'personType' => '5',
+                'personId' => '1'
+        ]);
+
         $manager = new WebuntisSecurityManager(
             'yourserver.yourschool.com', 
             [
@@ -45,15 +56,7 @@ final class WebuntisSecurityManagerTest extends TestCase
                 'password' => 'youradminpassword'
             ],
             'admin',
-            new class {
-                public function execute() {
-                    return [
-                        'sessionId' => '644AFBF2C1B592B68C6B04938BD26965',
-                        'personType' => '5',
-                        'personId' => '1'
-                    ];
-                }
-            }
+            $clientMock
         );
 
         $client = $manager->getClient();
@@ -62,7 +65,7 @@ final class WebuntisSecurityManagerTest extends TestCase
             'sessionId' => '644AFBF2C1B592B68C6B04938BD26965',
             'personType' => '5',
             'personId' => '1'
-        ], $client->execute());
+        ], $client->call('authenticate', ['youradminusername', 'youradminpassword', rand(1, 4000)]));
 
         $this->assertEquals(1, $manager->getCurrentUserId());
         $this->assertEquals(5, $manager->getCurrentUserType());

@@ -41,7 +41,7 @@ class ExecutionHandler implements ExecutionHandlerInterface {
         if ($this->cache && $this->cache->contains($model::METHOD) && isset($interfaces[CachableModelInterface::class])) {
             $data = $this->cache->fetch($model::METHOD);
         } else {
-            $result = $repository->getInstance()->getClient()->execute($model::METHOD, $params);
+            $result = $repository->getInstance()->getClient()->call($model::METHOD, $params);
             $data = $repository->parse($result);
 
             if ($this->cache && isset($interfaces[CachableModelInterface::class])) {

@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Webuntis\Security;
 
 use Webuntis\Repositories\Repository;
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
+use Webuntis\Client\Client;
 use Webuntis\Security\Interfaces\SecurityManagerInterface;
 use Webuntis\CacheBuilder\CacheBuilder;
 
@@ -101,20 +100,23 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
                 $this->currentUserType = $data['userType'];
             }
             $this->session = $data['session'];
-            $httpClient = new HttpClient($this->path);
             $newDate = $data['tokenCreatedAt']->add(new \DateInterval('PT1200000S'));
-            $httpClient->withCookies([
-                'JSESSIONID' => $this->session,
-                'Path' => '/WebUntis',
-                'Version' => '1',
-                'Max-Age' => 1209600,
-                'Expires' => $newDate->format('D, d-M-Y H:i:s ') . 'GMT'
+            
+            $cookie = 'JSESSIONID=' . $this->session . '; Path=/WebUntis; Version=1; Max-Age=1209600; Expires=' . $newDate->format('D, d-M-Y H:i:s ') . 'GMT;';
 
-            ]);
-            $client = new $this->clientClass($this->path, false, $httpClient);
+            if(gettype($this->clientClass) == 'object') {
+                $client = $this->clientClass;
+            } else if (gettype($this->clientClass) == 'string') {
+                $client = new $this->clientClass($this->path);
+                $client->setHeader('Cookie', $cookie);
+            }
         }else {
-            $client = new $this->clientClass($this->path);
-            $this->authenticate($client);
+            if(gettype($this->clientClass) == 'object') {
+                $client = $this->clientClass;
+            } else if (gettype($this->clientClass) == 'string') {
+                $client = new $this->clientClass($this->path);
+            }
+            $client = $this->authenticate($client);
         }
 
         return $client;
@@ -137,26 +139,30 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
     /**
      * authenticates the user
      * @param object $client 
-     * @return array
+     * @return object
      */
-    private function authenticate(object $client) : array 
+    private function authenticate(object $client) : object 
     {
-        $result = $client->execute('authenticate', [$this->config['username'], $this->config['password'], rand(1, 4000)]);
+        $result = $client->call('authenticate', [$this->config['username'], $this->config['password'], rand(1, 4000)]);
         $this->currentUserId = intval($result['personId']);
         $this->currentUserType = intval($result['personType']);
-
+        $createdAt = new \DateTime();
         if ($this->cache) {
             $this->cache->save('security.' . $this->context, [
                 'session' => $result['sessionId'],
                 'userId' => $this->currentUserId,
                 'userType' => $this->currentUserType,
-                'tokenCreatedAt' => new \DateTime()
+                'tokenCreatedAt' => $createdAt
             ], 86400);
         }
+        $newDate = $createdAt->add(new \DateInterval('PT1200000S'));
 
         $this->session = $result['sessionId'];
 
-        return $result;
+        $cookie = 'JSESSIONID=' . $this->session . '; Path=/WebUntis; Version=1; Max-Age=1209600; Expires=' . $newDate->format('D, d-M-Y H:i:s ') . 'GMT;';
+            
+        $client->setHeader('Cookie', $cookie);
+        return $client;
     }
 
     /**
@@ -182,7 +188,7 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      */
     public function logout() : void 
     {
-        static::$clients[$this->context]->execute('logout', []);
+        static::$clients[$this->context]->call('logout', []);
         $this->cache->delete('security.' . $this->context);
         unset(static::$clients[$this->context]);
     }

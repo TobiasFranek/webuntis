@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Webuntis\Tests\Util;
 
 use Webuntis\Repositories\Repository;
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
+use Webuntis\Client\Client;
 use Webuntis\Security\Interfaces\SecurityManagerInterface;
 use Webuntis\CacheBuilder\CacheBuilder;
 
@@ -393,7 +392,7 @@ class TestSecurityManager implements SecurityManagerInterface {
                 ]
             ];
 
-            public function execute($method) {
+            public function call($method) {
                 return $this->data[$method];
             }
 

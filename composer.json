@@ -17,14 +17,14 @@
   ],
   "require": {
     "php": "^7.2",
-    "fguillot/json-rpc": "@stable",
     "doctrine/cache": "^1.6",
     "jms/serializer": "^1.2",
     "symfony/yaml": "^2.8",
     "symfony/console": "^2.8",
     "symfony/filesystem": "^2.8",
     "memio/memio": "^2.0",
-    "ramsey/uuid": "^3.7"
+    "ramsey/uuid": "^3.7",
+    "datto/json-rpc-http": "^4.0"
   },
   "suggest": {
     "ext-memcached": "Required for caching"
