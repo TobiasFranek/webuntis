@@ -37,27 +37,27 @@ class PeriodRepository extends Repository {
         if ($id === null) {
             $id = $this->instance->getCurrentUser()->getId();
         }
-        if($startDate && $endDate) {
+        if ($startDate && $endDate) {
             $startDate = new \DateTime($startDate);
             $endDate = new \DateTime($endDate);
             $startDate = date_format($startDate, 'Ymd');
             $endDate = date_format($endDate, 'Ymd');
             $data = $this->executionHandler->execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
-        }else if ($startDate || $endDate) {
+        } else if ($startDate || $endDate) {
             throw new RepositoryException('missing parameter endDate or startDate');
-        }else {
+        } else {
             $data = $this->executionHandler->execute($this, ['id' => $id, 'type' => $type]);
         }
 
-        if(!empty($sort)) {
+        if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->find($data, $params);
             $data = $this->sort($data, $field, $sortingOrder);
-        }else {
+        } else {
             $data = $this->find($data, $params);
         }
-        if($limit !== null) {
+        if ($limit !== null) {
             return array_slice($data, 0, $limit);
         }
         return $data;
@@ -81,23 +81,23 @@ class PeriodRepository extends Repository {
         if ($id === null) {
             $id = $this->instance->getCurrentUser()->getId();
         }
-        if($startDate && $endDate) {
+        if ($startDate && $endDate) {
             $startDate = new \DateTime($startDate);
             $endDate = new \DateTime($endDate);
             $startDate = date_format($startDate, 'Ymd');
             $endDate = date_format($endDate, 'Ymd');
             $data = $this->executionHandler->execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
-        }else if ($startDate || $endDate){
+        } else if ($startDate || $endDate) {
             throw new RepositoryException('missing parameter endDate or startDate');
-        }else {
+        } else {
             $data = $this->executionHandler->execute($this, ['id' => $id, 'type' => $type]);
         }
-        if(!empty($sort)) {
+        if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->sort($data, $field, $sortingOrder);
         }
-        if($limit !== null) {
+        if ($limit !== null) {
             $data = array_slice($data, 0, $limit);
         }
         return $data;

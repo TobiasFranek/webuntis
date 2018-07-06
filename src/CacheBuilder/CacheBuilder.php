@@ -11,7 +11,7 @@ use Webuntis\Configuration\WebuntisConfiguration;
  * @author Tobias Franek <tobias.franek@gmail.com>
  * @license MIT
  */
-class CacheBuilder  {
+class CacheBuilder {
 
     /**
      * @var object[]
@@ -49,14 +49,14 @@ class CacheBuilder  {
         $config = WebuntisConfiguration::getConfig();
         $this->cacheType = self::DEFAULT;
 
-        if(isset($config['disable_cache'])) {
+        if (isset($config['disable_cache'])) {
             $this->cacheDisabled = boolval($config['disable_cache']);
         }
-        if(isset($config['cache'])) {
-            if(isset($config['cache']['routines'])) {
+        if (isset($config['cache'])) {
+            if (isset($config['cache']['routines'])) {
                 $this->routines = array_merge($config['cache']['routines'], $this->routines);
             }
-            if(isset($config['cache']['type'])) {
+            if (isset($config['cache']['type'])) {
                 $this->cacheType = $config['cache']['type'];
             }
             $this->config = $config['cache'];
@@ -69,7 +69,7 @@ class CacheBuilder  {
      * @return object|bool
      */
     public function create() {
-        if(!$this->cacheDisabled) {
+        if (!$this->cacheDisabled) {
             if (!isset(self::$caches[$this->cacheType])) {
                 self::$caches[$this->cacheType] = $this->routines[$this->cacheType]::execute($this->config);
             } 

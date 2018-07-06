@@ -32,12 +32,12 @@ class ModelCollectionType implements TypeInterface {
         if (isset($data[$fieldValues['api']['name']])) {
             if (!empty($data[$fieldValues['api']['name']])) {
                 foreach ($data[$fieldValues['api']['name']] as $value) {
-                    if(isset($value[$fieldValues['api']['searchkey']])){
+                    if (isset($value[$fieldValues['api']['searchkey']])) {
                         $referencedModel = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $value[$fieldValues['api']['searchkey']]]);
-                    }else {
+                    } else {
                         $referencedModel = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $value]);
                     }
-                    if(isset($referencedModel[0])){
+                    if (isset($referencedModel[0])) {
                         $tmp[] = $referencedModel[0];
                     }
                 }

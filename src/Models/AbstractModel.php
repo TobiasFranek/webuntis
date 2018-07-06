@@ -32,7 +32,7 @@ abstract class AbstractModel implements ModelInterface {
      * @param array $data
      */
     public function __construct(?array $data = []) {
-        if(!empty($data)) {
+        if (!empty($data)) {
             $this->parse($data);
         }
     }
@@ -74,9 +74,9 @@ abstract class AbstractModel implements ModelInterface {
      */
     protected function parse(array $data) : void 
     {
-        if(isset($data['id'])) {
+        if (isset($data['id'])) {
             $this->setId($data['id']);
-        }else {
+        } else {
             $uuid = Uuid::uuid4();
             $this->setId($uuid->toString());
         }

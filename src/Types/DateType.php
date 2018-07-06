@@ -25,7 +25,7 @@ class DateType implements TypeInterface {
     public static function execute(object &$model, array $data, array $field) : void 
     {
         $fieldName = array_keys($field)[0];
-        if(isset($data[$field[$fieldName]['api']['name']])) {
+        if (isset($data[$field[$fieldName]['api']['name']])) {
             $model->set($fieldName, new \DateTime(strval($data[$field[$fieldName]['api']['name']])));
         }
     }

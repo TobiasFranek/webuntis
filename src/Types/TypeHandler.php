@@ -66,11 +66,11 @@ class TypeHandler {
      */
     public function handle(AbstractModel &$model, array $data, array $fields) : void 
     {
-        foreach($fields as $key => $value) {
+        foreach ($fields as $key => $value) {
             $implements = class_implements(self::$types[$value['type']]);
-            if(isset($implements[TypeInterface::class])) {
+            if (isset($implements[TypeInterface::class])) {
                 self::$types[$value['type']]::execute($model, $data, [$key => $value]);
-            }else {
+            } else {
                 throw new TypeException('this type is not supported');
             }
         }

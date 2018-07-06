@@ -100,7 +100,7 @@ class CreateModelCommand extends Command {
         $question = new Question('Name of the attribute you want to add [enter if finished]: ');
         $name = $helper->ask($input, $output, $question);
         while ($name) {
-            if($name) {
+            if ($name) {
                 $question = new Question('Type of ' . $name . ': ');
                 $attribute = $helper->ask($input, $output, $question);
                 if (isset($allTypes[$attribute])) {
@@ -108,7 +108,7 @@ class CreateModelCommand extends Command {
                     $phpDoc = new PropertyPhpdoc();
                     $phpDoc->setVariableTag(new VariableTag($allTypes[$attribute]::getType()));
                     $property->setPhpdoc($phpDoc);
-                    if(!in_array(new FullyQualifiedName($allTypes[$attribute]::getType()), $file->allFullyQualifiedNames())  && $allTypes[$attribute]::getName() != 'model' && $allTypes[$attribute]::getName() != 'modelCollection') {
+                    if (!in_array(new FullyQualifiedName($allTypes[$attribute]::getType()), $file->allFullyQualifiedNames()) && $allTypes[$attribute]::getName() != 'model' && $allTypes[$attribute]::getName() != 'modelCollection') {
                         $file->addFullyQualifiedName(new FullyQualifiedName($allTypes[$attribute]::getType()));
                     }
                     $object->addProperty($property);
@@ -119,9 +119,9 @@ class CreateModelCommand extends Command {
                     $phpDoc->setReturnTag(new ReturnTag($allTypes[$attribute]::getType()));
                     $getter->setPhpdoc($phpDoc);
                     $object->addMethod($getter);
-                    if(!strpos($allTypes[$attribute]::getType(), '[]')) {
+                    if (!strpos($allTypes[$attribute]::getType(), '[]')) {
                         $setterArgument = new Argument($allTypes[$attribute]::getType(), $name);
-                    }else {
+                    } else {
                         $setterArgument = new Argument('array', $name);
                     }
                     $setter = new Method('set' . ucfirst($name));
@@ -132,7 +132,7 @@ class CreateModelCommand extends Command {
                     $setter->setPhpdoc($phpDoc);
                     $object->addMethod($setter);
                     $ymlConfig[$object->getFullyQualifiedName()]['fields'][$name] = $allTypes[$attribute]::generateTypeWithConsole($output, $input, $helper);
-                    if($attribute == 'model' || $attribute == 'modelCollection') {
+                    if ($attribute == 'model' || $attribute == 'modelCollection') {
                         $models[] = $name;
                     }
                 } else {
@@ -153,10 +153,10 @@ class CreateModelCommand extends Command {
         $set->setPhpdoc($phpDoc);
         $object->addMethod($set);
 
-        if(!empty($models)) {
+        if (!empty($models)) {
             $file->addFullyQualifiedName(new FullyQualifiedName(ModelException::class));
             $getBody = '        switch ($key) {';
-            foreach($models as $value) {
+            foreach ($models as $value) {
                 $getBody .= "\n            case '" . $value . "':\n" . '                return $this->' . $value . ";";
             }
             $getBody .= "\n" . '            default:' . "\n" . '                throw new ModelException("array of objects $key doesn\'t exist");' . "\n" . '        }';

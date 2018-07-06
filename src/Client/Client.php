@@ -11,7 +11,7 @@ use Webuntis\Exceptions\HttpException;
  * @author Tobias Franek <tobias.franek@gmail.com>
  * @license MIT
  */
-class Client extends JsonRpcClient  {
+class Client extends JsonRpcClient {
 
     /**
      * the logic which is used to create an Memcache instance
@@ -24,7 +24,7 @@ class Client extends JsonRpcClient  {
     {
         $this->query(1, $method, $arguments);
         $result = $this->send()[0];
-        if($result->isError()) {
+        if ($result->isError()) {
             $error = $result->getError();
             throw new HttpException($error->getMessage(), $error->getCode());
         } else {

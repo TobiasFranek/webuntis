@@ -11,7 +11,7 @@ use Webuntis\CacheBuilder\Cache\Memcached;
  * @author Tobias Franek <tobias.franek@gmail.com>
  * @license MIT
  */
-class MemcacheRoutine implements CacheBuilderRoutineInterface  {
+class MemcacheRoutine implements CacheBuilderRoutineInterface {
 
     /**
      * the logic which is used to create an Memcache instance
@@ -24,11 +24,11 @@ class MemcacheRoutine implements CacheBuilderRoutineInterface  {
             $cacheDriver = new Memcached();
             $host = 'localhost';
             $port = 11211;
-            if(!empty($config)) {
-                if(isset($config['host'])) {
+            if (!empty($config)) {
+                if (isset($config['host'])) {
                     $host = $config['host'];
                 }
-                if(isset($config['port'])) {
+                if (isset($config['port'])) {
                     $port = $config['port'];
                 }
             }
