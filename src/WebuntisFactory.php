@@ -36,12 +36,12 @@ class WebuntisFactory {
      */
     public static function create(string $model = null) : object 
     {
-        if($model) {
+        if ($model) {
             $interfaces = class_implements($model);
 
             if (isset($interfaces[ConfigurationModelInterface::class])) {
                 $config = $model::CONFIG_NAME;
-            } else if (isset(self::$config['only_admin']) && self::$config['only_admin']){
+            } else if (isset(self::$config['only_admin']) && self::$config['only_admin']) {
                 $config = 'admin';
             } else {
                 $config = 'default';
