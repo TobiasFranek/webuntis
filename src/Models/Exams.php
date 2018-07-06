@@ -173,7 +173,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
      * @return AbstractModel[]|Subjects
      * @throws ModelException
      */
-    public function get(string $key) : array 
+    public function get(string $key) 
     {
         switch ($key) {
             case 'teachers':

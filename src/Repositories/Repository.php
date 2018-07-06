@@ -85,7 +85,7 @@ class Repository {
         } else {
             $data = $this->find($data, $params);
         }
-        if ($limit) {
+        if ($limit !== null) {
             return array_slice($data, 0, $limit);
         }
         return $data;
@@ -105,7 +105,7 @@ class Repository {
             $sortingOrder = $sort[$field];
             $data = $this->sort($data, $field, $sortingOrder);
         }
-        if ($limit) {
+        if ($limit !== null) {
             $data = array_slice($data, 0, $limit);
         }
         return $data;

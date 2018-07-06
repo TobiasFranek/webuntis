@@ -97,7 +97,7 @@ class PeriodRepository extends Repository {
             $sortingOrder = $sort[$field];
             $data = $this->sort($data, $field, $sortingOrder);
         }
-        if($limit) {
+        if($limit !== null) {
             $data = array_slice($data, 0, $limit);
         }
         return $data;

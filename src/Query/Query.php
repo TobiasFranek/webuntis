@@ -23,7 +23,7 @@ class Query {
     /**
      * @var array
      */
-    private $model = [];
+    private $models = [];
 
     /**
      * @var array

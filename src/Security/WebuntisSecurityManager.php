@@ -89,7 +89,7 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      */
     private function createClient() : object
     {
-        $client;
+        $client = null;
         if ($this->cache && $this->cache->contains('security.' . $this->context)) {
             $data = $this->cache->fetch('security.' . $this->context);
             $this->currentUserId = -1;

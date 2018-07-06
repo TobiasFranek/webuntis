@@ -48,7 +48,7 @@ class ExamsRepository extends Repository {
             } else {
                 $data = $result;
             }
-            if ($limit) {
+            if ($limit !== null) {
                 return array_slice($data, 0, $limit);
             }
             if ($this->cache) {
