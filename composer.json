@@ -17,11 +17,11 @@
   ],
   "require": {
     "php": "^7.2",
-    "doctrine/cache": "^1.6",
+    "doctrine/cache": "^1.7",
     "jms/serializer": "^1.2",
-    "symfony/yaml": "^2.8",
-    "symfony/console": "^2.8",
-    "symfony/filesystem": "^2.8",
+    "symfony/yaml": "^4.1",
+    "symfony/console": "^4.1",
+    "symfony/filesystem": "^4.1",
     "memio/memio": "^2.0",
     "ramsey/uuid": "^3.7",
     "datto/json-rpc-http": "^4.0"
