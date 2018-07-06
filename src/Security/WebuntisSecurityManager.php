@@ -89,7 +89,6 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
      */
     private function createClient() : object
     {
-        $client = null;
         if ($this->cache && $this->cache->contains('security.' . $this->context)) {
             $data = $this->cache->fetch('security.' . $this->context);
             $this->currentUserId = -1;
@@ -107,14 +106,14 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
 
             if(gettype($this->clientClass) == 'object') {
                 $client = $this->clientClass;
-            } else if (gettype($this->clientClass) == 'string') {
+            } else {
                 $client = new $this->clientClass($this->path);
                 $client->setHeader('Cookie', $cookie);
             }
         }else {
             if(gettype($this->clientClass) == 'object') {
                 $client = $this->clientClass;
-            } else if (gettype($this->clientClass) == 'string') {
+            } else {
                 $client = new $this->clientClass($this->path);
             }
             $client = $this->authenticate($client);
