@@ -39,8 +39,8 @@ class Substitutions extends AbstractModel {
     private $endTime;
 
     /**
-    * @var Classes[]
-    */
+     * @var Classes[]
+     */
     private $classes = [];
 
     /**

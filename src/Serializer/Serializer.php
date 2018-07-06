@@ -24,9 +24,9 @@ class Serializer {
      * @return mixed|string
      */
     public static function serialize($data, string $format = null) {
-        if(!$format) {
+        if (!$format) {
             return json_decode(self::getSerializer()->serialize($data, 'json'), true);
-        }else {
+        } else {
             return self::getSerializer()->serialize($data, $format);
         }
     }
@@ -37,10 +37,10 @@ class Serializer {
      */
     private static function getSerializer() : object 
     {
-        if(!self::$serializer) {
+        if (!self::$serializer) {
             self::$serializer = SerializerBuilder::create()->build();
             return self::$serializer;
-        }else {
+        } else {
             return self::$serializer;
         }
     }

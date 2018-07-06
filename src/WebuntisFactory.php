@@ -46,7 +46,7 @@ class WebuntisFactory {
             } else {
                 $config = 'default';
             }
-        }else {
+        } else {
             $config = 'default';
         }
 

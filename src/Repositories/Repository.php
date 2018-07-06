@@ -48,7 +48,7 @@ class Repository {
     public function __construct(string $model, ExecutionHandlerInterface $executionHandler = null) {
         $this->model = $model;
 
-        if($executionHandler) {
+        if ($executionHandler) {
             $this->executionHandler = $executionHandler;
         } else {
             $this->executionHandler = new ExecutionHandler();
@@ -234,7 +234,7 @@ class Repository {
             $key = $keys[0];
         }
         if ($sortingOrder == 'ASC') {
-            return function ($a, $b) use ($key, $offset) {
+            return function($a, $b) use ($key, $offset) {
                 if ($offset) {
                     if (gettype($a->serialize()[$offset][0][$key]) == 'string' && gettype($b->serialize()[$offset][0][$key] == 'string')) {
                         return strcmp($a->serialize()[$offset][0][$key], $b->serialize()[$offset][0][$key]);
@@ -250,7 +250,7 @@ class Repository {
                 }
             };
         } else if ($sortingOrder == 'DESC') {
-            return function ($a, $b) use ($key, $offset) {
+            return function($a, $b) use ($key, $offset) {
                 if ($offset) {
                     if (gettype($a->serialize()[$offset][0][$key]) == 'string' && gettype($b->serialize()[$offset][0][$key] == 'string')) {
                         return strcmp($b->serialize()[$offset][0][$key], $a->serialize()[$offset][0][$key]);
