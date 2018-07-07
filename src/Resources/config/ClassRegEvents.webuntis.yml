@@ -4,10 +4,10 @@ Webuntis\Models\ClassRegEvents:
         student:
             type: model
             api:
-                name: studentid
+                name: surname
             model:
                 name: Students
-                searchkey: id
+                searchkey: lastName
         date:
             type: date
             api:
