@@ -95,7 +95,7 @@ final class ArrayTypeTest extends TestCase
             'api' => [
                 'name' => 'test'
             ]
-        ], StringType::generateTypeWithConsole($output, $input, $helper));
+        ], ArrayType::generateTypeWithConsole($output, $input, $helper));
     }
 
     public function testGetName() : void 
