@@ -96,7 +96,6 @@ For the models there are different types and these are defined as types, types t
 
 All your configuration that you set(fieldnames, custom repos) are saved in .yml files with these files the class can automatically generate a parse() function to assign the right api value to the right model values.
 
-
 # Caching 
 
 You can create an cache instance like this:
@@ -161,6 +160,8 @@ With the option --exclude you can exclude multiple Models like this:
 ```shell
 php vendor/tfranek/webuntis/bin/console.php webuntis:cache:build --exclude=Students --exclude=Teachers
 ```
+
+If you have an custom Caching Method or SecurityManager the you can add either --routine to add the class for the caching routine or --securityManagger to add the class for the SecurityManager. When you have written the getConfigMeta right the config will be handled according to this and you can pass the parameters into your command how you defined the configMeta.
 
 # Adding an custom Type
 
