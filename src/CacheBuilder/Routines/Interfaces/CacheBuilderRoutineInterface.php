@@ -16,4 +16,17 @@ interface CacheBuilderRoutineInterface {
      * @return object|bool
      */
     public static function execute(array $config);
+
+    /**
+     * return how the config should be given
+     * is used by the commands
+     * @return array
+     */
+    public static function getConfigMeta() : array;
+
+    /**
+     * return the name of the routine
+     * @return string
+     */
+    public static function getName() : string;
 }

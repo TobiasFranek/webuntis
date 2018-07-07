@@ -45,8 +45,12 @@ class CacheBuilder {
      */
     private $cacheDisabled = false;
 
-    public function __construct() {
-        $config = WebuntisConfiguration::getConfig();
+    public function __construct(array $passedConfig = []) {
+        if(empty($passedConfig)) {
+            $config = WebuntisConfiguration::getConfig();
+        } else {
+            $config = $passedConfig;
+        }
         $this->cacheType = self::DEFAULT;
 
         if (isset($config['disable_cache'])) {

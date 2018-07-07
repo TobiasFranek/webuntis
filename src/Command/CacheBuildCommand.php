@@ -13,6 +13,9 @@ use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Configuration\YAMLConfiguration;
 use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Query\Query;
+use Webuntis\Security\WebuntisSecurityManager;
+use Webuntis\CacheBuilder\CacheBuilder;
+use Webuntis\CacheBuilder\Routines\MemcacheRoutine;
 
 /**
  * Command to build the Cache
@@ -24,68 +27,79 @@ class CacheBuildCommand extends Command {
         $this->setName('webuntis:cache:build')
             ->setDescription('builds the webuntis cache')
             ->setHelp('This Command builds the webuntis cache')
-            ->addArgument('server', InputArgument::OPTIONAL, 'server whch the school is based in')
-            ->addArgument('school', InputArgument::OPTIONAL, 'school')
-            ->addArgument('adminusername', InputArgument::OPTIONAL, 'the admin username')
-            ->addArgument('adminpassword', InputArgument::OPTIONAL, 'the admin password')
-            ->addArgument('memcachedhost', InputArgument::OPTIONAL, 'the memcached host')
-            ->addArgument('memcachedport', InputArgument::OPTIONAL, 'the memcached port')
-            ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL|InputOption::VALUE_IS_ARRAY, 'exclude models', []);
+            ->addArgument('config', InputArgument::OPTIONAL|InputArgument::IS_ARRAY, 'config of the whole server + username and password + caching')
+            ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL|InputOption::VALUE_IS_ARRAY, 'exclude models', [])
+            ->addOption('routine', 'r', InputOption::VALUE_OPTIONAL, 'caching routine', [])
+            ->addOption('securityManager', 's', InputOption::VALUE_OPTIONAL, 'Security Manager', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        if (!extension_loaded('memcached')) {
-            $output->writeln('<error>extension memcached not found</error>');
-            return;
+        $helper = $this->getHelper('question');
+        $excluded = $input->getOption('exclude');
+        $config = $input->getArgument('config');
+
+        $routine = MemcacheRoutine::class;
+        $customRoutine = $input->getOption('routine');
+        if($customRoutine) {
+            $routine = $customRoutine;
         }
 
-        $helper = $this->getHelper('question');
-        if (!$server = $input->getArgument('server')) {
-            $question = new Question('Server of the school: ');
-            $server = $helper->ask($input, $output, $question);
+        $manager = WebuntisSecurityManager::class;
+        $customManager = $input->getOption('securityManager');
+        if($customManager) {
+            $manager = $customManager;
         }
-        if (!$school = $input->getArgument('school')) {
-            $question = new Question('school: ');
-            $school = $helper->ask($input, $output, $question);
+
+        $cacheConfigMeta = $routine::getConfigMeta();
+        $managerConfigMeta = $manager::getConfigMeta();
+
+        $parsedConfig = [
+            'admin' => [],
+            'cache' => [],
+            'only_admin' => true
+        ];
+
+        foreach($managerConfigMeta as $i => $value) {
+            if(isset($config[$i])) {
+                $parsedConfig['admin'][$value['name']] = $config[$i];
+            } else {
+                $question = new Question($value['question'], $value['default']);
+                $parsedConfig['admin'][$value['name']] = $helper->ask($input, $output, $question);
+            }
         }
-        $admin = [];
-        if (!$admin['username'] = $input->getArgument('adminusername')) {
-            $question = new Question('Admin username: ');
-            $admin['username'] = $helper->ask($input, $output, $question);
+
+        foreach($cacheConfigMeta as $i => $value) {
+            if(isset($config[$i + count($managerConfigMeta)])) {
+                $parsedConfig['cache'][$value['name']] = $config[$i + count($managerConfigMeta)];
+            } else {
+                $question = new Question($value['question'], $value['default']);
+                $parsedConfig['cache'][$value['name']] = $helper->ask($input, $output, $question);
+            }
         }
-        if (!$admin['password'] = $input->getArgument('adminpassword')) {
-            $question = new Question('Admin password: ');
-            $admin['password'] = $helper->ask($input, $output, $question);
+        $cacheClearArgs = $parsedConfig['cache'];
+        $parsedConfig['cache']['type'] = $routine::getName();
+        if($customRoutine) {
+            $parsedConfig['cache']['routine'][$routine::getName()] = $routine;
         }
-        if (!$memcachedPort = $input->getArgument('memcachedport')) {
-            $question = new Question('Memcached host[11211]: ', 11211);
-            $memcachedPort = $helper->ask($input, $output, $question);
+
+        if($customManager) {
+            $parsedConfig['security_manager'] = $manager;
         }
-        if (!$memcachedHost = $input->getArgument('memcachedhost')) {
-            $question = new Question('Memcached host[localhost]: ', 'localhost');
-            $memcachedHost = $helper->ask($input, $output, $question);
-        }
-        $excluded = $input->getOption('exclude');
         $command = $this->getApplication()->find('webuntis:cache:clear');
 
         $arguments = [
-            'host' => $memcachedHost,
-            'port' => $memcachedPort
+            'config' => array_values($cacheClearArgs),
         ];
+
+        if($customRoutine) {
+            $arguments['--routine'] = $routine;
+        }
 
         $argumentInput = new ArrayInput($arguments);
 
         $command->run($argumentInput, $output);
 
-        new WebuntisConfiguration([
-            'admin' => [
-                'server' => $server,
-                'school' => $school,
-                'username' => $admin['username'],
-                'password' => $admin['password']
-            ],
-            'only_admin' => true
-        ]);
+        new WebuntisConfiguration($parsedConfig);
 
         $query = new Query();
 

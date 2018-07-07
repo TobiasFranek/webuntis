@@ -39,4 +39,34 @@ class MemcacheRoutine implements CacheBuilderRoutineInterface {
             return false;
         }
     }
+
+    /**
+     * return how the config should be given
+     * is used by the commands
+     * @return array
+     */
+    public static function getConfigMeta() : array
+    {
+        return [
+            [
+                'name' => 'host',
+                'default' => 'localhost',
+                'question' => 'Host [localhost]: '
+            ],
+            [
+                'name' => 'port',
+                'default' => 11211,
+                'question' => 'Port [11211]: '
+            ]
+        ];
+    }
+
+    /**
+     * return the name of the routine
+     * @return string
+     */
+    public static function getName() : string 
+    {
+        return 'memcached';
+    }
 }

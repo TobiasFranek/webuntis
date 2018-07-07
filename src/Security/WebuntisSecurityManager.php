@@ -192,4 +192,35 @@ class WebuntisSecurityManager implements SecurityManagerInterface {
         $this->cache->delete('security.' . $this->context);
         unset(self::$clients[$this->context]);
     }
+
+    /**
+     * return how the config should be given
+     * is used by the commands
+     * @return array
+     */
+    public static function getConfigMeta() : array
+    {
+        return [
+            [
+                'name' => 'server',
+                'default' => null,
+                'question' => 'Server of the school: '
+            ],
+            [
+                'name' => 'school',
+                'default' => null,
+                'question' => 'School: '
+            ],
+            [
+                'name' => 'username',
+                'default' => null,
+                'question' => 'Admin username: '
+            ],
+            [
+                'name' => 'password',
+                'default' => null,
+                'question' => 'Admin password: '
+            ]
+        ];
+    }
 }

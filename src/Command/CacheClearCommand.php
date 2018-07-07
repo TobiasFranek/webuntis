@@ -3,11 +3,12 @@
 namespace Webuntis\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Webuntis\CacheBuilder\Cache\Memcached;
-
+use Webuntis\CacheBuilder\Routines\MemcacheRoutine;
+use Webuntis\CacheBuilder\CacheBuilder;
 
 /**
  * Command to clear the Cache
@@ -19,28 +20,44 @@ class CacheClearCommand extends Command {
         $this->setName('webuntis:cache:clear')
             ->setDescription('cleares the webuntis cache')
             ->setHelp('This Command clears the webuntis cache')
-            ->addArgument('port', InputArgument::OPTIONAL, 'port of the memcached server')
-            ->addArgument('host', InputArgument::OPTIONAL, 'host of the memcached server');
+            ->addArgument('config', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'config of the caching server')
+            ->addOption('routine', 'r', InputOption::VALUE_OPTIONAL , 'caching routine', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
-        if (!$port = $input->getArgument('port')) {
-            $question = new Question('Port [11211]: ', 11211);
-            $port = $helper->ask($input, $output, $question);
-
-        }
-        if (!$host = $input->getArgument('host')) {
-            $question = new Question('Host [localhost]: ', 'localhost');
-            $host = $helper->ask($input, $output, $question);
+        $routine = MemcacheRoutine::class;
+        $config = $input->getArgument('config');
+        $customRoutine = $input->getOption('routine');
+        if($customRoutine) {
+            $routine = $customRoutine;
         }
 
-        $cacheDriver = new Memcached();
-        if (extension_loaded('memcached')) {
-            $memcached = new \Memcached();
-            $memcached->addServer($host, $port);
-            $cacheDriver->setMemcached($memcached);
-            $cacheDriver->deleteAll();
+        $configMeta = $routine::getConfigMeta();
+
+        $cacheConfig = [];
+
+        foreach($configMeta as $i => $value) {
+            if(isset($config[$i])) {
+                $cacheConfig[$value['name']] = $config[$i];
+            } else {
+                $question = new Question($value['question'], $value['default']);
+                $cacheConfig[$value['name']] = $helper->ask($input, $output, $question);
+            }
+        }
+
+        $cacheConfig['type'] = $routine::getName();
+
+        if($customRoutine) {
+            $cacheConfig['routine'][$routine::getName()] = $routine;
+        }
+
+        $cacheBuilder = new CacheBuilder($cacheConfig);
+
+        $cache = $cacheBuilder->create();
+
+        if($cache) {
+            $cache->deleteAll();
             $output->writeln('<info>Successfully cleared the cache</info>');
         } else {
             $output->writeln('<error>extension memcached not found</error>');

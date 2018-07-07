@@ -29,4 +29,11 @@ interface SecurityManagerInterface {
      */
     public function getCurrentUserType() : int;
 
+    /**
+     * return how the config should be given
+     * is used by the commands
+     * @return array
+     */
+    public static function getConfigMeta() : array;
+
 }
