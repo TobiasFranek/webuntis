@@ -43,7 +43,8 @@ final class ClassRegEventsTest extends TestCase
             'studentid' => 2,
             'subject' => 'testsubject',
             'reason' => 'testreason',
-            'text' => 'eats during lesson'
+            'text' => 'eats during lesson',
+            'surname' => 'Schidt'
         ];
 
         $exam = new ClassRegEvents($data);
