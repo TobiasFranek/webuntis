@@ -34,6 +34,5 @@ final class ExamTypesTest extends TestCase
         ];
 
         $this->assertEquals($expected, $examTypes->serialize());
-        $this->assertEquals(json_encode($expected), $examTypes->serialize('json'));
     }
 }

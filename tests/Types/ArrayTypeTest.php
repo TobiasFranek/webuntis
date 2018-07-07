@@ -13,6 +13,7 @@ use Webuntis\Configuration\WebuntisConfiguration;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Webuntis\Exceptions\TypeException;
 
 /**
  * ArrayTypeTest
@@ -79,6 +80,14 @@ final class ArrayTypeTest extends TestCase
             'test' => 222,
             'asdasda'
         ], $test->getArrayTest());
+
+        $data = [
+            'testArray' => 'test'
+        ];
+
+        $this->expectException(TypeException::class);
+
+        ArrayType::execute($test, $data, $field);
     }
 
     public function testGenerateTypeWithConsole() : void

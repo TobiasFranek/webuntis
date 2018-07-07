@@ -13,6 +13,7 @@ use Webuntis\Configuration\WebuntisConfiguration;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Webuntis\Exceptions\TypeException;
 
 /**
  * StringTypeTest
@@ -73,6 +74,14 @@ final class StringTypeTest extends TestCase
         StringType::execute($test, $data, $field);
 
         $this->assertEquals('hello', $test->getStringTest());
+
+        $data = [
+            'testString' => []
+        ];
+
+        $this->expectException(TypeException::class);
+
+        StringType::execute($test, $data, $field);
     }
 
     public function testGenerateTypeWithConsole() : void

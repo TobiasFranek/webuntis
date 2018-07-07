@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
+use Webuntis\Exceptions\TypeException;
 
 /**
  * maps a int value to the according field
@@ -21,12 +22,17 @@ class IntType implements TypeInterface {
      * @param object $model
      * @param array $data
      * @param array $field
+     * @throws TypeException
      */
     public static function execute(object &$model, array $data, array $field) : void 
     {
         $fieldName = array_keys($field)[0];
         if (isset($data[$field[$fieldName]['api']['name']])) {
-            $model->set($fieldName, intval($data[$field[$fieldName]['api']['name']]));
+            if(is_numeric($data[$field[$fieldName]['api']['name']])) {
+                $model->set($fieldName, intval($data[$field[$fieldName]['api']['name']]));
+            } else {
+                throw new TypeException('the given data is no int value');
+            }
         }
     }
 

@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
+use Webuntis\Exceptions\TypeException;
 
 /**
  * maps a array value to the according field
@@ -21,12 +22,17 @@ class ArrayType implements TypeInterface {
      * @param object $model
      * @param array $data
      * @param array $field
+     * @throws TypeException
      */
     public static function execute(object &$model, array $data, array $field) : void 
     {
         $fieldName = array_keys($field)[0];
         if (isset($data[$field[$fieldName]['api']['name']])) {
-            $model->set($fieldName, $data[$field[$fieldName]['api']['name']]);
+            if(gettype($data[$field[$fieldName]['api']['name']]) == 'array') {
+                $model->set($fieldName, $data[$field[$fieldName]['api']['name']]);
+            } else {
+                throw new TypeException('the given data is no array value');
+            }
         }
     }
 

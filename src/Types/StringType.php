@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
+use Webuntis\Exceptions\TypeException;
 
 /**
  * maps a string value to the according field
@@ -21,12 +22,17 @@ class StringType implements TypeInterface {
      * @param object $model
      * @param array $data
      * @param array $field
+     * @throws TypeException
      */
     public static function execute(object &$model, array $data, array $field) : void 
     {
         $fieldName = array_keys($field)[0];
-        if (isset($data[$field[$fieldName]['api']['name']])) {
-            $model->set($fieldName, $data[$field[$fieldName]['api']['name']]);
+        if(isset($data[$field[$fieldName]['api']['name']])) {
+            if(gettype($data[$field[$fieldName]['api']['name']]) == 'string' || gettype($data[$field[$fieldName]['api']['name']]) == 'integer') {
+                $model->set($fieldName, strval($data[$field[$fieldName]['api']['name']]));
+            } else {
+                throw new TypeException('the given data is no int or string value');
+            }
         }
     }
 

@@ -13,6 +13,7 @@ use Webuntis\Configuration\WebuntisConfiguration;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Webuntis\Exceptions\TypeException;
 
 /**
  * IntTypeTest
@@ -73,6 +74,13 @@ final class IntTypeTest extends TestCase
         IntType::execute($test, $data, $field);
 
         $this->assertEquals(22, $test->getIntTest());
+
+        $data = [
+            'testInt' => 'asd'
+        ];
+
+        $this->expectException(TypeException::class);
+        IntType::execute($test, $data, $field);
     }
 
     public function testGenerateTypeWithConsole() : void
