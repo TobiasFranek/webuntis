@@ -7,6 +7,11 @@ use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use JMS\Serializer\Annotation\SerializedName;
 
+/**
+ * StatusData Model
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 class StatusData extends AbstractModel implements CachableModelInterface, AdministrativeModelInterface
 {
     const CACHE_LIFE_TIME = 0;

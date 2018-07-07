@@ -1,0 +1,11 @@
+Webuntis\Models\TimegridUnits:
+    repositoryClass: null
+    fields:
+        day:
+            type: int
+            api:
+                name: day
+        timeUnits:
+            type: array
+            api:
+                name: timeUnits
