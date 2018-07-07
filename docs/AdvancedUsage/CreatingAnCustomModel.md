@@ -2,15 +2,15 @@
 
 Why would you create a custom Model? It is simple, what if you want different fields or you want to add a Model that doesn't exist yet.
 
-First you have to learn how a Model is assembled every model inherits from the AbstractModel and there are mandatory methods like parse() and serialize(). But it is important to know that you implement the right Interfaces because the Interfaces say if the Model is Cacheable or need Adminrights to execute the command.
+First you have to learn how a Model is assembled every model inherits from the AbstractModel. But it is important to know that you implement the right Interfaces because the Interfaces say if the Model is cacheable or needs admin rights to execute an certain command.
 
-if you have installed the package over composer you can use this command
+If you have installed the package over composer you can use this command:
 
 ```shell
 php vendor/tfranek/webuntis/bin/console.php webuntis:generate:model
 ```
 
-follow the instruction in the console.
+Follow the instruction in the console.
 
 ## Types
 

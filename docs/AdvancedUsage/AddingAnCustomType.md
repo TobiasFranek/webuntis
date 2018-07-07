@@ -2,7 +2,7 @@
 
 By adding an custom type you can influence how the model handles certain values.
 
-First you have to create an type class that implements TypeInterface, like this:
+First you have to create an type class that implements the TypeInterface, like this:
 
 ```php
 class YourType implements TypeInterface {
@@ -46,15 +46,13 @@ class YourType implements TypeInterface {
 }
 ```
 
-you have to add and also code these methods, because there are used to handle the things for the models.
+The execute() method takes a model, data and field properties. With that information the method() sets an model value with the right value from the data array, these relations between the data array and the model are defined in the yml configuration.
 
-the execute() method takes a model, data and field properties with that information the method() sets an model value with the right value from the data array, these relations between the data array and the model are defined in the yml configuration
+The generateTypeWithConsole() returns an array that resembles your yml configuration for that type, it will be used to autogenerate Models.
 
-the generateTypeWithConsole() return an array that resembles your yml configuration for that type
+getName() and getType() returns the type f.e \DateTime::class and the name f.e. 'date'.
 
-getName() and getType() return the type f.e \DateTime::class and the name f.e. 'date'
-
-to add the type to the existing one you have to add it to the certain yml configuration of the model like this:
+To add the type to the existing one you have to add it to the certain yml configuration of the model like this:
 
 ```yml
 Webuntis\Models\Classes:

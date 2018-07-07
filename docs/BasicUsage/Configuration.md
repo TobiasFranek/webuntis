@@ -32,7 +32,7 @@ The recommended configuration is when you have an default and an admin configura
     ]
 ```
 
-if you want to change the path schme, for example if your domain is not webuntis.com you can use this config. The keywords {school} and {server} will be replaced with the server name and school, you can also leave them out if you don't have such a thing. In summary you can build your own domain/url.
+if you want to change the path scheme, for example if your domain is not webuntis.com you can use this config. The keywords {school} and {server} will be replaced with the server name and school, you can also leave them out if you don't have such a thing. In summary you can build your own domain/url.
 
 ```php
  'default' => [
@@ -123,7 +123,7 @@ if you have changed the vendor dir in the composer.json config you can add this 
     'vendor_dir' => 'lib'
 ```
 
-if you want to use another SecurityManager you can use this config
+if you want to use another SecurityManager you can use this config. With an custom Security Manager you can return your own Client. You just have to implement the Webuntis\Security\Interfaces\SecurityManagerInterface and create the method you need (getClient, getCurrentUserId, getCurrentUserType) and return the right things according to the method. With the method getClient() you can return your own client which is then used by the ExecutionHandler to execute http request to apis, the client class must have an call method. F.e. you could return your own Client thats accesses an complietly differently api (not webuntis) and use this library in an complettly other way. 
 ```php
   'admin' => [
         //f.e. thalia, cissa etc.
