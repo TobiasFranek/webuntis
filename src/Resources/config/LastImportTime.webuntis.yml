@@ -1,0 +1,7 @@
+Webuntis\Models\LastImportTime:
+    repositoryClass: Webuntis\Repositories\LastImportTimeRepository
+    fields:
+        time:
+            type: int
+            api:
+                name: time
