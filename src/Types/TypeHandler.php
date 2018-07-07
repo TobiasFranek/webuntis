@@ -26,7 +26,8 @@ class TypeHandler {
         'modelCollection' => ModelCollectionType::class,
         'mergeTimeAndDate' => MergeTimeAndDateType::class,
         'model' => ModelType::class,
-        'date' => DateType::class
+        'date' => DateType::class,
+        'array' => ArrayType::class
     ];
 
     public function __construct() {
