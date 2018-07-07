@@ -389,6 +389,35 @@ class TestSecurityManager implements SecurityManagerInterface {
                         ],
                         'txt' => 'sick teacher'
                     ]
+                ],
+                'getClassregEvents' => [
+                    [
+                        'id' => 1,
+                        'date' => '20180706',
+                        'studentid' => 2,
+                        'subject' => 'testsubject',
+                        'reason' => 'testreason',
+                        'text' => 'eats during lesson',
+                        'surname' => 'Schidt'
+                    ],
+                    [
+                        'id' => 2,
+                        'date' => '20180706',
+                        'studentid' => 2,
+                        'subject' => 'testsubject1',
+                        'reason' => 'testreason1',
+                        'text' => 'eats during lesson1',
+                        'surname' => 'Schidt'
+                    ],
+                    [
+                        'id' => 3,
+                        'date' => '20180706',
+                        'studentid' => 2,
+                        'subject' => 'testsubject2',
+                        'reason' => 'testreason2',
+                        'text' => 'eats during lesson2',
+                        'surname' => 'Schidt'
+                    ]
                 ]
             ];
 
