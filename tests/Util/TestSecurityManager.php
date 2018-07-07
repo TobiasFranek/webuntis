@@ -420,4 +420,35 @@ class TestSecurityManager implements SecurityManagerInterface {
         return 2;
     }
 
+     /**
+     * return how the config should be given
+     * is used by the commands
+     * @return array
+     */
+    public static function getConfigMeta() : array
+    {
+        return [
+            [
+                'name' => 'server',
+                'default' => null,
+                'question' => 'Server of the school: '
+            ],
+            [
+                'name' => 'school',
+                'default' => null,
+                'question' => 'School: '
+            ],
+            [
+                'name' => 'username',
+                'default' => null,
+                'question' => 'Admin username: '
+            ],
+            [
+                'name' => 'password',
+                'default' => null,
+                'question' => 'Admin password: '
+            ]
+        ];
+    }
+
 }
