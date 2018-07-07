@@ -52,5 +52,9 @@ final class ExamsRepositoryTest extends TestCase
 
         $models = $repository->findAll([], 1);
         $this->assertEquals(1, count($models));
+
+        $models = $repository->findBy(['subject:id' => 1]);
+
+        $this->assertEquals(2, count($models));
     }
 }

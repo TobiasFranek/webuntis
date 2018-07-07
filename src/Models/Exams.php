@@ -170,10 +170,10 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     /**
      * return the children by given id
      * @param string $key
-     * @return AbstractModel[]|Subjects
+     * @return AbstractModel[]
      * @throws ModelException
      */
-    public function get(string $key) 
+    public function get(string $key) : array
     {
         switch ($key) {
             case 'teachers':
@@ -183,7 +183,7 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
             case 'classes':
                 return $this->classes;
             case 'subject':
-                return $this->subject;
+                return [$this->subject];
             default:
                 throw new ModelException('array of objects' . $key . 'doesn\'t exist');
         }

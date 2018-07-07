@@ -240,7 +240,7 @@ class Substitutions extends AbstractModel {
 
     /**
      * @param string $key
-     * @return Classes[]|Rooms[]|Subjects[]|Teachers[]
+     * @return AbstractModel[]
      * @throws ModelException
      */
     public function get(string $key) : array {
@@ -253,6 +253,8 @@ class Substitutions extends AbstractModel {
                 return $this->rooms;
             case 'subjects':
                 return $this->subjects;
+            case 'lesson':
+                return [$this->lesson];
             default:
                 throw new ModelException('array of objects' . $key . 'doesn\'t exist');
         }
