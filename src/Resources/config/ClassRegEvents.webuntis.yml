@@ -1,0 +1,26 @@
+Webuntis\Models\ClassRegEvents:
+    repositoryClass: Webuntis\Repositories\ClassRegEventsRepository
+    fields:
+        student:
+            type: model
+            api:
+                name: studentid
+            model:
+                name: Students
+                searchkey: id
+        date:
+            type: date
+            api:
+                name: date
+        subject:
+            type: string
+            api:
+                name: subject
+        reason:
+            type: string
+            api:
+                name: reason
+        text:
+            type: string
+            api:
+                name: text
