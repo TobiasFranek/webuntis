@@ -170,7 +170,7 @@ class ClassRegEvents extends AbstractModel implements CachableModelInterface, Ad
     {
         $this->$field = $value;
 
-        return self;
+        return $this;
     }
 
     /**
