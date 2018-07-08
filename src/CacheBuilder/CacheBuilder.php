@@ -71,7 +71,7 @@ class CacheBuilder {
 
     /**
      * creates an Cache Instance
-     * @return Memcached|bool
+     * @return object|bool
      */
     public function create() {
         if (!$this->cacheDisabled) {
