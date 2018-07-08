@@ -16,7 +16,7 @@ class MemcacheRoutine implements CacheBuilderRoutineInterface {
     /**
      * the logic which is used to create an Memcache instance
      * @var array $config
-     * @return bool|object
+     * @return bool|Memcached
      */
     public static function execute(array $config) 
     {
