@@ -47,7 +47,7 @@ class CacheBuilder {
     private $cacheDisabled = false;
 
     public function __construct(array $passedConfig = []) {
-        if(empty($passedConfig)) {
+        if (empty($passedConfig)) {
             $config = WebuntisConfiguration::getConfig();
         } else {
             $config = $passedConfig;

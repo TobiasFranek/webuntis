@@ -28,7 +28,7 @@ class Client extends JsonRpcClient {
             $error = $result->getError();
             throw new HttpException($error->getMessage(), $error->getCode());
         } else {
-            if(gettype($result->getResult()) == 'array') {
+            if (gettype($result->getResult()) == 'array') {
                 return $result->getResult();
             } else {
                 return [$result->getResult()];
