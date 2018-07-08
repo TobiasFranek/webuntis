@@ -40,13 +40,13 @@ class CacheBuildCommand extends Command {
 
         $routine = MemcacheRoutine::class;
         $customRoutine = $input->getOption('routine');
-        if($customRoutine) {
+        if ($customRoutine) {
             $routine = $customRoutine;
         }
 
         $manager = WebuntisSecurityManager::class;
         $customManager = $input->getOption('securityManager');
-        if($customManager) {
+        if ($customManager) {
             $manager = $customManager;
         }
 
@@ -59,8 +59,8 @@ class CacheBuildCommand extends Command {
             'only_admin' => true
         ];
 
-        foreach($managerConfigMeta as $i => $value) {
-            if(isset($config[$i])) {
+        foreach ($managerConfigMeta as $i => $value) {
+            if (isset($config[$i])) {
                 $parsedConfig['admin'][$value['name']] = $config[$i];
             } else {
                 $question = new Question($value['question'], $value['default']);
@@ -68,8 +68,8 @@ class CacheBuildCommand extends Command {
             }
         }
 
-        foreach($cacheConfigMeta as $i => $value) {
-            if(isset($config[$i + count($managerConfigMeta)])) {
+        foreach ($cacheConfigMeta as $i => $value) {
+            if (isset($config[$i + count($managerConfigMeta)])) {
                 $parsedConfig['cache'][$value['name']] = $config[$i + count($managerConfigMeta)];
             } else {
                 $question = new Question($value['question'], $value['default']);
@@ -78,11 +78,11 @@ class CacheBuildCommand extends Command {
         }
         $cacheClearArgs = $parsedConfig['cache'];
         $parsedConfig['cache']['type'] = $routine::getName();
-        if($customRoutine) {
+        if ($customRoutine) {
             $parsedConfig['cache']['routine'][$routine::getName()] = $routine;
         }
 
-        if($customManager) {
+        if ($customManager) {
             $parsedConfig['security_manager'] = $manager;
         }
         $command = $this->getApplication()->find('webuntis:cache:clear');
@@ -91,7 +91,7 @@ class CacheBuildCommand extends Command {
             'config' => array_values($cacheClearArgs),
         ];
 
-        if($customRoutine) {
+        if ($customRoutine) {
             $arguments['--routine'] = $routine;
         }
 

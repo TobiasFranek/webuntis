@@ -28,7 +28,7 @@ class ArrayType implements TypeInterface {
     {
         $fieldName = array_keys($field)[0];
         if (isset($data[$field[$fieldName]['api']['name']])) {
-            if(gettype($data[$field[$fieldName]['api']['name']]) == 'array') {
+            if (gettype($data[$field[$fieldName]['api']['name']]) == 'array') {
                 $model->set($fieldName, $data[$field[$fieldName]['api']['name']]);
             } else {
                 throw new TypeException('the given data is no array value');

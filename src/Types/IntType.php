@@ -28,7 +28,7 @@ class IntType implements TypeInterface {
     {
         $fieldName = array_keys($field)[0];
         if (isset($data[$field[$fieldName]['api']['name']])) {
-            if(is_numeric($data[$field[$fieldName]['api']['name']])) {
+            if (is_numeric($data[$field[$fieldName]['api']['name']])) {
                 $model->set($fieldName, intval($data[$field[$fieldName]['api']['name']]));
             } else {
                 throw new TypeException('the given data is no int value');

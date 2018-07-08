@@ -51,7 +51,7 @@ class ClassRegEventsRepository extends Repository
      */
     public function findAll(array $sort = [], int $limit = null, \DateTime $startDate = null, \DateTime $endDate = null) : array 
     {
-        if($startDate && $endDate) {
+        if ($startDate && $endDate) {
             $data = $this->executionHandler->execute($this, ['startDate' => date_format($startDate, 'Ymd'), 'endDate' => date_format($endDate, 'Ymd')]);
         } else {
             $query = new Query();

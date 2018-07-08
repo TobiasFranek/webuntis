@@ -27,8 +27,8 @@ class StringType implements TypeInterface {
     public static function execute(object &$model, array $data, array $field) : void 
     {
         $fieldName = array_keys($field)[0];
-        if(isset($data[$field[$fieldName]['api']['name']])) {
-            if(gettype($data[$field[$fieldName]['api']['name']]) == 'string' || gettype($data[$field[$fieldName]['api']['name']]) == 'integer') {
+        if (isset($data[$field[$fieldName]['api']['name']])) {
+            if (gettype($data[$field[$fieldName]['api']['name']]) == 'string' || gettype($data[$field[$fieldName]['api']['name']]) == 'integer') {
                 $model->set($fieldName, strval($data[$field[$fieldName]['api']['name']]));
             } else {
                 throw new TypeException('the given data is no int or string value');
