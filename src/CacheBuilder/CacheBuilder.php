@@ -5,6 +5,7 @@ namespace Webuntis\CacheBuilder;
 
 use Webuntis\CacheBuilder\Routines\MemcacheRoutine;
 use Webuntis\Configuration\WebuntisConfiguration;
+use Webuntis\CacheBuilder\Cache\Memcached;
 
 /**
  * The CacheBuilder creates different Caching Instances from the given config
@@ -70,7 +71,7 @@ class CacheBuilder {
 
     /**
      * creates an Cache Instance
-     * @return object|bool
+     * @return Memcached|bool
      */
     public function create() {
         if (!$this->cacheDisabled) {
