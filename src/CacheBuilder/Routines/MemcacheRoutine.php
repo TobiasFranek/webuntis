@@ -35,6 +35,7 @@ class MemcacheRoutine implements CacheBuilderRoutineInterface {
             $memcached = new \Memcached();
             $memcached->addServer($host, $port);
             $cacheDriver->setMemcached($memcached);
+            return $cacheDriver;
         } else {
             return false;
         }
