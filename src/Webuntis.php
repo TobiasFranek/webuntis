@@ -85,7 +85,7 @@ class Webuntis {
         $this->client = $manager->getClient();
         $this->currentUserId = $manager->getCurrentUserId();
         $this->currentUserType = $manager->getCurrentUserType();
-        if($config['user_type']) {
+        if(isset($config['user_type']) && $config['user_type']) {
             $this->userRepo = $config['user_type'];
         }
     }
