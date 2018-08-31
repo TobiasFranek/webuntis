@@ -92,7 +92,7 @@ class Webuntis {
 
     /**
      * return the User thats is currently logged in with this instance
-     * @return AbstractModel
+     * @return object
      * @throws ModelException
      */
     public function getCurrentUser() : object 
