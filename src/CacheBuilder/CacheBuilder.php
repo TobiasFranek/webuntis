@@ -46,7 +46,8 @@ class CacheBuilder {
      */
     private $cacheDisabled = false;
 
-    public function __construct(array $passedConfig = []) {
+    public function __construct(array $passedConfig = []) 
+    {
         if (empty($passedConfig)) {
             $config = WebuntisConfiguration::getConfig();
         } else {
@@ -73,7 +74,8 @@ class CacheBuilder {
      * creates an Cache Instance
      * @return object|bool
      */
-    public function create() {
+    public function create() 
+    {
         if (!$this->cacheDisabled) {
             if (!isset(self::$caches[$this->cacheType])) {
                 self::$caches[$this->cacheType] = $this->routines[$this->cacheType]::execute($this->config);
