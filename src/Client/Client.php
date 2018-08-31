@@ -17,7 +17,7 @@ class Client extends JsonRpcClient {
      * the logic which is used to create an Memcache instance
      * @param string $method
      * @param array $arguments
-     * @return self
+     * @return array
      * @throws HttpException
      */
     public function call(string $method, array $arguments = null) : array

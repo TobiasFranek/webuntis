@@ -10,6 +10,7 @@ use Webuntis\Handler\ExecutionHandler;
 use Webuntis\Handler\Interfaces\ExecutionHandlerInterface;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Webuntis;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Webuntis\WebuntisFactory;
 use Webuntis\CacheBuilder\CacheBuilder;
 
@@ -59,7 +60,7 @@ class Repository {
         $this->cache = $cacheBuilder->create();
 
         $this->instance = WebuntisFactory::create($model);
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
+        AnnotationRegistry::registerLoader('class_exists');
     }
 
     /**

@@ -47,7 +47,7 @@ class ClassRegEvents extends AbstractModel implements CachableModelInterface, Ad
     /**
      * Getter for student
      *
-     * @return Webuntis\Models\AbstractModel
+     * @return AbstractModel
      */
     public function getStudent() : AbstractModel
     {

@@ -5,6 +5,7 @@ namespace Webuntis\Repositories;
 
 use Webuntis\Repositories\Repository;
 use Webuntis\Query\Query;
+use Webuntis\Exceptions\RepositoryException;
 
 /**
  * ClassRegEventsRepository
