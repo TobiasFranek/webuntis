@@ -141,44 +141,42 @@ class Repository {
                 $temp = [];
                 $keys = explode(":", $key);
                 $key = $keys[0];
-                if (isset($data[0])) {
-                    if (isset($data[0]->serialize()[$key])) {
-                        foreach ($data as $key2 => $value2) {
-                            if (count($keys) > 1) {
-                                $tempKeys = $keys;
-                                $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
-                                $tempKeys = implode(':', $tempKeys);
-                                if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+                if (isset($data[0]) && isset($data[0]->serialize()[$key])) {
+                    foreach ($data as $key2 => $value2) {
+                        if (count($keys) > 1 && (!isset(WebuntisConfiguration::getConfig()[$this->instance->getContext()]['ignore_children']) || !WebuntisConfiguration::getConfig()[$this->instance->getContext()]['ignore_children'])) {
+                            $tempKeys = $keys;
+                            $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
+                            $tempKeys = implode(':', $tempKeys);
+                            if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+                                $temp[] = $value2;
+                            }
+                        } else {
+                            if ($this->validateDate(substr(strval($value), 1))) {
+                                if ($this->startsWith($value, '<')) {
+                                    if (new \DateTime($value2->serialize()[$key]) <= new \DateTime(substr(strval($value), 1))) {
+                                        $temp[] = $value2;
+                                    }
+                                } else if ($this->startsWith($value, '>')) {
+                                    if (new \DateTime($value2->serialize()[$key]) >= new \DateTime(substr(strval($value), 1))) {
+                                        $temp[] = $value2;
+                                    }
+                                } else {
+                                    throw new RepositoryException('wrong date format');
+                                }
+                            }
+                            if ($value2->serialize()[$key] == $value) {
+                                $temp[] = $value2;
+                            } else if ($this->endsWith(strval($value), '%') && $this->startsWith(strval($value), '%')) {
+                                if ($this->contains($value2->serialize()[$key], substr(strval($value), 1, strlen(strval($value)) - 2))) {
                                     $temp[] = $value2;
                                 }
-                            } else {
-                                if ($this->validateDate(substr(strval($value), 1))) {
-                                    if ($this->startsWith($value, '<')) {
-                                        if (new \DateTime($value2->serialize()[$key]) <= new \DateTime(substr(strval($value), 1))) {
-                                            $temp[] = $value2;
-                                        }
-                                    } else if ($this->startsWith($value, '>')) {
-                                        if (new \DateTime($value2->serialize()[$key]) >= new \DateTime(substr(strval($value), 1))) {
-                                            $temp[] = $value2;
-                                        }
-                                    } else {
-                                        throw new RepositoryException('wrong date format');
-                                    }
-                                }
-                                if ($value2->serialize()[$key] == $value) {
+                            } else if ($this->startsWith(strval($value), '%')) {
+                                if ($this->endsWith(strval($value2->serialize()[$key]), substr(strval($value), 1, strlen(strval($value))))) {
                                     $temp[] = $value2;
-                                } else if ($this->endsWith(strval($value), '%') && $this->startsWith(strval($value), '%')) {
-                                    if ($this->contains($value2->serialize()[$key], substr(strval($value), 1, strlen(strval($value)) - 2))) {
-                                        $temp[] = $value2;
-                                    }
-                                } else if ($this->startsWith(strval($value), '%')) {
-                                    if ($this->endsWith(strval($value2->serialize()[$key]), substr(strval($value), 1, strlen(strval($value))))) {
-                                        $temp[] = $value2;
-                                    }
-                                } else if ($this->endsWith(strval($value), '%')) {
-                                    if ($this->startsWith(strval($value2->serialize()[$key]), substr(strval($value), 0, strlen(strval($value)) - 1))) {
-                                        $temp[] = $value2;
-                                    }
+                                }
+                            } else if ($this->endsWith(strval($value), '%')) {
+                                if ($this->startsWith(strval($value2->serialize()[$key]), substr(strval($value), 0, strlen(strval($value)) - 1))) {
+                                    $temp[] = $value2;
                                 }
                             }
                         }
