@@ -10,6 +10,7 @@ use Webuntis\Repositories\Repository;
 use Webuntis\Security\WebuntisSecurityManager;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Exceptions\ModelException;
+use Webuntis\Models\Account;
 
 /**
  * Webuntis is the main instance which stores the client
@@ -95,7 +96,7 @@ class Webuntis {
         } else if ($this->currentUserType == 2) {
             return $query->get('Teachers')->findBy(['id' => $this->currentUserId])[0];
         } else {
-            throw new ModelException('There is no Model available for the user type: "' . $this->currentUserType . '"');
+            return new Account($this->currentUserId, $this->currentUserType);
         }
     }
 
