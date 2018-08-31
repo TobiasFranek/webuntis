@@ -172,11 +172,11 @@ class Repository {
                                         $temp[] = $value2;
                                     }
                                 } else if ($this->startsWith(strval($value), '%')) {
-                                    if ($this->startsWith(strval($value2->serialize()[$key]), substr(strval($value), 1, strlen(strval($value))))) {
+                                    if ($this->endsWith(strval($value2->serialize()[$key]), substr(strval($value), 1, strlen(strval($value))))) {
                                         $temp[] = $value2;
                                     }
                                 } else if ($this->endsWith(strval($value), '%')) {
-                                    if ($this->endsWith(strval($value2->serialize()[$key]), substr(strval($value), 0, strlen(strval($value)) - 1))) {
+                                    if ($this->startsWith(strval($value2->serialize()[$key]), substr(strval($value), 0, strlen(strval($value)) - 1))) {
                                         $temp[] = $value2;
                                     }
                                 }

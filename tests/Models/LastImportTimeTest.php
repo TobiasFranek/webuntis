@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace Webuntis\Tests\Models;
 
 use PHPUnit\Framework\TestCase;
-use Webuntis\Models\LastImportTIme;
+use Webuntis\Models\LastImportTime;
 
 /**
  * LastImportTImeTest
  * @author Tobias Franek <tobias.franek@gmail.com>
  * @license MIT
  */
-final class LastImportTImeTest extends TestCase
+final class LastImportTimeTest extends TestCase
 {
     public function testCreate() : void
     {   

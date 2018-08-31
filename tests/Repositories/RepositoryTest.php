@@ -51,6 +51,8 @@ final class RepositoryTest extends TestCase
         $repository = new Repository(Classes::class);
 
         $this->assertEquals('valid', $repository->findBy(['name' => '%d%'])[0]->getName());
+        $this->assertEquals('valid', $repository->findBy(['name' => 'vali%'])[0]->getName());
+        $this->assertEquals('valid', $repository->findBy(['name' => '%alid'])[0]->getName());
         $this->assertEquals('valid', $repository->findBy(['name' => 'valid'])[0]->getName());
 
         $repository = new Repository(Schoolyears::class);
