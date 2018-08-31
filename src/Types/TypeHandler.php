@@ -5,6 +5,7 @@ namespace Webuntis\Types;
 
 
 use Webuntis\Configuration\YAMLConfiguration;
+use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Exceptions\TypeException;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
@@ -67,10 +68,15 @@ class TypeHandler {
      */
     public function handle(AbstractModel &$model, array $data, array $fields) : void 
     {
+        $instanceConfig = WebuntisConfiguration::getConfigByModel($model);
         foreach ($fields as $key => $value) {
             $implements = class_implements(self::$types[$value['type']]);
             if (isset($implements[TypeInterface::class])) {
-                self::$types[$value['type']]::execute($model, $data, [$key => $value]);
+                if(($value['type'] == 'model' || $value['type'] == 'modelCollection') && (isset($instanceConfig['ignore_children']) && $instanceConfig['ignore_children'])) {
+                    self::$types['array']::execute($model, $data, [$key => $value]);
+                } else {
+                    self::$types[$value['type']]::execute($model, $data, [$key => $value]);
+                }
             } else {
                 throw new TypeException('this type is not supported');
             }

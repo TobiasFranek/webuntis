@@ -5,6 +5,8 @@ namespace Webuntis\Configuration;
 
 use Webuntis\Repositories\Repository;
 use Webuntis\WebuntisFactory;
+use Webuntis\Models\AbstractModel;
+use Webuntis\Models\Interfaces\ConfigurationModelInterface;
 
 /**
  * manages the different configurations and passes them to the WebuntisFactory
@@ -31,6 +33,27 @@ class WebuntisConfiguration {
 
         WebuntisFactory::setConfig($newConfig);
     }
+
+    /**
+     * gets the right instance config from given model
+     * @param AbstractModel $model 
+     * @return array
+     */
+    public static function getConfigByModel(AbstractModel $model) : array
+    {
+        $config = WebuntisFactory::getConfig();
+        $model = get_class($model);
+        $interfaces = class_implements($model);
+        if (isset($interfaces[ConfigurationModelInterface::class])) {
+            $configName = $model::CONFIG_NAME;
+        } else if (isset($config['only_admin']) && $config['only_admin']) {
+            $configName = 'admin';
+        } else {
+            $configName = 'default';
+        }
+
+        return $config[$configName];
+    } 
 
     /**
      * gets the current config
