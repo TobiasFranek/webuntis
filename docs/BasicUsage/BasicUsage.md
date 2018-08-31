@@ -135,6 +135,60 @@ if you want to use another SecurityManager you can use this config. With an cust
     'security_manager' => 'Your\Namespace\Manager'
 ```
 
+Often you have to request api endpoint with normal users for example Periods, but there is the Problem that the childs that you have in the Periods Model like Teachers and Students need admin access, the problem that arises from this is that you get your access denied. With the option ignore_children you can disable the rendering of the children, so you don't need to access there end points too. just add the option to the instance you want it to work on.
+
+```php
+use Webuntis\Configuration\WebuntisConfiguration;
+
+$config = new WebuntisConfiguration([ 
+'default' => [
+       //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'yourusername',
+        'password' => 'yourpassword',
+        'ignore_children' => true
+    ],
+    'admin' => [
+       //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ]
+ ]);
+```
+
+At the moment there is a problem with webuntis that all access right have changed, so your account could be found in the Students Repository but has not the UserType 5. There is now an option per instance to define a default User Repository, where the User will be searched for when you login. When you don't define this property and you have a UserType other then 2 or 5 you will get returned the Webuntis\Models\Account class, which has minimal definition (userId, userType).
+
+
+```php
+use Webuntis\Configuration\WebuntisConfiguration;
+
+$config = new WebuntisConfiguration([ 
+'default' => [
+       //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'yourusername',
+        'password' => 'yourpassword',
+
+        // when calling ->getCurrentUser() the user will be 
+        // searched in the Students repository even if the returned UserType is a Teacher or other
+        // $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
+        'user_type' => 'Students'
+    ],
+    'admin' => [
+       //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ]
+ ]);
+```
+
+
 To apply the configuration you have to simply create a new WebuntisConfiguration object.
 
 ```php
