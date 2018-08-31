@@ -45,6 +45,11 @@ class Webuntis {
      */
     private $context;
 
+    /** 
+     * @var string
+    */
+    private $userRepo = null;
+
     /**
      * @var string
      */
@@ -80,7 +85,9 @@ class Webuntis {
         $this->client = $manager->getClient();
         $this->currentUserId = $manager->getCurrentUserId();
         $this->currentUserType = $manager->getCurrentUserType();
-       
+        if($config['user_type']) {
+            $this->userRepo = $config['user_type'];
+        }
     }
 
     /**
@@ -91,12 +98,16 @@ class Webuntis {
     public function getCurrentUser() : object 
     {
         $query = new Query();
-        if ($this->currentUserType == 5) {
-            return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
-        } else if ($this->currentUserType == 2) {
-            return $query->get('Teachers')->findBy(['id' => $this->currentUserId])[0];
+        if ($this->userRepo) {
+            return $query->get($this->userRepo)->findBy(['id' => $this->currentUserId])[0];
         } else {
-            return new Account($this->currentUserId, $this->currentUserType);
+            if ($this->currentUserType == 5) {
+                return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
+            } else if ($this->currentUserType == 2) {
+                return $query->get('Teachers')->findBy(['id' => $this->currentUserId])[0];
+            } else {
+                return new Account($this->currentUserId, $this->currentUserType);
+            }
         }
     }
 
@@ -149,6 +160,15 @@ class Webuntis {
         $this->client = $client;
 
         return $this;
+    }
+
+    /**
+     * return the user repo which will be used to map the user
+     * @return string
+     */
+    public function getUserRepo() : string 
+    {
+        return $this->userRepo;
     }
 
     /**
