@@ -34,6 +34,11 @@ class CacheBuilder {
     /**
      * @var string
      */
+    private $cacheClass = \Webuntis\CacheBuilder\Cache\Memcached::class;
+
+    /**
+     * @var string
+     */
     private $cacheType;
 
     /**
@@ -62,6 +67,9 @@ class CacheBuilder {
             if (isset($config['cache']['routines'])) {
                 $this->routines = array_merge($config['cache']['routines'], $this->routines);
             }
+            if(isset($config['cache']['cache_class'])) {
+                $this->cacheClass = $config['cache']['cache_class'];
+            }
             if (isset($config['cache']['type'])) {
                 $this->cacheType = $config['cache']['type'];
             }
@@ -72,17 +80,17 @@ class CacheBuilder {
 
     /**
      * creates an Cache Instance
-     * @return object|bool
+     * @return object
      */
-    public function create() 
+    public function create() : ?object
     {
         if (!$this->cacheDisabled) {
             if (!isset(self::$caches[$this->cacheType])) {
-                self::$caches[$this->cacheType] = $this->routines[$this->cacheType]::execute($this->config);
+                self::$caches[$this->cacheType] = $this->routines[$this->cacheType]::execute($this->config, $this->cacheClass);
             } 
             return self::$caches[$this->cacheType];
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -93,5 +101,23 @@ class CacheBuilder {
     public function isCacheDisabled() : bool
     {
         return $this->cacheDisabled;
+    }
+
+    /**
+     * return the initialized caching routines
+     * @return array
+     */
+    public function getRoutines() : array
+    {
+        return $this->routines;
+    }
+
+    /**
+     * return the config array of the cache builder
+     * @return array
+     */
+    public function getConfig() : array 
+    {
+        return $this->config;
     }
 }
