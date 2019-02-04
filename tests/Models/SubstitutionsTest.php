@@ -83,10 +83,17 @@ final class SubstitutionsTest extends TestCase
         $this->assertEquals('another teacher', $sub->getText());
         $this->assertEquals('cancel', $sub->getType());
 
+        $serialized = $sub->serialize();
+
+        $serialized['startTime'] = substr($serialized['startTime'], 0, 19);
+        $serialized['endTime'] = substr($serialized['endTime'], 0, 19);
+        $serialized['lesson']['startTime'] = substr($serialized['lesson']['startTime'], 0, 19);
+        $serialized['lesson']['endTime'] = substr($serialized['lesson']['endTime'], 0, 19);
+
         $expected = [
             'id' => 1,
-            'startTime' => '2018-07-06T08:00:00+0200',
-            'endTime' => '2018-07-06T08:50:00+0200',
+            'startTime' => '2018-07-06T08:00:00',
+            'endTime' => '2018-07-06T08:50:00',
             'classes' => [
                 [
                     'id' => 1,
@@ -118,8 +125,8 @@ final class SubstitutionsTest extends TestCase
             ],
             'lesson' => [
                 'id' => 1,
-                'startTime' => '2018-07-03T08:00:00+0200',
-                'endTime' => '2018-07-03T08:50:00+0200',
+                'startTime' => '2018-07-03T08:00:00',
+                'endTime' => '2018-07-03T08:50:00',
                 'classes' => [
                     [
                         'id' => 1,
@@ -156,6 +163,6 @@ final class SubstitutionsTest extends TestCase
             'text' => 'another teacher'
         ];
 
-        $this->assertEquals($expected, $sub->serialize());
+        $this->assertEquals($expected, $serialized);
     }
 }

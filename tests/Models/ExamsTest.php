@@ -73,10 +73,15 @@ final class ExamsTest extends TestCase
         $this->assertEquals(1, $exam->getClasses()[0]->getId());
         $this->assertEquals(2, $exam->getStudents()[0]->getId());
 
+        $serialized = $exam->serialize();
+
+        $serialized['startDate'] = substr($serialized['startDate'], 0, 19);
+        $serialized['endDate'] = substr($serialized['endDate'], 0, 19);
+
         $expected = [
             'id' => 1,
-            'startDate' => '2018-07-06T08:00:00+0200',
-            'endDate' => '2018-07-06T08:50:00+0200',
+            'startDate' => '2018-07-06T08:00:00',
+            'endDate' => '2018-07-06T08:50:00',
             'classes' => [
                 [
                     'id' => 1,
@@ -109,6 +114,6 @@ final class ExamsTest extends TestCase
             ]
         ];
 
-        $this->assertEquals($expected, $exam->serialize());
+        $this->assertEquals($expected, $serialized);
     }
 }

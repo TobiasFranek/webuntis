@@ -47,17 +47,21 @@ final class ClassRegEventsTest extends TestCase
             'surname' => 'Schidt'
         ];
 
-        $exam = new ClassRegEvents($data);
-        $this->assertEquals(1, $exam->getId());
-        $this->assertEquals(2, $exam->getStudent()->getId());
-        $this->assertEquals(new \DateTime('2018-07-06'), $exam->getDate());
-        $this->assertEquals('testsubject', $exam->getSubject());
-        $this->assertEquals('testreason', $exam->getReason());
-        $this->assertEquals('eats during lesson', $exam->getText());
+        $classRegEvent = new ClassRegEvents($data);
+        $this->assertEquals(1, $classRegEvent->getId());
+        $this->assertEquals(2, $classRegEvent->getStudent()->getId());
+        $this->assertEquals(new \DateTime('2018-07-06'), $classRegEvent->getDate());
+        $this->assertEquals('testsubject', $classRegEvent->getSubject());
+        $this->assertEquals('testreason', $classRegEvent->getReason());
+        $this->assertEquals('eats during lesson', $classRegEvent->getText());
+
+        $serialized = $classRegEvent->serialize();
+
+        $serialized['date'] = substr($serialized['date'], 0, 19);
 
         $expected = [
             'id' => 1,
-            'date' => '2018-07-06T00:00:00+0200',
+            'date' => '2018-07-06T00:00:00',
             'student' => [
                 'id' => 2,
                 'key' => '1234567',
@@ -71,6 +75,6 @@ final class ClassRegEventsTest extends TestCase
             'text' => 'eats during lesson'
         ];
 
-        $this->assertEquals($expected, $exam->serialize());
+        $this->assertEquals($expected, $serialized);
     }
 }

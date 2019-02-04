@@ -77,10 +77,15 @@ final class PeriodTest extends TestCase
         $this->assertEquals(1, $period->getClasses()[0]->getId());
         $this->assertEquals(1, $period->getRooms()[0]->getId());
 
+        $serialized = $period->serialize();
+
+        $serialized['startTime'] = substr($serialized['startTime'], 0, 19);
+        $serialized['endTime'] = substr($serialized['endTime'], 0, 19);
+
         $expected = [
             'id' => 1,
-            'startTime' => '2018-07-06T08:00:00+0200',
-            'endTime' => '2018-07-06T08:50:00+0200',
+            'startTime' => '2018-07-06T08:00:00',
+            'endTime' => '2018-07-06T08:50:00',
             'classes' => [
                 [
                     'id' => 1,
@@ -114,6 +119,6 @@ final class PeriodTest extends TestCase
             'type' => 'lesson'
         ];
 
-        $this->assertEquals($expected, $period->serialize());
+        $this->assertEquals($expected, $serialized);
     }
 }

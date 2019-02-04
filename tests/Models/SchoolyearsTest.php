@@ -52,14 +52,18 @@ final class SchoolyearsTest extends TestCase
         $this->assertEquals(new \DateTime('2018-07-04'), $schoolyear->getStartDate());
         $this->assertEquals(new \DateTime('2018-07-06'), $schoolyear->getEndDate());
 
+        $serialized = $schoolyear->serialize();
+
+        $serialized['startDate'] = substr($serialized['startDate'], 0, 19);
+        $serialized['endDate'] = substr($serialized['endDate'], 0, 19);
+
         $expected = [
             'id' => 1,
             'name' => 'test',
-            'startDate' => '2018-07-04T00:00:00+0200',
-            'endDate' => '2018-07-06T00:00:00+0200'
+            'startDate' => '2018-07-04T00:00:00',
+            'endDate' => '2018-07-06T00:00:00'
         ];
 
-        $this->assertEquals($expected, $schoolyear->serialize());
-        $this->assertEquals(json_encode($expected), $schoolyear->serialize('json'));
+        $this->assertEquals($expected, $serialized);
     }
 }
