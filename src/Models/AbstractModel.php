@@ -88,6 +88,7 @@ abstract class AbstractModel implements ModelInterface {
             $this->setId($uuid->toString());
         }
         $fields = YAMLConfiguration::getFields(get_class($this));
+        
         $typeHandler = new TypeHandler();
 
         $typeHandler->handle($this, $data, $fields);

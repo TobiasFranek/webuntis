@@ -74,7 +74,11 @@ class TypeHandler {
             if (isset($implements[TypeInterface::class])) {
                 if(($value['type'] == 'model' || $value['type'] == 'modelCollection') && (isset($instanceConfig['ignore_children']) && $instanceConfig['ignore_children'])) {
                     if($value['type'] == 'model') {
-                        self::$types['int']::execute($model, $data, [$key => $value]);
+                        if(is_numeric($data[$value['api']['name']])) {
+                            self::$types['int']::execute($model, $data, [$key => $value]);
+                        } else {
+                            self::$types['string']::execute($model, $data, [$key => $value]);
+                        }
                     } else {
                         self::$types['array']::execute($model, $data, [$key => $value]);
                     }
