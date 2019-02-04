@@ -211,7 +211,6 @@ $config = new WebuntisConfiguration([
     ]
  ]);
 ```
-
 # Querys 
 
 Now to the important part, the data fetching.
@@ -313,11 +312,23 @@ $query->get('User')->getCurrentUserType();
 $query->get('Schoolyears')->getCurrentSchoolyear()
 ```
 
-the methods mentioned before are also working on these custom repos.
+* ClassRegEventsRespository needs some additional madatory parameters
+```php
+$query->get('ClassRegEvents')->findAll([], null, startDate, endDate, element);
+// element is a option that the api offers to filter the class reg events it should loog like this
+// - element
+//     - id id of the element, e.g. „Tobermory“
+//     - type type of the element, 1 = klasse, 5 = student
+//     - keyType „id“, „name“, or „externalkey“, (default: „id“)
+```
+
+* LastImportTimeRepository just has a different parse method, because the returned data from the api is not an array.
+
+* StatusDataRepository again just a different parse method.
 
 ### Model Usage
 
-These are all the model that exists in the core build:
+These are all the models that exists in the core build:
 
 * Classes - api method: getKlassen
 * Departments - api method: getDepartments
@@ -332,6 +343,10 @@ These are all the model that exists in the core build:
 * Substitutions - api method: getSubstitutions
 * Schoolyears - api method: getSchoolyears/getCurrentSchoolyear
 * ExamTypes - api method: getExamTypes
+* TimegridUnits - api method: getTimegridUnits
+* ClassRegEvents - api method: getClassregEvents
+* StatusData - api method: getStatusData
+* LastImportTime - api method: getLatestImportTime
 
 ### Serializer
 
