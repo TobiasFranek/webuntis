@@ -47,6 +47,8 @@ final class SchoolyearsTest extends TestCase
 
         $schoolyear = new Schoolyears($data);
 
+        $this->assertEquals($schoolyear->getAttributes(), $data);
+
         $this->assertEquals(1, $schoolyear->getId());
         $this->assertEquals('test', $schoolyear->getName());
         $this->assertEquals(new \DateTime('2018-07-04'), $schoolyear->getStartDate());

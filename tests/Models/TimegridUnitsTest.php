@@ -23,13 +23,15 @@ final class TimegridUnitsTest extends TestCase
             ]
         ];
 
-        $classes = new TimegridUnits($data);
+        $timeGridUnits = new TimegridUnits($data);
 
-        $this->assertEquals(1, $classes->getId());
-        $this->assertEquals(0, $classes->getDay());
+        $this->assertEquals($timeGridUnits->getAttributes(), $data);
+
+        $this->assertEquals(1, $timeGridUnits->getId());
+        $this->assertEquals(0, $timeGridUnits->getDay());
         $this->assertEquals([
             'test' => 'test'
-        ], $classes->getTimeUnits());
+        ], $timeGridUnits->getTimeUnits());
 
         $expected = [
             'id' => 1,
@@ -39,6 +41,6 @@ final class TimegridUnitsTest extends TestCase
             ]
         ];
 
-        $this->assertEquals($expected, $classes->serialize());
+        $this->assertEquals($expected, $timeGridUnits->serialize());
     }
 }

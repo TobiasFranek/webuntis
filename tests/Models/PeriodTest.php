@@ -69,6 +69,9 @@ final class PeriodTest extends TestCase
         ];
 
         $period = new Period($data);
+
+        $this->assertEquals($period->getAttributes(), $data);
+
         $this->assertEquals(1, $period->getId());
         $this->assertEquals(1, $period->getSubjects()[0]->getId());
         $this->assertEquals(new \DateTime('2018-07-06 8:00'), $period->getStartTime());

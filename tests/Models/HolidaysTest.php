@@ -48,6 +48,8 @@ final class HolidaysTest extends TestCase
 
         $holiday = new Holidays($data);
 
+        $this->assertEquals($holiday->getAttributes(), $data);
+
         $this->assertEquals(1, $holiday->getId());
         $this->assertEquals('test', $holiday->getName());
         $this->assertEquals('teststring', $holiday->getFullName());

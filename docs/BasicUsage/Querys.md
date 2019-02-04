@@ -143,4 +143,10 @@ $students =  \Webuntis\Serializer\Serializer::serialize($students, 'json|xml|yml
                                                                                    // if the second parameter is empty it will return an php array
 ```
 
+### original API data
 
+If you want to get the originally received API data from the json rpc end point, call the 
+
+```php
+$students = $query->get('Students')->findAll()[0]->getAttributes(); // returns the original received array
+```

@@ -72,6 +72,9 @@ final class SubstitutionsTest extends TestCase
         ];
 
         $sub = new Substitutions($data);
+
+        $this->assertEquals($sub->getAttributes(), $data);
+
         $this->assertEquals(1, $sub->getId());
         $this->assertEquals(1, $sub->getSubjects()[0]->getId());
         $this->assertEquals(new \DateTime('2018-07-06 8:00'), $sub->getStartTime());

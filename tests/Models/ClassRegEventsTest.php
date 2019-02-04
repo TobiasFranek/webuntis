@@ -48,6 +48,9 @@ final class ClassRegEventsTest extends TestCase
         ];
 
         $classRegEvent = new ClassRegEvents($data);
+
+        $this->assertEquals($classRegEvent->getAttributes(), $data);
+
         $this->assertEquals(1, $classRegEvent->getId());
         $this->assertEquals(2, $classRegEvent->getStudent()->getId());
         $this->assertEquals(new \DateTime('2018-07-06'), $classRegEvent->getDate());

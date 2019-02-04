@@ -20,11 +20,13 @@ final class LastImportTimeTest extends TestCase
             'time' => 22222222
         ];
 
-        $classes = new LastImportTime($data);
+        $importTime = new LastImportTime($data);
 
-        $this->assertEquals(1, $classes->getId());
-        $this->assertEquals(22222222, $classes->getTime());
+        $this->assertEquals($importTime->getAttributes(), $data);
 
-        $this->assertEquals(['id' => 1, 'time' => 22222222], $classes->serialize());
+        $this->assertEquals(1, $importTime->getId());
+        $this->assertEquals(22222222, $importTime->getTime());
+
+        $this->assertEquals(['id' => 1, 'time' => 22222222], $importTime->serialize());
     }
 }

@@ -291,11 +291,8 @@ $query->get('Exams')->findAll(['startDate' => 'ASC|DESC'], 5);
 There are six custom Repositories in the core already and they are the
 
 * PeriodRepository only has some additional parameters to the standard methods.
-* ExamsRespository has some different logic in the findAll() method.
-* ClassHasTeachersRespository has some different logic in the findAll() method.
-* ClassRegEventsRespository has some different findBy() and findAll() logic.
-* LastImportTimeRepository has a diffrent parse() method.
-* StatusDataRepository has a different parse() method.
+* Exams has some different logic in the findAll() method.
+* ClassHasTeachers has some different logic in the findAll() method.
 * SubstitutionsRepository has some additional MANDATORY parameters to the standard methods.
  
 ```php
@@ -335,10 +332,6 @@ These are all the model that exists in the core build:
 * Substitutions - api method: getSubstitutions
 * Schoolyears - api method: getSchoolyears/getCurrentSchoolyear
 * ExamTypes - api method: getExamTypes
-* ClassRegEvents - api method: getClassregEvents
-* LastImportTime - api method: getlatestImportTime
-* StatusData - api method: getStatusData
-* TimegridUnits - api method: getTimegridUnits
 
 ### Serializer
 
@@ -362,4 +355,12 @@ If you have an array of objects you can serialize the array including the models
 $students = $query->get('Students')->findAll(); // returns an object array
 $students =  \Webuntis\Serializer\Serializer::serialize($students, 'json|xml|yml') // turn the object array into an array,
                                                                                    // if the second parameter is empty it will return an php array
+```
+
+### original API data
+
+If you want to get the originally received API data from the json rpc end point, call the 
+
+```php
+$students = $query->get('Students')->findAll()[0]->getAttributes(); // returns the original received array
 ```

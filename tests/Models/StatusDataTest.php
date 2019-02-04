@@ -25,15 +25,17 @@ final class StatusDataTest extends TestCase
             ]
         ];
 
-        $classes = new StatusData($data);
+        $statusData = new StatusData($data);
 
-        $this->assertEquals(1, $classes->getId());
+        $this->assertEquals($statusData->getAttributes(), $data);
+
+        $this->assertEquals(1, $statusData->getId());
         $this->assertEquals([
             'test' => 'test'
-        ], $classes->getLessonTypes());
+        ], $statusData->getLessonTypes());
         $this->assertEquals([
             'test' => 'test'
-        ], $classes->getCodes());
+        ], $statusData->getCodes());
 
         $expected = [
             'id' => 1,
@@ -45,6 +47,6 @@ final class StatusDataTest extends TestCase
             ]
         ];
 
-        $this->assertEquals($expected, $classes->serialize());
+        $this->assertEquals($expected, $statusData->serialize());
     }
 }

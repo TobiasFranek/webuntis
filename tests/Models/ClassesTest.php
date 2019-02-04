@@ -23,6 +23,8 @@ final class ClassesTest extends TestCase
 
         $classes = new Classes($data);
 
+        $this->assertEquals($classes->getAttributes(), $data);
+
         $this->assertEquals(1, $classes->getId());
         $this->assertEquals('test', $classes->getName());
         $this->assertEquals('teststring', $classes->getFullName());

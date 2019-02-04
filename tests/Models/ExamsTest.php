@@ -65,6 +65,9 @@ final class ExamsTest extends TestCase
         ];
 
         $exam = new Exams($data);
+
+        $this->assertEquals($exam->getAttributes(), $data);
+
         $this->assertEquals(1, $exam->getId());
         $this->assertEquals(1, $exam->getSubject()->getId());
         $this->assertEquals(new \DateTime('2018-07-06 8:00'), $exam->getStartDate());

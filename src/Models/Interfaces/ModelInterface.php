@@ -18,13 +18,24 @@ interface ModelInterface {
 
     /**
      * @param int|string $id
-     * @return AbstractModel
+     * @return self
      */
-    public function setId($id) : AbstractModel;
+    public function setId($id) : self;
 
     /**
      * @param string $format
      * @return array|string
      */
     public function serialize(?string $format);
+
+    /**
+     * @param array $attributes
+     * @return self
+     */
+    public function setAttributes(array $attributes) : self;
+
+    /**
+     * @return array
+     */
+    public function getAttributes(): array;
 }

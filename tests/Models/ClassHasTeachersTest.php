@@ -49,6 +49,9 @@ final class ClassHasTeachersTest extends TestCase
 
         $classHasTeachers = new ClassHasTeachers($data);
 
+        $this->assertEquals($classHasTeachers->getAttributes(), $data);
+
+
         $this->assertEquals(1, $classHasTeachers->getId());
         $this->assertEquals('test', $classHasTeachers->getName());
         $this->assertEquals('teststring', $classHasTeachers->getFullName());

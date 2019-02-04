@@ -9,6 +9,7 @@ use Webuntis\Serializer\Serializer;
 use Webuntis\Types\StringType;
 use Webuntis\Types\TypeHandler;
 use Ramsey\Uuid\Uuid;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * The AbstractModel is responsible for the data injection into the different Models.
@@ -21,6 +22,12 @@ abstract class AbstractModel implements ModelInterface {
      * @var string|int
      */
     private $id;
+
+    /**
+     * @var array
+     * @Exclude()
+     */
+    private $attributes;
 
     /**
      * @var string
@@ -51,7 +58,7 @@ abstract class AbstractModel implements ModelInterface {
      * @param int|string $id
      * @return AbstractModel $this
      */
-    public function setId($id) : self
+    public function setId($id) : ModelInterface
     {
         $this->id = $id;
 
@@ -84,5 +91,26 @@ abstract class AbstractModel implements ModelInterface {
         $typeHandler = new TypeHandler();
 
         $typeHandler->handle($this, $data, $fields);
+        $this->setAttributes($data);
+    }
+
+    /**
+     * sets the original attributes of the received data
+     * @param array $attributes
+     * @return ModelInterface
+     */
+    public function setAttributes(array $attributes) : ModelInterface
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * return the original attributes of the received data
+     * @return array
+     */
+    public function getAttributes() : array {
+        return $this->attributes;
     }
 }

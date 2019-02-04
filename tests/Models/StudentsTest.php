@@ -26,6 +26,8 @@ final class StudentsTest extends TestCase
 
         $student = new Students($data);
 
+        $this->assertEquals($student->getAttributes(), $data);
+        
         $this->assertEquals(1, $student->getId());
         $this->assertEquals('john.doe', $student->getName());
         $this->assertEquals('john', $student->getFirstName());

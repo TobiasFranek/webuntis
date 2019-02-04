@@ -22,6 +22,9 @@ final class ExamTypesTest extends TestCase
         ];
 
         $examTypes = new ExamTypes($data);
+
+        $this->assertEquals($examTypes->getAttributes(), $data);
+
         $this->assertEquals(1, $examTypes->getId());
         $this->assertEquals('test', $examTypes->getName());
         $this->assertEquals('teststring', $examTypes->getLongName());
