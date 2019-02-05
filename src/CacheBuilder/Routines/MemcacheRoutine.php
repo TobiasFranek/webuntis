@@ -16,12 +16,13 @@ class MemcacheRoutine implements CacheBuilderRoutineInterface {
     /**
      * the logic which is used to create an Memcache instance
      * @var array $config
+     * @var object $cacheClass
      * @return object
      */
-    public static function execute(array $config, string $memcachedName) : ?object
+    public static function execute(array $config) : ?object
     {
         if (extension_loaded('memcached')) {
-            $cacheDriver = new $memcachedName();
+            $cacheDriver = new Memcached();
             $host = 'localhost';
             $port = 11211;
             if (!empty($config)) {

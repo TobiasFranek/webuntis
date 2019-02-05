@@ -13,10 +13,9 @@ interface CacheBuilderRoutineInterface {
     /**
      * executes the CacheBuilderRoutine so a Caching instance can be created
      * @param array $config
-     * @param string $memcachedName
-     * @return object|bool
+     * @return object
      */
-    public static function execute(array $config, string $memcachedName);
+    public static function execute(array $config) : ?object;
 
     /**
      * return how the config should be given

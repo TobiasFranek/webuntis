@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Webuntis\CacheBuilder;
 
 use Webuntis\CacheBuilder\Routines\MemcacheRoutine;
+use Webuntis\CacheBuilder\Routines\FilesystemCacheRoutine;
+use Webuntis\CacheBuilder\Routines\ArrayCacheRoutine;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\CacheBuilder\Cache\Memcached;
 
@@ -28,13 +30,10 @@ class CacheBuilder {
      * @var array
      */
     private $routines = [
-        'memcached' => MemcacheRoutine::class
+        'memcached' => MemcacheRoutine::class,
+        'filesystem' => FilesystemCacheRoutine::class,
+        'arraycache' => ArrayCacheRoutine::class
     ]; 
-
-    /**
-     * @var string
-     */
-    private $cacheClass = \Webuntis\CacheBuilder\Cache\Memcached::class;
 
     /**
      * @var string
@@ -67,9 +66,6 @@ class CacheBuilder {
             if (isset($config['cache']['routines'])) {
                 $this->routines = array_merge($config['cache']['routines'], $this->routines);
             }
-            if(isset($config['cache']['cache_class'])) {
-                $this->cacheClass = $config['cache']['cache_class'];
-            }
             if (isset($config['cache']['type'])) {
                 $this->cacheType = $config['cache']['type'];
             }
@@ -86,7 +82,7 @@ class CacheBuilder {
     {
         if (!$this->cacheDisabled) {
             if (!isset(self::$caches[$this->cacheType])) {
-                self::$caches[$this->cacheType] = $this->routines[$this->cacheType]::execute($this->config, $this->cacheClass);
+                self::$caches[$this->cacheType] = $this->routines[$this->cacheType]::execute($this->config);
             } 
             return self::$caches[$this->cacheType];
         } else {
