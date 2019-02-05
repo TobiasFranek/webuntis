@@ -9,3 +9,10 @@ Webuntis\Models\RemarkCategories:
             type: string
             api:
                 name: longName
+        group:
+            type: model
+            api:
+                name: groupId
+            model:
+                name: RemarkCategoryGroups
+                searchkey: id

@@ -81,7 +81,11 @@ final class ClassRegEventsTest extends TestCase
             'category' => [
                 'id' => 1,
                 'name' => 'Disziplinarblatt #1',
-                'fullName' => 'Disziplinarblatt #1'
+                'fullName' => 'Disziplinarblatt #1',
+                'group' => [
+                    'id' => 1,
+                    'name' => 'Group1'
+                ]
             ]
         ];
 

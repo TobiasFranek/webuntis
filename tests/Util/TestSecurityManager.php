@@ -275,12 +275,24 @@ class TestSecurityManager implements SecurityManagerInterface {
                     [
                         'id' => 1,
                         'name' => 'Disziplinarblatt #1',
-                        'longName' => 'Disziplinarblatt #1'
+                        'longName' => 'Disziplinarblatt #1',
+                        'groupId' => 1
                     ],
                     [
                         'id' => 2,
                         'name' => 'Disziplinarblatt #2',
-                        'longName' => 'Disziplinarblatt #2'
+                        'longName' => 'Disziplinarblatt #2',
+                        'groupId' => 2
+                    ]
+                ],
+                'getClassregCategoryGroups' => [
+                    [
+                        'id' => 1,
+                        'name' => 'Group1'
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'Group2'
                     ]
                 ],
                 'getStudents' => [

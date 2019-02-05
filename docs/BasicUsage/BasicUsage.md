@@ -421,6 +421,8 @@ These are all the models that exists in the core build:
 * StatusData - api method: getStatusData
 * LastImportTime - api method: getLatestImportTime
 * Absences - api method: getTimetableWithAbsences
+* RemarkCategories - api method: getClassregCategories
+* RemarkCategoryGroups - api method: getClassregCategoryGroups
 
 ### Serializer
 

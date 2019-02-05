@@ -1,0 +1,7 @@
+Webuntis\Models\RemarkCategoryGroups:
+    repositoryClass: null
+    fields:
+        name:
+            type: string
+            api:
+                name: name
