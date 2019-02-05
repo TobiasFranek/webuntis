@@ -138,6 +138,9 @@ class Repository {
     protected function find(array $data, array $params) : array 
     {
         if (!empty($data)) {
+            if($this->cache && $this->cache->contains($this->model::METHOD . '.' . serialize($params))) {
+                return $this->cache->fetch($this->model::METHOD . '.' . serialize($params));
+            }
             foreach ($params as $key => $value) {
                 $temp = [];
                 $keys = explode(":", $key);
@@ -187,6 +190,9 @@ class Repository {
                     throw new RepositoryException('the parameter ' . $key . ' doesn\'t exist');
                 }
             }
+        }
+        if($this->cache) {
+            $this->cache->save($this->model::METHOD . '.' . serialize($params), $data);
         }
         return $data;
     }
