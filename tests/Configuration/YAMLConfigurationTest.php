@@ -33,7 +33,8 @@ final class YamlConfigurationTest extends TestCase
             'ClassRegEvents' => 'Webuntis\Models\ClassRegEvents',
             'StatusData' => 'Webuntis\Models\StatusData',
             'TimegridUnits' => 'Webuntis\Models\TimegridUnits',
-            'LastImportTime' => 'Webuntis\Models\LastImportTime'
+            'LastImportTime' => 'Webuntis\Models\LastImportTime',
+            'Absences' => 'Webuntis\Models\Absences'
         ];
         $expectedRepositories = [
             'Default' => 'Webuntis\Repositories\Repository',
@@ -45,7 +46,8 @@ final class YamlConfigurationTest extends TestCase
             'Substitutions' => 'Webuntis\Repositories\SubstitutionsRepository',
             'ClassRegEvents' => 'Webuntis\Repositories\ClassRegEventsRepository',
             'StatusData' => 'Webuntis\Repositories\StatusDataRepository',
-            'LastImportTime' => 'Webuntis\Repositories\LastImportTimeRepository'
+            'LastImportTime' => 'Webuntis\Repositories\LastImportTimeRepository',
+            'Absences' => 'Webuntis\Repositories\AbsencesRepository'
         ];
         $gottenModels = $yamlConfiguration->getModels();
 

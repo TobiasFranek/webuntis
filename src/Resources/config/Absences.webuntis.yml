@@ -1,0 +1,67 @@
+Webuntis\Models\Absences:
+    repositoryClass: Webuntis\Repositories\AbsencesRepository
+    fields:
+        startTime:
+            type: mergeTimeAndDate
+            api:
+                time: startTime
+                date: date
+        endTime:
+            type: mergeTimeAndDate
+            api:
+                time: endTime
+                date: date
+        student:
+            type: model
+            api:
+                name: studentId
+            model:
+                name: Students
+                searchkey: key
+        subject:
+            type: model
+            api:
+                name: subjectId
+            model:
+                name: Period
+                searchkey: id
+        teachers:
+            type: modelCollection
+            api:
+                name: teacherIds
+                searchkey: id
+            model:
+                name: Teachers
+                searchkey: id
+        studentGroup:
+            type: string
+            api:
+                name: studentGroup
+        status:
+            type: string
+            api:
+                name: status
+        absenceReason:
+            type: string
+            api:
+                name: absenceReason
+        absentTime:
+            type: int
+            api:
+                name: absentTime
+        excuseStatus:
+            type: string
+            api: 
+                name: excuseStatus
+        user:
+            type: string
+            api:
+                name: user
+        checked:
+            type: bool
+            api:
+                name: checked
+        invalid:
+            type: bool
+            api:
+                name: invalid

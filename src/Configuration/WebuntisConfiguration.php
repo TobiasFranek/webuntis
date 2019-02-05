@@ -35,7 +35,7 @@ class WebuntisConfiguration {
     }
 
     /**
-     * gets the right instance config from given model
+     * gets the right instance config from a given model
      * @param AbstractModel $model 
      * @return array
      */
@@ -54,6 +54,27 @@ class WebuntisConfiguration {
 
         return $config[$configName];
     } 
+
+    /**
+     * returns the name of the configuration from a given model
+     * @param AbstractModel $model 
+     * @return string
+     */
+    public static function getConfigNameByModel(AbstractModel $model) : string 
+    {
+        $config = WebuntisFactory::getConfig();
+        $model = get_class($model);
+        $interfaces = class_implements($model);
+        if (isset($interfaces[ConfigurationModelInterface::class])) {
+            $configName = $model::CONFIG_NAME;
+        } else if (isset($config['only_admin']) && $config['only_admin']) {
+            $configName = 'admin';
+        } else {
+            $configName = 'default';
+        }
+
+        return $configName;
+    }
 
     /**
      * gets the current config

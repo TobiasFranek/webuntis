@@ -1,3 +1,4 @@
+
 # Querys 
 
 Now to the important part, the data fetching.
@@ -135,6 +136,33 @@ $query->get('ClassRegEvents')->findAll([], null, startDate, endDate, element);
 
 * StatusDataRepository again just a different parse method.
 
+* AbsencesRespoitory allows you to fetch absences from a certain date
+  
+
+```php
+$query->get('Absences')->findAll([], null, startDate, endDate, lazy = true|false);
+// the lazy operator works like this
+
+// loads all the data and works just as fine
+$absence = $query->get('Absences')->findAll([], null, startDate, endDate, lazy = false)[0];
+$absence->getTeachers()[0]->getName();
+
+// it loads all the children etc for the absences model
+$absences = $query->get('Absences')->findAll([], null, startDate, endDate, lazy = false);
+\Webuntis\Serializer\Serializer::serialize($absences)[12]['teachers'][2]->getName()
+
+// now with lazy enabled this happens
+$absence = $query->get('Absences')->findAll([], null, startDate, endDate, lazy = true)[0];
+
+// Error: undefined method
+$absence->getTeachers()[0]->getName();
+// and also all other object only have the base data
+// but if you load them:
+// everything works as before, but you had to process a lot less data at once
+// keep in mind, with this command you have to load one model at a time
+$absence->load()->getTeachers()[0]->getName();
+```
+
 ### Model Usage
 
 These are all the models that exists in the core build:
@@ -156,6 +184,7 @@ These are all the models that exists in the core build:
 * ClassRegEvents - api method: getClassregEvents
 * StatusData - api method: getStatusData
 * LastImportTime - api method: getLatestImportTime
+* Absences - api method: getTimetableWithAbsences
 
 ### Serializer
 

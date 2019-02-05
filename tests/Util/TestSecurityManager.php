@@ -418,6 +418,42 @@ class TestSecurityManager implements SecurityManagerInterface {
                         'text' => 'eats during lesson2',
                         'surname' => 'Schidt'
                     ]
+                ],
+                'getTimetableWithAbsences' => [
+                    'periodsWithAbsences' => [
+                        [
+                            'id' => 1,
+                            'startTime' => '800',
+                            'endTime' => '850',
+                            'date' => '20180706',
+                            'studentId' => 1234567,
+                            'subjectId' => 1,
+                            'teacherIds' => [
+                                '1'                            
+                            ],
+                            'studentGroup' => '5BHWII',
+                            'absenceReason' => 'Illness',
+                            'absentTime' => 50,
+                            'user' => 'admin',
+                            'checked' => true,
+                        ],
+                        [
+                            'id' => 2,
+                            'startTime' => '800',
+                            'endTime' => '850',
+                            'date' => '20180706',
+                            'studentId' => 1234567,
+                            'subjectId' => 2,
+                            'teacherIds' => [
+                                '2'
+                            ],
+                            'studentGroup' => '5BHWII',
+                            'absenceReason' => 'Illness',
+                            'absentTime' => 50,
+                            'user' => 'admin',
+                            'checked' => true,
+                        ]
+                    ]
                 ]
             ];
 
