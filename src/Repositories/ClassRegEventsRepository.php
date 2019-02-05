@@ -53,7 +53,22 @@ class ClassRegEventsRepository extends Repository
     public function findAll(array $sort = [], int $limit = null, \DateTime $startDate = null, \DateTime $endDate = null, array $element = []) : array 
     {
         if ($startDate && $endDate) {
-            $data = $this->executionHandler->execute($this, ['startDate' => date_format($startDate, 'Ymd'), 'endDate' => date_format($endDate, 'Ymd')]);
+            if(!empty($element)) {
+                $data = $this->executionHandler->execute($this, ['options' => 
+                    [
+                        'startDate' => date_format($startDate, 'Ymd'),
+                        'endDate' => date_format($endDate, 'Ymd'),
+                        'element' => $element
+                    ]
+                ]);
+            } else {
+                $data = $this->executionHandler->execute($this, ['options' => 
+                    [
+                        'startDate' => date_format($startDate, 'Ymd'),
+                        'endDate' => date_format($endDate, 'Ymd')
+                    ]
+                ]);
+            }
         } else {
             $query = new Query();
             $schoolyear = $query->get('Schoolyears')->getCurrentSchoolyear();
