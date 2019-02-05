@@ -73,9 +73,9 @@ class TypeHandler {
         foreach ($fields as $key => $value) {
             $implements = class_implements(self::$types[$value['type']]);
             if (isset($implements[TypeInterface::class])) {
-                if(($value['type'] == 'model' || $value['type'] == 'modelCollection') && (isset($instanceConfig['ignore_children']) && $instanceConfig['ignore_children'])) {
-                    if($value['type'] == 'model') {
-                        if(is_numeric($data[$value['api']['name']]) && $data[$value['api']['name']] < PHP_INT_MAX) {
+                if (($value['type'] == 'model' || $value['type'] == 'modelCollection') && (isset($instanceConfig['ignore_children']) && $instanceConfig['ignore_children'])) {
+                    if ($value['type'] == 'model') {
+                        if (is_numeric($data[$value['api']['name']]) && $data[$value['api']['name']] < PHP_INT_MAX) {
                             self::$types['int']::execute($model, $data, [$key => $value]);
                         } else {
                             self::$types['string']::execute($model, $data, [$key => $value]);

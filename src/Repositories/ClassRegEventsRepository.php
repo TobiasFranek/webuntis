@@ -15,14 +15,14 @@ use Webuntis\Exceptions\RepositoryException;
 class ClassRegEventsRepository extends Repository
 {
 
-     /**
-     * return all ClassRegEvents that have been searched for
-     * @param array $params
-     * @param array $sort
-     * @param int $limit
-     * @return array
-     * @throws RepositoryException
-     */
+        /**
+         * return all ClassRegEvents that have been searched for
+         * @param array $params
+         * @param array $sort
+         * @param int $limit
+         * @return array
+         * @throws RepositoryException
+         */
     public function findBy(array $params, array $sort = [], int $limit = null, $startDate = null, \DateTime $endDate = null, array $element = []) : array 
     {
         if (empty($params)) {
@@ -53,7 +53,7 @@ class ClassRegEventsRepository extends Repository
     public function findAll(array $sort = [], int $limit = null, \DateTime $startDate = null, \DateTime $endDate = null, array $element = []) : array 
     {
         if ($startDate && $endDate) {
-            if(!empty($element)) {
+            if (!empty($element)) {
                 $data = $this->executionHandler->execute($this, ['options' => 
                     [
                         'startDate' => date_format($startDate, 'Ymd'),
@@ -73,7 +73,7 @@ class ClassRegEventsRepository extends Repository
             $query = new Query();
             $schoolyear = $query->get('Schoolyears')->getCurrentSchoolyear();
 
-            if(!empty($element)) {
+            if (!empty($element)) {
                 $data = $this->executionHandler->execute($this, ['options' => 
                     [
                         'startDate' => date_format($schoolyear->getStartDate(), 'Ymd'),
