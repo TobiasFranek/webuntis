@@ -314,6 +314,28 @@ $query->get('Exams')->findAll(['startDate' => 'ASC|DESC'], 5);
 There are six custom Repositories in the core already and they are the
 
 * PeriodRepository only has some additional parameters to the standard methods.
+```php
+$query->get('Period')->findAll(sort, limit, options);
+//options is a array and can contain these values for filtering
+// - options a parameter object encapsulating the following fields:
+//      - element id object encapsulating the following fields:
+//          - id element id, either the internal id, name, or external key of an element (see „keyType“), mandatory
+//           - type element type, mandatory 1 = klasse, 2 = teacher, 3 = subject, 4 = room, 5 = student
+//      - keyType „id“, „name“, or„externalkey“, optional (default: „id“)
+//      - startDate number, format: YYYYMMDD, optional (default: current date)
+//      - endDate number, format: YYYYMMDD, optional (default: current date)
+//      - onlyBaseTimetable boolean, returns only the base timetable (without bookings etc.) (default:false)
+//      - showBooking boolean, returns the period's booking info if available (default: false)
+//      - showInfo boolean, returns the period information if available (default: false)
+//      - showSubstText boolean, returns the Untis substitution text if available (default: false)
+//      - showLsText boolean, returns the text of the period's lesson (default: false)
+//      - showLsNumber boolean, returns the number of the period's lesson (default: false)
+//      - showStudentgroup boolean, returns the name(s) of the studentgroup(s) (default: false)
+//      - klasseFields array, optional, values: „id“, „name“, „longname“, „externalkey“
+//      - roomFields array, optional, values: „id“, „name“, „longname“, „externalkey“
+//      - subjectFields array, optional, values: „id“, „name“, „longname“, „externalkey“
+//      - teacherFields array, optional, values: „id“, „name“, „longname“, „externalkey“
+```
 * Exams has some different logic in the findAll() method.
 * ClassHasTeachers has some different logic in the findAll() method.
 * SubstitutionsRepository has some additional MANDATORY parameters to the standard methods.

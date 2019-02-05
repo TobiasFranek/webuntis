@@ -26,28 +26,12 @@ class PeriodRepository extends Repository {
      * @return AbstractModel[]
      * @throws RepositoryException
      */
-    public function findBy(array $params, array $sort = [], int $limit = null, int $id = null, int $type = null, string $startDate = null, string $endDate = null) : array
+    public function findBy(array $params, array $sort = [], int $limit = null, array $options = []) : array
     {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
-        if ($type === null) {
-            $type = $this->instance->getCurrentUserType();
-        }
-        if ($id === null) {
-            $id = $this->instance->getCurrentUser()->getId();
-        }
-        if ($startDate && $endDate) {
-            $startDate = new \DateTime($startDate);
-            $endDate = new \DateTime($endDate);
-            $startDate = date_format($startDate, 'Ymd');
-            $endDate = date_format($endDate, 'Ymd');
-            $data = $this->executionHandler->execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
-        } else if ($startDate || $endDate) {
-            throw new RepositoryException('missing parameter endDate or startDate');
-        } else {
-            $data = $this->executionHandler->execute($this, ['id' => $id, 'type' => $type]);
-        }
+        $data = $this->findAll([], null, $options);
 
         if (!empty($sort)) {
             $field = array_keys($sort)[0];
@@ -73,25 +57,16 @@ class PeriodRepository extends Repository {
      * @param string $endDate
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [], int $limit = null, int $id = null, int $type = null, string $startDate = null, string $endDate = null) : array 
+    public function findAll(array $sort = [], int $limit = null, array $options = []) : array 
     {
-        if ($type === null) {
-            $type = $this->instance->getCurrentUserType();
+        if (isset($options['options']['element']['type'])) {
+            $options['options']['element']['type'] = $this->instance->getCurrentUserType();
         }
-        if ($id === null) {
-            $id = $this->instance->getCurrentUser()->getId();
+        if (isset($options['options']['element']['id'])) {
+            $options['options']['element']['type'] = $this->instance->getCurrentUser()->getId();
         }
-        if ($startDate && $endDate) {
-            $startDate = new \DateTime($startDate);
-            $endDate = new \DateTime($endDate);
-            $startDate = date_format($startDate, 'Ymd');
-            $endDate = date_format($endDate, 'Ymd');
-            $data = $this->executionHandler->execute($this, ['id' => $id, 'type' => $type, 'startDate' => $startDate, 'endDate' => $endDate]);
-        } else if ($startDate || $endDate) {
-            throw new RepositoryException('missing parameter endDate or startDate');
-        } else {
-            $data = $this->executionHandler->execute($this, ['id' => $id, 'type' => $type]);
-        }
+        $data = $this->executionHandler->execute($this, $options);
+
         if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
