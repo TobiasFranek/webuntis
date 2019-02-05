@@ -16,14 +16,14 @@ use Webuntis\Configuration\WebuntisConfiguration;
 class AbsencesRepository extends Repository
 {
 
-     /**
-     * return all Absences that have been searched for
-     * @param array $params
-     * @param array $sort
-     * @param int $limit
-     * @return array
-     * @throws RepositoryException
-     */
+        /**
+         * return all Absences that have been searched for
+         * @param array $params
+         * @param array $sort
+         * @param int $limit
+         * @return array
+         * @throws RepositoryException
+         */
     public function findBy(array $params, array $sort = [], int $limit = null, $startDate = null, \DateTime $endDate = null, bool $lazy = false) : array 
     {
         if (empty($params)) {
@@ -55,7 +55,7 @@ class AbsencesRepository extends Repository
     {
         $configName = WebuntisConfiguration::getConfigNameByModel(new $this->model());
         $config = WebuntisConfiguration::getConfig();
-        if($lazy) {
+        if ($lazy) {
             $config[$configName]['ignore_children'] = true;
             WebuntisConfiguration::setConfig($config);
         }
@@ -84,7 +84,7 @@ class AbsencesRepository extends Repository
         if ($limit !== null) {
             $data = array_slice($data, 0, $limit);
         }
-        if($lazy) {
+        if ($lazy) {
             unset($config[$configName]['ignore_children']);
             WebuntisConfiguration::setConfig($config);
         }
