@@ -3,7 +3,7 @@
 At the moment there are 3 available options for caching:
 
 * memcached - works with an memcached server and the php extension
-* filebased caching - stores the data in files
+* filebased caching - stores the data in files (be careful with outdated data)
 * array cache - which stores the data in the php run-time, but can not be persistet across processes
 
 You can create an cache instance like this:

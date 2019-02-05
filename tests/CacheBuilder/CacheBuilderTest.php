@@ -6,6 +6,8 @@ namespace Webuntis\Tests\Configuration;
 use PHPUnit\Framework\TestCase;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\CacheBuilder\CacheBuilder;
+use Doctrine\Common\Cache\FilesystemCache;
+use Doctrine\Common\Cache\ArrayCache;
 
 /**
  * CacheBuilderTest
@@ -76,5 +78,24 @@ final class CacheBuilderTest extends TestCase
         } else {
             $this->assertNull($cache);
         }
+
+        $cacheBuilder = new CacheBuilder([
+            'cache' => [
+                'type' => 'arraycache'
+            ]
+        ]);
+
+        $cache = $cacheBuilder->create();
+        $this->assertInstanceOf(ArrayCache::class, $cache);
+
+        $cacheBuilder = new CacheBuilder([
+            'cache' => [
+                'type' => 'filesystem',
+                'path' => 'test'
+            ]
+        ]);
+
+        $cache = $cacheBuilder->create();
+        $this->assertInstanceOf(FilesystemCache::class, $cache);
     }
 }
