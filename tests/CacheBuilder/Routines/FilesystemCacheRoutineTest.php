@@ -20,7 +20,7 @@ final class FilesystemCacheRoutineTest extends TestCase
         $filesystem = new FilesystemCacheRoutine();
 
         $cache = $filesystem->execute([
-            'path' => 'test'
+            'path' => 'tests/var'
         ]);
         $this->assertInstanceOf(FilesystemCache::class, $cache);
     }

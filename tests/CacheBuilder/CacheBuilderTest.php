@@ -91,7 +91,7 @@ final class CacheBuilderTest extends TestCase
         $cacheBuilder = new CacheBuilder([
             'cache' => [
                 'type' => 'filesystem',
-                'path' => 'test'
+                'path' => 'tests/var'
             ]
         ]);
 
