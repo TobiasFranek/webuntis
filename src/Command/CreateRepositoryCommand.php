@@ -38,7 +38,7 @@ class CreateRepositoryCommand extends Command {
         $fs = new Filesystem();
 
         if ($input->getArgument('pathToModelYML')) {
-            $path = $input->getArgument('pathToModelYML');
+            $path = gettype($input->getArgument('pathToModelYML')) == 'array' ? $input->getArgument('pathToModelYML')[0] : $input->getArgument('pathToModelYML');
             $explodedPath = explode('.', $path);
             if (count($explodedPath) == 3) {
                 $extension = $explodedPath[1] . '.' . $explodedPath[2];

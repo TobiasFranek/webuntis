@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Webuntis\Models;
 
-use Webuntis\Models\Interfaces\ModelInterfaces;
-
 /**
  * RemarkCategories Model
  * @author Tobias Franek <tobias.franek@gmail.com>
@@ -17,16 +15,16 @@ class RemarkCategories extends Classes {
     const METHOD = 'getClassregCategories';
 
     /**
-     * @var ModelInterface
+     * @var mixed
      */
     protected $group;
 
     /**
      * sets group
      * @param mixed
-     * @return ModelInterface
+     * @return RemarkCategories
      */
-    public function setGroup($group) : ModelInterface
+    public function setGroup($group) : self
     {
         $this->group = $group;
 

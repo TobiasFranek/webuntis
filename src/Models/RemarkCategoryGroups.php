@@ -38,7 +38,7 @@ class RemarkCategoryGroups extends AbstractModel implements CachableModelInterfa
     /**
      * set the name
      * @param string $name
-     * @return Classes $this
+     * @return RemarkCategoryGroups
      */
     public function setName(string $name) : self
     {
@@ -51,7 +51,7 @@ class RemarkCategoryGroups extends AbstractModel implements CachableModelInterfa
      * sets an given field
      * @param string $field
      * @param mixed $value
-     * @return Classes
+     * @return RemarkCategoryGroups
      */
     public function set(string $field, $value) : self 
     {

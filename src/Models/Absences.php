@@ -108,9 +108,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets student
      * @param mixed
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setStudent($student) : ModelInterface 
+    public function setStudent($student) : self 
     {
         $this->student = $student;
 
@@ -129,9 +129,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets subject
      * @param mixed
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setSubject($subject) : ModelInterface 
+    public function setSubject($subject) : self 
     {
         $this->subject = $subject;
 
@@ -150,9 +150,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets teachers
      * @param array
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setTeachers(array $teachers) : ModelInterface 
+    public function setTeachers(array $teachers) : self 
     {
         $this->teachers = $teachers;
 
@@ -171,9 +171,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets studentGroup
      * @param string
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setStudentGroup(string $studentGroup) : ModelInterface 
+    public function setStudentGroup(string $studentGroup) : self 
     {
         $this->studentGroup = $studentGroup;
 
@@ -192,9 +192,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets status
      * @param string
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setStatus(string $status) : ModelInterface 
+    public function setStatus(string $status) : self 
     {
         $this->status = $status;
 
@@ -213,9 +213,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets absenceReason
      * @param string
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setAbsenceReason(string $absenceReason) : ModelInterface 
+    public function setAbsenceReason(string $absenceReason) : self 
     {
         $this->absenceReason = $absenceReason;
 
@@ -234,9 +234,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets absentTime
      * @param int
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setAbsentTime(int $absentTime) : ModelInterface 
+    public function setAbsentTime(int $absentTime) : self 
     {
         $this->absentTime = $absentTime;
 
@@ -255,9 +255,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets excuse Status
      * @param string
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setExcuseStatus(string $excuseStatus) : ModelInterface 
+    public function setExcuseStatus(string $excuseStatus) : self 
     {
         $this->excuseStatus = $excuseStatus;
 
@@ -276,9 +276,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets user
      * @param string
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setUser(string $user) : ModelInterface 
+    public function setUser(string $user) : self 
     {
         $this->user = $user;
 
@@ -297,9 +297,9 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets checked
      * @param bool
-     * @return ModelInterface
+     * @return Absences
      */
-    public function setChecked(bool $checked) : ModelInterface
+    public function setChecked(bool $checked) : self
     {
         $this->checked = $checked;
 
@@ -308,7 +308,7 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
 
     /**
      * returns bool
-     * @return string
+     * @return bool
      */
     public function getInvalid() : ?bool 
     {
@@ -318,7 +318,7 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets invalid
      * @param bool
-     * @return ModelInterface
+     * @return Absences
      */
     public function setInvalid(bool $invalid) : self 
     {
@@ -339,7 +339,7 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets the startTime
      * @param \DateTime $startTime
-     * @return Period
+     * @return Absences
      */
     public function setStartTime(\DateTime $startTime) : self 
     {
@@ -360,7 +360,7 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     /**
      * sets the endTime
      * @param \DateTime $endTime
-     * @return Period
+     * @return Absences
      */
     public function setEndTime(\DateTime $endTime) : self 
     {
@@ -373,7 +373,7 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
      * sets an given field
      * @param string $field
      * @param mixed $value
-     * @return Period
+     * @return Absences
      */
     public function set(string $field, $value) : self
     {
@@ -390,11 +390,11 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
     {
         $query = new Query();
 
-        if($this->student && !$this->student instanceof AbstractModel) {
+        if ($this->student && !$this->student instanceof AbstractModel) {
             $this->student = $query->get('Students')->findBy(['key' => $this->student])[0];
         }
 
-        if($this->subject && !$this->subject instanceof AbstractModel) {
+        if ($this->subject && !$this->subject instanceof AbstractModel) {
            $this->subject = $query->get('Period')->findAll([], null, [
                'options' => [
                    'element' => $this->subject,

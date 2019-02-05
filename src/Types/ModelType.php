@@ -30,7 +30,7 @@ class ModelType implements TypeInterface {
         $fieldValues = $field[$fieldName];
         $query = new Query();
         if (isset($data[$fieldValues['api']['name']]) && $data[$fieldValues['api']['name']] !== null && $data[$fieldValues['api']['name']] !== '') {
-            if($fieldValues['model']['name'] == 'Period') {
+            if ($fieldValues['model']['name'] == 'Period') {
                 $result = $query->get('Period')->findAll([], null, [
                     'options' => [
                         'element' => [
@@ -41,7 +41,7 @@ class ModelType implements TypeInterface {
                 ])[0];
             } else {
                 $result = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $data[$fieldValues['api']['name']]]);
-                if($result) {
+                if ($result) {
                     $result = $result[0];
                 }
             }
