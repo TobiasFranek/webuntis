@@ -21,7 +21,7 @@ final class MemcacheRoutineTest extends TestCase
         $cache = $memcache->execute([
             'host' => 'localhost',
             'port' => 11211
-        ], \Webuntis\CacheBuilder\Cache\Memcached::class);
+        ]);
 
         if(extension_loaded('memcached')) {
             $this->assertInstanceOf(\Webuntis\CacheBuilder\Cache\Memcached::class, $cache);

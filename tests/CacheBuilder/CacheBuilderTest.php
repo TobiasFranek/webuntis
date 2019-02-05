@@ -54,7 +54,9 @@ final class CacheBuilderTest extends TestCase
 
         $this->assertEquals([
             'test' => 'TestRoutine',
-            'memcached' => 'Webuntis\CacheBuilder\Routines\MemcacheRoutine'
+            'memcached' => 'Webuntis\CacheBuilder\Routines\MemcacheRoutine',
+            'filesystem' => 'Webuntis\CacheBuilder\Routines\FilesystemCacheRoutine',
+            'arraycache' => 'Webuntis\CacheBuilder\Routines\ArrayCacheRoutine'
         ], $cacheBuilder->getRoutines());
     }
 
