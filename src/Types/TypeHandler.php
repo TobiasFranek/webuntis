@@ -28,7 +28,8 @@ class TypeHandler {
         'mergeTimeAndDate' => MergeTimeAndDateType::class,
         'model' => ModelType::class,
         'date' => DateType::class,
-        'array' => ArrayType::class
+        'array' => ArrayType::class,
+        'bool' => BoolType::class
     ];
 
     public function __construct() {

@@ -111,6 +111,7 @@ final class TypeHandlerTest extends TestCase
 
         $this->assertArrayHasKey('int', $array);
         $this->assertArrayHasKey('string', $array);
+        $this->assertArrayHasKey('bool', $array);
         $this->assertArrayHasKey('model', $array);
         $this->assertArrayHasKey('modelCollection', $array);
         $this->assertArrayHasKey('date', $array);
