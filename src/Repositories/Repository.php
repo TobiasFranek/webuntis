@@ -155,7 +155,7 @@ class Repository {
                                 $temp[] = $value2;
                             }
                         } else {
-                            if ($this->validateDate(substr(strval($value), 1))) {
+                            if ($value !== '' && $this->validateDate(substr(strval($value), 1))) {
                                 if ($this->startsWith($value, '<')) {
                                     if (new \DateTime($value2->serialize()[$key]) <= new \DateTime(substr(strval($value), 1))) {
                                         $temp[] = $value2;

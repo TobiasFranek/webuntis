@@ -29,11 +29,23 @@ class ModelType implements TypeInterface {
         $fieldName = array_keys($field)[0];
         $fieldValues = $field[$fieldName];
         $query = new Query();
-        if (isset($data[$fieldValues['api']['name']])) {
-            $result = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $data[$fieldValues['api']['name']]]);
-            if($result) {
-                $result = $result[0];
+        if (isset($data[$fieldValues['api']['name']]) && $data[$fieldValues['api']['name']] !== null && $data[$fieldValues['api']['name']] !== '') {
+            if($fieldValues['model']['name'] == 'Period') {
+                $result = $query->get('Period')->findAll([], null, [
+                    'options' => [
+                        'element' => [
+                            'id' => $data[$fieldValues['api']['name']],
+                            'type' => 3
+                        ]
+                    ]
+                ])[0];
+            } else {
+                $result = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $data[$fieldValues['api']['name']]]);
+                if($result) {
+                    $result = $result[0];
+                }
             }
+
             $model->set($fieldName, $result);
         }
     }
