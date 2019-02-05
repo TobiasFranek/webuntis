@@ -44,7 +44,8 @@ final class ClassRegEventsTest extends TestCase
             'subject' => 'testsubject',
             'reason' => 'testreason',
             'text' => 'eats during lesson',
-            'surname' => 'Schidt'
+            'surname' => 'Schidt',
+            'categoryId' => 1
         ];
 
         $classRegEvent = new ClassRegEvents($data);
@@ -53,6 +54,7 @@ final class ClassRegEventsTest extends TestCase
 
         $this->assertEquals(1, $classRegEvent->getId());
         $this->assertEquals(2, $classRegEvent->getStudent()->getId());
+        $this->assertEquals(1, $classRegEvent->getCategory()->getId());
         $this->assertEquals(new \DateTime('2018-07-06'), $classRegEvent->getDate());
         $this->assertEquals('testsubject', $classRegEvent->getSubject());
         $this->assertEquals('testreason', $classRegEvent->getReason());
@@ -75,7 +77,12 @@ final class ClassRegEventsTest extends TestCase
             ],
             'subject' => 'testsubject',
             'reason' => 'testreason',
-            'text' => 'eats during lesson'
+            'text' => 'eats during lesson',
+            'category' => [
+                'id' => 1,
+                'name' => 'Disziplinarblatt #1',
+                'fullName' => 'Disziplinarblatt #1'
+            ]
         ];
 
         $this->assertEquals($expected, $serialized);
@@ -106,7 +113,8 @@ final class ClassRegEventsTest extends TestCase
             'student' => 'Schidt',
             'subject' => 'testsubject',
             'reason' => 'testreason',
-            'text' => 'eats during lesson'
+            'text' => 'eats during lesson',
+            'category' => 1
         ];
 
         $classRegEvent = new ClassRegEvents($data);

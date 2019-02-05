@@ -271,6 +271,18 @@ class TestSecurityManager implements SecurityManagerInterface {
                         'longName' => 'Fourth Floor'
                     ],
                 ],
+                'getClassregCategories' => [
+                    [
+                        'id' => 1,
+                        'name' => 'Disziplinarblatt #1',
+                        'longName' => 'Disziplinarblatt #1'
+                    ],
+                    [
+                        'id' => 2,
+                        'name' => 'Disziplinarblatt #2',
+                        'longName' => 'Disziplinarblatt #2'
+                    ]
+                ],
                 'getStudents' => [
                     [
                         'id' => 1,
@@ -398,7 +410,8 @@ class TestSecurityManager implements SecurityManagerInterface {
                         'subject' => 'testsubject',
                         'reason' => 'testreason',
                         'text' => 'eats during lesson',
-                        'surname' => 'Schidt'
+                        'surname' => 'Schidt',
+                        'categoryId' => 1
                     ],
                     [
                         'id' => 2,
@@ -407,7 +420,8 @@ class TestSecurityManager implements SecurityManagerInterface {
                         'subject' => 'testsubject1',
                         'reason' => 'testreason1',
                         'text' => 'eats during lesson1',
-                        'surname' => 'Schidt'
+                        'surname' => 'Schidt',
+                        'categoryId' => 2
                     ],
                     [
                         'id' => 3,
@@ -416,7 +430,8 @@ class TestSecurityManager implements SecurityManagerInterface {
                         'subject' => 'testsubject2',
                         'reason' => 'testreason2',
                         'text' => 'eats during lesson2',
-                        'surname' => 'Schidt'
+                        'surname' => 'Schidt',
+                        'categoryId' => 1
                     ]
                 ],
                 'getTimetableWithAbsences' => [

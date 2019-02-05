@@ -34,7 +34,8 @@ final class YamlConfigurationTest extends TestCase
             'StatusData' => 'Webuntis\Models\StatusData',
             'TimegridUnits' => 'Webuntis\Models\TimegridUnits',
             'LastImportTime' => 'Webuntis\Models\LastImportTime',
-            'Absences' => 'Webuntis\Models\Absences'
+            'Absences' => 'Webuntis\Models\Absences',
+            'RemarkCategories' => 'Webuntis\Models\RemarkCategories'
         ];
         $expectedRepositories = [
             'Default' => 'Webuntis\Repositories\Repository',

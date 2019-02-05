@@ -24,3 +24,10 @@ Webuntis\Models\ClassRegEvents:
             type: string
             api:
                 name: text
+        category:
+            type: model
+            api:
+                name: categoryId
+            model:
+                name: RemarkCategories
+                searchkey: id

@@ -8,6 +8,7 @@ use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use DateTime;
 use Webuntis\Exceptions\ModelException;
+use Webuntis\Models\Interfaces\ModelInterface;
 
 /**
  * ClassRegEvents Model
@@ -43,6 +44,32 @@ class ClassRegEvents extends AbstractModel implements CachableModelInterface, Ad
      * @var string
      */
     private $text;
+
+    /**
+     * @var ModelInterface
+     */
+    private $category;
+
+    /**
+     * sets category
+     * @param ModelInterface
+     * @return ModelInterface
+     */
+    public function setCategory(ModelInterface $category) : ModelInterface 
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * return category
+     * @return ModelInterface
+     */
+    public function getCategory() : ModelInterface
+    {
+        return $this->category;
+    }
 
     /**
      * Getter for student
