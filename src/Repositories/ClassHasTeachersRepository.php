@@ -36,7 +36,16 @@ class ClassHasTeachersRepository extends Repository {
             }
             $schoolyear = $query->get('Schoolyears')->getCurrentSchoolyear();
             foreach ($classesHaveTeachers as $key => $value) {
-                $periods = $query->get('Period')->findAll([], null, $value->getId(), 1, date_format($schoolyear->getStartDate(), 'Ymd'), date_format($schoolyear->getEndDate(), 'Ymd'));
+                $periods = $query->get('Period')->findAll([], null, [
+                    'options' => [
+                        'element' => [
+                            'id' => $value->getId(),
+                            'type' => 1
+                        ],
+                        'startDate' => date_format($schoolyear->getStartDate(), 'Ymd'),
+                        'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')
+                    ]
+                ]);
                 $tempTeachers = [];
                 foreach ($periods as $value2) {
                     $teachers = $value2->getTeachers();
