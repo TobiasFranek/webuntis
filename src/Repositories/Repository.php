@@ -138,7 +138,7 @@ class Repository {
     protected function find(array $data, array $params) : array 
     {
         if (!empty($data)) {
-            if($this->cache && $this->cache->contains($this->model::METHOD . '.' . serialize($params))) {
+            if ($this->cache && $this->cache->contains($this->model::METHOD . '.' . serialize($params))) {
                 return $this->cache->fetch($this->model::METHOD . '.' . serialize($params));
             }
             foreach ($params as $key => $value) {
@@ -191,7 +191,7 @@ class Repository {
                 }
             }
         }
-        if($this->cache) {
+        if ($this->cache) {
             $this->cache->save($this->model::METHOD . '.' . serialize($params), $data);
         }
         return $data;

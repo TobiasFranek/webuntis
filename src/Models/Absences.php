@@ -68,10 +68,10 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
      */
     private $absentTime;
 
-     /**
-     * @SerializedName("excuseStatus")
-     * @var string
-     */
+        /**
+         * @SerializedName("excuseStatus")
+         * @var string
+         */
     private $excuseStatus;
 
     /**
@@ -395,15 +395,15 @@ class Absences extends AbstractModel implements AdministrativeModelInterface {
         }
 
         if($this->subject && !$this->subject instanceof AbstractModel) {
-           $this->subject = $query->get('Period')->findAll([], null, [
-               'options' => [
-                   'element' => $this->subject,
-                   'type' => 3
-               ]
-           ])[0];
+            $this->subject = $query->get('Period')->findAll([], null, [
+                'options' => [
+                    'element' => $this->subject,
+                    'type' => 3
+                ]
+            ])[0];
         }
 
-        if(!empty($this->teachers) && $this->teachers[0] && !$this->teachers[0] instanceof AbstractModel) {
+        if (!empty($this->teachers) && $this->teachers[0] && !$this->teachers[0] instanceof AbstractModel) {
             $temp = [];
             foreach ($this->teachers as $value) {
                 $temp[] = $query->get('Teachers')->findBy(['id' => $value]);
