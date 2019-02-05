@@ -99,6 +99,29 @@ if you don't want the default memcached(port=11211, host=localhost) server use:
     ]
 ```
 
+there is also a filebased caching server
+
+```php
+ 'default' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'yourusername',
+        'password' => 'yourpassword'
+    ],
+  'admin' => [
+        //f.e. thalia, cissa etc.
+        'server' => 'yourserver',
+        'school' => 'yourschool',
+        'username' => 'youradminusername',
+        'password' => 'youradminpassword'
+    ],
+    'cache' => [
+        'type' => 'filesystem',
+        'path' => 'your/path/to/the/cache'
+    ]
+```
+
 if you want to execute all models with the admin instance
 ```php
   'admin' => [

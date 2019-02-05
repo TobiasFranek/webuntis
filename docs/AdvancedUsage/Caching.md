@@ -1,5 +1,11 @@
 # Caching 
 
+At the moment there are 3 available options for caching:
+
+* memcached - works with an memcached server and the php extension
+* filebased caching - stores the data in files
+* array cache - which stores the data in the php run-time, but can not be persistet across processes
+
 You can create an cache instance like this:
 
 ```php
@@ -8,7 +14,7 @@ $cacheBuilder = new \Webuntis\CacheBuilder\CacheBuilder();
 $cache = $cacheBuilder->create();
 ```
 
-with this caching instance you can do everything the [doctrine MemcachedCache](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/caching.html) class can.
+with this caching instance you can do everything the [doctrine Cache](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/caching.html) class can.
 
 If you want to have another Caching method (like f.e. filebased caching) you can simply add it by yourself.
 
