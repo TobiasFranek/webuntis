@@ -123,5 +123,62 @@ final class PeriodTest extends TestCase
         ];
 
         $this->assertEquals($expected, $serialized);
+
+        $config = new WebuntisConfiguration([ 
+            'default' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'yourusername',
+                    'password' => 'yourpassword',
+                    'ignore_children' => true
+                ],
+            'admin' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'youradminusername',
+                    'password' => 'youradminpassword',
+                    'ignore_children' => true
+            ],
+            'security_manager' => 'Webuntis\Tests\Util\TestSecurityManager'
+        ]);
+
+        $period = new Period($data);
+        
+        $serialized = $period->serialize();
+
+        $serialized['startTime'] = substr($serialized['startTime'], 0, 19);
+        $serialized['endTime'] = substr($serialized['endTime'], 0, 19);
+
+        $expected = [
+            'id' => 1,
+            'startTime' => '2018-07-06T08:00:00',
+            'endTime' => '2018-07-06T08:50:00',
+            'classes' => [
+                [
+                    'id' => 1
+                ]
+            ],
+            'teachers' => [
+                [
+                    'id' => 1
+                ]
+            ],
+            'rooms' => [
+                [
+                    'id' => 1
+                ]
+            ],
+            'subjects' => [
+                [
+                    'id' => 1
+                ]
+            ],
+            'code' => 'normal',
+            'type' => 'lesson'
+        ];
+
+        $this->assertEquals($expected, $serialized);
     }
 }

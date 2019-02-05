@@ -167,5 +167,63 @@ final class SubstitutionsTest extends TestCase
         ];
 
         $this->assertEquals($expected, $serialized);
+
+        $config = new WebuntisConfiguration([ 
+            'default' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'yourusername',
+                    'password' => 'yourpassword',
+                    'ignore_children' => true
+                ],
+            'admin' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'youradminusername',
+                    'password' => 'youradminpassword',
+                    'ignore_children' => true
+            ],
+            'security_manager' => 'Webuntis\Tests\Util\TestSecurityManager'
+        ]);
+
+        $sub = new Substitutions($data);
+
+        $serialized = $sub->serialize();
+
+        $serialized['startTime'] = substr($serialized['startTime'], 0, 19);
+        $serialized['endTime'] = substr($serialized['endTime'], 0, 19);
+
+        $expected = [
+            'id' => 1,
+            'startTime' => '2018-07-06T08:00:00',
+            'endTime' => '2018-07-06T08:50:00',
+            'classes' => [
+                [
+                    'id' => 1
+                ]
+            ],
+            'teachers' => [
+                [
+                    'id' => 1
+                ]
+            ],
+            'rooms' => [
+                [
+                    'id' => 1
+                ]
+            ],
+            'subjects' => [
+                [
+                    'id' => 1
+                ]
+            ],
+            'lesson' => 1,
+            'type' => 'cancel',
+            'text' => 'another teacher'
+        ];
+
+        $this->assertEquals($expected, $serialized);
     }
 }

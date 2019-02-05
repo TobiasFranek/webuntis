@@ -74,5 +74,37 @@ final class ClassHasTeachersTest extends TestCase
 
         $this->assertEquals($expected, $classHasTeachers->serialize());
         $this->assertEquals(json_encode($expected), $classHasTeachers->serialize('json'));
+
+        $config = new WebuntisConfiguration([ 
+            'default' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'yourusername',
+                    'password' => 'yourpassword',
+                    'ignore_children' => true
+                ],
+            'admin' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'youradminusername',
+                    'password' => 'youradminpassword',
+                    'ignore_children' => true
+            ],
+            'security_manager' => 'Webuntis\Tests\Util\TestSecurityManager'
+        ]);
+
+        $classHasTeachers = new ClassHasTeachers($data);
+
+        $expected = [
+            'id' => 1,
+            'name' => 'test',
+            'fullName' => 'teststring',
+            'teachers' => [
+                'id' => 1
+            ]
+        ];
+        $this->assertEquals($expected, $classHasTeachers->serialize());
     }
 }

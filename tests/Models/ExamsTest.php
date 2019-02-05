@@ -118,5 +118,56 @@ final class ExamsTest extends TestCase
         ];
 
         $this->assertEquals($expected, $serialized);
+
+        $config = new WebuntisConfiguration([ 
+            'default' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'yourusername',
+                    'password' => 'yourpassword',
+                    'ignore_children' => true
+                ],
+            'admin' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'youradminusername',
+                    'password' => 'youradminpassword',
+                    'ignore_children' => true
+            ],
+            'security_manager' => 'Webuntis\Tests\Util\TestSecurityManager'
+        ]);
+
+        $exam = new Exams($data);
+
+        $serialized = $exam->serialize();
+
+        $serialized['startDate'] = substr($serialized['startDate'], 0, 19);
+        $serialized['endDate'] = substr($serialized['endDate'], 0, 19);
+
+        $expected = [
+            'id' => 1,
+            'startDate' => '2018-07-06T08:00:00',
+            'endDate' => '2018-07-06T08:50:00',
+            'classes' => [
+                [
+                    'id' => 1,
+                ]
+            ],
+            'teachers' => [
+                [
+                    'id' => 1,
+                ]
+            ],
+            'students' => [
+                [
+                    'id' => 2,
+                ]
+            ],
+            'subject' => 1
+        ];
+
+        $this->assertEquals($expected, $serialized);
     }
 }

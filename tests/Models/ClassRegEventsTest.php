@@ -79,5 +79,42 @@ final class ClassRegEventsTest extends TestCase
         ];
 
         $this->assertEquals($expected, $serialized);
+
+        $config = new WebuntisConfiguration([ 
+            'default' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'yourusername',
+                    'password' => 'yourpassword',
+                    'ignore_children' => true
+                ],
+            'admin' => [
+                   //f.e. thalia, cissa etc.
+                    'server' => 'yourserver',
+                    'school' => 'yourschool',
+                    'username' => 'youradminusername',
+                    'password' => 'youradminpassword',
+                    'ignore_children' => true
+            ],
+            'security_manager' => 'Webuntis\Tests\Util\TestSecurityManager'
+        ]);
+
+        $expected = [
+            'id' => 1,
+            'date' => '2018-07-06T00:00:00',
+            'student' => 'Schidt',
+            'subject' => 'testsubject',
+            'reason' => 'testreason',
+            'text' => 'eats during lesson'
+        ];
+
+        $classRegEvent = new ClassRegEvents($data);
+
+        $serialized = $classRegEvent->serialize();
+
+        $serialized['date'] = substr($serialized['date'], 0, 19);
+
+        $this->assertEquals($expected, $serialized);
     }
 }
