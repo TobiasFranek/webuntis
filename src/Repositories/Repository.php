@@ -1,37 +1,24 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Repositories;
 
-use Doctrine\Common\Cache\MemcachedCache;
-use Webuntis\Cache\Memcached;
 use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Exceptions\RepositoryException;
 use Webuntis\Models\Interfaces\CachableModelInterface;
-use Webuntis\Util\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandler;
+use Webuntis\Handler\Interfaces\ExecutionHandlerInterface;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Webuntis;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Webuntis\WebuntisFactory;
+use Webuntis\CacheBuilder\CacheBuilder;
 
 /**
- * Class Repository
- * @package Webuntis\Repositorys
+ * The Repository receives the raw data from the ExectuionHandler
+ * it is responsible for parsing, filtering, sorting this raw data
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Repository {
 
@@ -46,36 +33,46 @@ class Repository {
     protected $instance;
 
     /**
-     * @var MemcachedCache
+     * @var object|bool
      */
-    protected static $cache;
+    protected $cache;
 
     /**
-     * @var bool
+     * @var ExecutionHandlerInterface
      */
-    public static $disabledCache;
+    protected $executionHandler;
 
     /**
      * Repository constructor.
-     * @param $model
+     * @param string $model
      */
-    public function __construct($model) {
+    public function __construct(string $model, ExecutionHandlerInterface $executionHandler = null) {
         $this->model = $model;
-        $this->instance = WebuntisFactory::create($model);
-        \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
-        if (!self::$cache) {
-            self::$cache = self::initMemcached();
+
+        if ($executionHandler) {
+            $this->executionHandler = $executionHandler;
+        } else {
+            $this->executionHandler = new ExecutionHandler();
         }
+
+        $cacheBuilder = new CacheBuilder();
+
+        $this->cache = $cacheBuilder->create();
+
+        $this->instance = WebuntisFactory::create($model);
+        AnnotationRegistry::registerLoader('class_exists');
     }
 
     /**
      * return all objects that have been searched for
      * @param array $params
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @return AbstractModel[]
+     * @throws RepositoryException
      */
-    public function findBy(array $params, array $sort = [], $limit = null) {
+    public function findBy(array $params, array $sort = [], int $limit = null) : array 
+    {
         if (empty($params)) {
             throw new RepositoryException('missing parameters');
         }
@@ -89,7 +86,7 @@ class Repository {
         } else {
             $data = $this->find($data, $params);
         }
-        if ($limit != null) {
+        if ($limit !== null) {
             return array_slice($data, 0, $limit);
         }
         return $data;
@@ -98,17 +95,18 @@ class Repository {
     /**
      * returns all objects it could find
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [], $limit = null) {
-        $data = ExecutionHandler::execute($this, []);
+    public function findAll(array $sort = [], int $limit = null) : array 
+    {
+        $data = $this->executionHandler->execute($this, []);
         if (!empty($sort)) {
             $field = array_keys($sort)[0];
             $sortingOrder = $sort[$field];
             $data = $this->sort($data, $field, $sortingOrder);
         }
-        if ($limit != null) {
+        if ($limit !== null) {
             $data = array_slice($data, 0, $limit);
         }
         return $data;
@@ -119,7 +117,8 @@ class Repository {
      * @param array $result
      * @return AbstractModel[]
      */
-    public function parse($result) {
+    public function parse(array $result) : array
+    {
         $data = [];
         foreach ($result as $key => $value) {
             /** @var AbstractModel $newObj */
@@ -131,54 +130,57 @@ class Repository {
 
     /**
      * searches the $data array with the given params
-     * @param AbstractModel[] $data
+     * @param array $data
      * @param array $params
      * @return AbstractModel[]
+     * @throws RepositoryException
      */
-    protected function find($data, $params) {
+    protected function find(array $data, array $params) : array 
+    {
         if (!empty($data)) {
+            if ($this->cache && $this->cache->contains($this->model::METHOD . '.' . serialize($params))) {
+                return $this->cache->fetch($this->model::METHOD . '.' . serialize($params));
+            }
             foreach ($params as $key => $value) {
                 $temp = [];
                 $keys = explode(":", $key);
                 $key = $keys[0];
-                if (isset($data[0])) {
-                    if (isset($data[0]->serialize()[$key])) {
-                        foreach ($data as $key2 => $value2) {
-                            if (count($keys) > 1) {
-                                $tempKeys = $keys;
-                                $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
-                                $tempKeys = implode(':', $tempKeys);
-                                if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+                if (isset($data[0]) && isset($data[0]->serialize()[$key])) {
+                    foreach ($data as $key2 => $value2) {
+                        if (count($keys) > 1 && (!isset(WebuntisConfiguration::getConfig()[$this->instance->getContext()]['ignore_children']) || !WebuntisConfiguration::getConfig()[$this->instance->getContext()]['ignore_children'])) {
+                            $tempKeys = $keys;
+                            $tempKeys = array_splice($tempKeys, 1, count($tempKeys) - 1);
+                            $tempKeys = implode(':', $tempKeys);
+                            if (!empty($this->find($value2->get($key), [$tempKeys => $value]))) {
+                                $temp[] = $value2;
+                            }
+                        } else {
+                            if ($value !== '' && $this->validateDate(substr(strval($value), 1))) {
+                                if ($this->startsWith($value, '<')) {
+                                    if (new \DateTime($value2->serialize()[$key]) <= new \DateTime(substr(strval($value), 1))) {
+                                        $temp[] = $value2;
+                                    }
+                                } else if ($this->startsWith($value, '>')) {
+                                    if (new \DateTime($value2->serialize()[$key]) >= new \DateTime(substr(strval($value), 1))) {
+                                        $temp[] = $value2;
+                                    }
+                                } else {
+                                    throw new RepositoryException('wrong date format');
+                                }
+                            }
+                            if ($value2->serialize()[$key] == $value) {
+                                $temp[] = $value2;
+                            } else if ($this->endsWith(strval($value), '%') && $this->startsWith(strval($value), '%')) {
+                                if ($this->contains($value2->serialize()[$key], substr(strval($value), 1, strlen(strval($value)) - 2))) {
                                     $temp[] = $value2;
                                 }
-                            } else {
-                                if ($this->validateDate(substr($value, 1))) {
-                                    if ($this->startsWith($value, '<')) {
-                                        if (new \DateTime($value2->serialize()[$key]) <= new \DateTime(substr($value, 1))) {
-                                            $temp[] = $value2;
-                                        }
-                                    } else if ($this->startsWith($value, '>')) {
-                                        if (new \DateTime($value2->serialize()[$key]) >= new \DateTime(substr($value, 1))) {
-                                            $temp[] = $value2;
-                                        }
-                                    } else {
-                                        throw new RepositoryException('wrong date format');
-                                    }
-                                }
-                                if ($value2->serialize()[$key] == $value) {
+                            } else if ($this->startsWith(strval($value), '%')) {
+                                if ($this->endsWith(strval($value2->serialize()[$key]), substr(strval($value), 1, strlen(strval($value))))) {
                                     $temp[] = $value2;
-                                } else if ($this->endsWith($value, '%') && $this->startsWith($value, '%')) {
-                                    if ($this->contains($value2->serialize()[$key], substr($value, 1, strlen($value) - 2))) {
-                                        $temp[] = $value2;
-                                    }
-                                } else if ($this->startsWith($value, '%')) {
-                                    if ($this->startsWith($value2->serialize()[$key], substr($value, 1, strlen($value)))) {
-                                        $temp[] = $value2;
-                                    }
-                                } else if ($this->endsWith($value, '%')) {
-                                    if ($this->endsWith($value2->serialize()[$key], substr($value, 0, strlen($value) - 1))) {
-                                        $temp[] = $value2;
-                                    }
+                                }
+                            } else if ($this->endsWith(strval($value), '%')) {
+                                if ($this->startsWith(strval($value2->serialize()[$key]), substr(strval($value), 0, strlen(strval($value)) - 1))) {
+                                    $temp[] = $value2;
                                 }
                             }
                         }
@@ -189,10 +191,19 @@ class Repository {
                 }
             }
         }
+        if ($this->cache) {
+            $this->cache->save($this->model::METHOD . '.' . serialize($params), $data);
+        }
         return $data;
     }
 
-    private function validateDate($date) {
+    /**
+     * validates the given date
+     * @param string $data
+     * @return bool
+     */
+    private function validateDate(string $date) : bool 
+    {
         $d = \DateTime::createFromFormat('Y-m-d', $date);
         $d2 = \DateTime::createFromFormat('Y-m-d H:i', $date);
         return $d && $d->format('Y-m-d') === $date || $d2 && $d2->format('Y-m-d H:i') === $date;
@@ -200,23 +211,25 @@ class Repository {
 
     /**
      * sort the given data array, that contains of AbstractModels
-     * @param $data
-     * @param $field
-     * @param $sortingOrder
+     * @param array $data
+     * @param string $field
+     * @param string $sortingOrder
      * @return AbstractModel[]
      */
-    public function sort($data, $field, $sortingOrder) {
+    public function sort(array $data, string $field, string $sortingOrder) : array 
+    {
         usort($data, $this->sortingAlgorithm($field, $sortingOrder));
         return $data;
     }
 
     /**
      * generates the right sorting lambda for the usort() method
-     * @param $key
-     * @param $sortingOrder
+     * @param string $key
+     * @param string $sortingOrder
      * @return \Closure
      */
-    private function sortingAlgorithm($key, $sortingOrder) {
+    private function sortingAlgorithm(string $key, string $sortingOrder) : callable 
+    {
         $keys = explode(':', $key);
         $offset = null;
         if (count($keys) > 1) {
@@ -226,7 +239,7 @@ class Repository {
             $key = $keys[0];
         }
         if ($sortingOrder == 'ASC') {
-            return function ($a, $b) use ($key, $offset) {
+            return function($a, $b) use ($key, $offset) {
                 if ($offset) {
                     if (gettype($a->serialize()[$offset][0][$key]) == 'string' && gettype($b->serialize()[$offset][0][$key] == 'string')) {
                         return strcmp($a->serialize()[$offset][0][$key], $b->serialize()[$offset][0][$key]);
@@ -242,7 +255,7 @@ class Repository {
                 }
             };
         } else if ($sortingOrder == 'DESC') {
-            return function ($a, $b) use ($key, $offset) {
+            return function($a, $b) use ($key, $offset) {
                 if ($offset) {
                     if (gettype($a->serialize()[$offset][0][$key]) == 'string' && gettype($b->serialize()[$offset][0][$key] == 'string')) {
                         return strcmp($b->serialize()[$offset][0][$key], $a->serialize()[$offset][0][$key]);
@@ -263,92 +276,48 @@ class Repository {
     }
 
     /**
-     * returns the Memcache instance
-     * @return Memcached
-     */
-    protected static function initMemcached() {
-        if (self::$cache) {
-            return self::$cache;
-        }
-        $cacheDriver = new Memcached();
-        if (self::$disabledCache == false && extension_loaded('memcached')) {
-            $config = WebuntisConfiguration::getConfig();
-            $host = 'localhost';
-            $port = 11211;
-            if (isset($config['memcached'])) {
-                if (isset($config['memcached']['host'])) {
-                    $host = $config['memcached']['host'];
-                }
-                if (isset($config['memcached']['port'])) {
-                    $port = $config['memcached']['port'];
-                }
-            }
-            $memcached = new \Memcached();
-            $memcached->addServer($host, $port);
-            $cacheDriver->setMemcached($memcached);
-        } else {
-            return false;
-        }
-        self::$cache = $cacheDriver;
-        return self::$cache;
-    }
-
-    /**
-     * @return MemcachedCache|Memcached
-     */
-    public static function getCache() {
-        if (self::$cache) {
-            return self::$cache;
-        } else {
-            return self::initMemcached();
-        }
-    }
-
-    /**
      * @return Webuntis
      */
-    public function getInstance() {
+    public function getInstance() : object 
+    {
         return $this->instance;
     }
 
     /**
      * @return string
      */
-    public function getModel() {
+    public function getModel() : string 
+    {
         return $this->model;
     }
 
     /**
+     * @param string $haystack
+     * @param string $needle
      * @return bool
      */
-    public function checkIfCachingIsDisabled() {
-        return self::$disabledCache;
-    }
-
-    /**
-     * @param $haystack
-     * @param $needle
-     * @return bool
-     */
-    protected function startsWith($haystack, $needle) {
+    protected function startsWith(string $haystack, string $needle) : bool 
+    {
         return substr($haystack, 0, strlen($needle)) == $needle;
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return bool
      */
-    protected function endsWith($haystack, $needle) {
+    protected function endsWith(string $haystack, string $needle) : bool 
+    {
         return substr($haystack, strlen($haystack) - strlen($needle), strlen($haystack)) == $needle;
     }
 
     /**
-     * @param $haystack
-     * @param $needle
+     * @param string $haystack
+     * @param string $needle
      * @return bool
      */
-    protected function contains($haystack, $needle) {
-        return strpos($haystack, $needle) != false;
+    protected function contains(string $haystack, string $needle) : bool 
+    {
+        return strpos($haystack, $needle) !== false;
     }
 }

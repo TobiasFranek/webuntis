@@ -1,20 +1,5 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Models;
 
@@ -24,9 +9,9 @@ use Webuntis\Models\Interfaces\CachableModelInterface;
 use JMS\Serializer\Annotation\SerializedName;
 
 /**
- * Class ExamTypes
- * @package Webuntis\Models
+ * ExamTypes Model
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class ExamTypes extends AbstractModel implements CachableModelInterface, AdministrativeModelInterface {
 
@@ -59,50 +44,69 @@ class ExamTypes extends AbstractModel implements CachableModelInterface, Adminis
     /**
      * @return int
      */
-    public function getType() {
+    public function getType() : int 
+    {
         return $this->type;
     }
 
     /**
      * @param int $type
+     * @return ExamTypes
      */
-    public function setType($type) {
+    public function setType(int $type) : self 
+    {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getLongName() {
+    public function getLongName() : string
+    {
         return $this->longName;
     }
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
     /**
      * @param string $longName
+     * @return ExamTypes
      */
-    public function setLongName($longName) {
+    public function setLongName(string $longName) : self 
+    {
         $this->longName = $longName;
+
+        return $this;
     }
 
     /**
      * @param string $name
+     * @return ExamTypes
      */
-    public function setName($name) {
+    public function setName(string $name) : self
+    {
         $this->name = $name;
+
+        return $this;
     }
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return ExamTypes
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

@@ -1,0 +1,18 @@
+Webuntis\Models\RemarkCategories:
+    repositoryClass: null
+    fields:
+        name:
+            type: string
+            api:
+                name: name
+        fullName:
+            type: string
+            api:
+                name: longName
+        group:
+            type: model
+            api:
+                name: groupId
+            model:
+                name: RemarkCategoryGroups
+                searchkey: id

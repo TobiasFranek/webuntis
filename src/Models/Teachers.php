@@ -1,20 +1,5 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Models;
 
@@ -24,9 +9,9 @@ use JMS\Serializer\Annotation\SerializedName;
 
 
 /**
- * Class Teachers
- * @package Webuntis\Models
+ * Teachers Model
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Teachers extends AbstractModel implements AdministrativeModelInterface, CachableModelInterface {
     /**
@@ -60,16 +45,18 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
      * return the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
     /**
      * sets the name
      * @param string $name
-     * @return Teachers $this
+     * @return Teachers
      */
-    public function setName($name) {
+    public function setName(string $name) : self 
+    {
         $this->name = $name;
 
         return $this;
@@ -79,16 +66,18 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
      * returns the firstName
      * @return string
      */
-    public function getFirstName() {
+    public function getFirstName() : string 
+    {
         return $this->firstName;
     }
 
     /**
      * sets the firstName
      * @param string $firstName
-     * @return Teachers $this
+     * @return Teachers
      */
-    public function setFirstName($firstName) {
+    public function setFirstName(string $firstName) : self 
+    {
         $this->firstName = $firstName;
 
         return $this;
@@ -98,16 +87,18 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
      * return the lastName
      * @return string
      */
-    public function getLastName() {
+    public function getLastName() : string 
+    {
         return $this->lastName;
     }
 
     /**
      * sets the lastName
      * @param string $lastName
-     * @return Teachers $this
+     * @return Teachers
      */
-    public function setLastName($lastName) {
+    public function setLastName(string $lastName) : self 
+    {
         $this->lastName = $lastName;
 
         return $this;
@@ -115,10 +106,14 @@ class Teachers extends AbstractModel implements AdministrativeModelInterface, Ca
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Teachers
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

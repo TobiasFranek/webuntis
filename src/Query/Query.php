@@ -1,20 +1,5 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Query;
 
@@ -23,9 +8,10 @@ use Webuntis\Exceptions\QueryException;
 use Webuntis\Repositories\Repository;
 
 /**
- * Class Query
- * @package Webuntis\Query
+ * returns the right Repository according to the given String. 
+ * The right Model that is assigned to that string is injectied into the Repository.
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Query {
 
@@ -33,6 +19,16 @@ class Query {
      * @var Repository[]
      */
     private static $cachedRepositories = [];
+
+    /**
+     * @var array
+     */
+    private $models = [];
+
+    /**
+     * @var array
+     */
+    private $repositories = [];
 
     /**
      * Query constructor.
@@ -48,13 +44,15 @@ class Query {
      * gets the right repository to the right model
      * @param string $className
      * @return Repository
+     * @throws QueryException
      */
-    public function get($className) {
-        if($className == 'User') {
-            if (!isset(static::$cachedRepositories[$className])) {
-                static::$cachedRepositories[$className] = new $this->repositories[$className]();
+    public function get(string $className) : object 
+    {
+        if ($className == 'User') {
+            if (!isset(self::$cachedRepositories[$className])) {
+                self::$cachedRepositories[$className] = new $this->repositories[$className]();
             }
-            return static::$cachedRepositories[$className];
+            return self::$cachedRepositories[$className];
         }
         if (isset($this->models[$className])) {
             if (isset($this->repositories[$className])) {
@@ -62,10 +60,10 @@ class Query {
             } else {
                 $name = 'Default';
             }
-            if (!isset(static::$cachedRepositories[$className])) {
-                static::$cachedRepositories[$className] = new $this->repositories[$name]($this->models[$className]);
+            if (!isset(self::$cachedRepositories[$className])) {
+                self::$cachedRepositories[$className] = new $this->repositories[$name]($this->models[$className]);
             }
-            return static::$cachedRepositories[$className];
+            return self::$cachedRepositories[$className];
         }
         throw new QueryException('Model ' . $className . ' not found');
     }

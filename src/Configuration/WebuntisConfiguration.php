@@ -1,30 +1,17 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Configuration;
 
 use Webuntis\Repositories\Repository;
 use Webuntis\WebuntisFactory;
+use Webuntis\Models\AbstractModel;
+use Webuntis\Models\Interfaces\ConfigurationModelInterface;
 
 /**
- * Class WebuntisConfiguration
- * @package Webuntis
+ * manages the different configurations and passes them to the WebuntisFactory
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class WebuntisConfiguration {
 
@@ -40,17 +27,61 @@ class WebuntisConfiguration {
      * adds config f.e. another instance to the WebuntisFactry
      * @param array $config
      */
-    public static function addConfig(array $config) {
+    public static function addConfig(array $config) : void
+    {
         $newConfig = array_merge(self::getConfig(), $config);
 
         WebuntisFactory::setConfig($newConfig);
     }
 
     /**
+     * gets the right instance config from a given model
+     * @param AbstractModel $model 
+     * @return array
+     */
+    public static function getConfigByModel(AbstractModel $model) : array
+    {
+        $config = WebuntisFactory::getConfig();
+        $model = get_class($model);
+        $interfaces = class_implements($model);
+        if (isset($interfaces[ConfigurationModelInterface::class])) {
+            $configName = $model::CONFIG_NAME;
+        } else if (isset($config['only_admin']) && $config['only_admin']) {
+            $configName = 'admin';
+        } else {
+            $configName = 'default';
+        }
+
+        return $config[$configName];
+    } 
+
+    /**
+     * returns the name of the configuration from a given model
+     * @param AbstractModel $model 
+     * @return string
+     */
+    public static function getConfigNameByModel(AbstractModel $model) : string 
+    {
+        $config = WebuntisFactory::getConfig();
+        $model = get_class($model);
+        $interfaces = class_implements($model);
+        if (isset($interfaces[ConfigurationModelInterface::class])) {
+            $configName = $model::CONFIG_NAME;
+        } else if (isset($config['only_admin']) && $config['only_admin']) {
+            $configName = 'admin';
+        } else {
+            $configName = 'default';
+        }
+
+        return $configName;
+    }
+
+    /**
      * gets the current config
      * @return array
      */
-    public static function getConfig() {
+    public static function getConfig() : array
+    {
         return WebuntisFactory::getConfig();
     }
 
@@ -59,20 +90,8 @@ class WebuntisConfiguration {
      * @param array $config
      * @return WebuntisConfiguration $this
      */
-    public static function setConfig(array $config) {
-        if(isset($config['disableCache'])) {
-            if(extension_loaded('memcached') == false) {
-                Repository::$disabledCache = true;
-            }else {
-                Repository::$disabledCache = $config['disableCache'];
-            }
-        } else {
-            if(extension_loaded('memcached') == false) {
-                Repository::$disabledCache = true;
-            }else {
-                Repository::$disabledCache = false;
-            }
-        }
+    public static function setConfig(array $config) : void
+    {
         WebuntisFactory::setConfig($config);
     }
 }

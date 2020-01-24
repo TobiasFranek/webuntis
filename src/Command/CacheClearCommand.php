@@ -1,62 +1,63 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
 
 namespace Webuntis\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Webuntis\Cache\Memcached;
-
+use Webuntis\CacheBuilder\Routines\MemcacheRoutine;
+use Webuntis\CacheBuilder\CacheBuilder;
 
 /**
- * Class CacheClearCommand
- * @package Webuntis\Command
+ * Command to clear the Cache
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
-class CacheClearCommand extends Command{
+class CacheClearCommand extends Command {
     protected function configure() {
         $this->setName('webuntis:cache:clear')
             ->setDescription('cleares the webuntis cache')
             ->setHelp('This Command clears the webuntis cache')
-            ->addArgument('port', InputArgument::OPTIONAL, 'port of the memcached server')
-            ->addArgument('host', InputArgument::OPTIONAL, 'host of the memcached server');
+            ->addArgument('config', InputArgument::OPTIONAL|InputArgument::IS_ARRAY, 'config of the caching server')
+            ->addOption('routine', 'r', InputOption::VALUE_OPTIONAL, 'caching routine', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
         $helper = $this->getHelper('question');
-        if(!$port = $input->getArgument('port')) {
-            $question = new Question('Port [11211]: ', 11211);
-            $port = $helper->ask($input, $output, $question);
-
-        }
-        if(!$host = $input->getArgument('host')) {
-            $question = new Question('Host [localhost]: ', 'localhost');
-            $host = $helper->ask($input, $output, $question);
+        $routine = MemcacheRoutine::class;
+        $config = $input->getArgument('config');
+        $customRoutine = $input->getOption('routine');
+        if ($customRoutine) {
+            $routine = $customRoutine;
         }
 
-        $cacheDriver = new Memcached();
-        if (extension_loaded('memcached')) {
-            $memcached = new \Memcached();
-            $memcached->addServer($host, $port);
-            $cacheDriver->setMemcached($memcached);
-            $cacheDriver->deleteAll();
+        $configMeta = $routine::getConfigMeta();
+
+        $cacheConfig = [];
+
+        foreach ($configMeta as $i => $value) {
+            if (isset($config[$i])) {
+                $cacheConfig[$value['name']] = $config[$i];
+            } else {
+                $question = new Question($value['question'], $value['default']);
+                $cacheConfig[$value['name']] = $helper->ask($input, $output, $question);
+            }
+        }
+
+        $cacheConfig['type'] = $routine::getName();
+
+        if ($customRoutine) {
+            $cacheConfig['routine'][$routine::getName()] = $routine;
+        }
+
+        $cacheBuilder = new CacheBuilder($cacheConfig);
+
+        $cache = $cacheBuilder->create();
+
+        if ($cache) {
+            $cache->deleteAll();
             $output->writeln('<info>Successfully cleared the cache</info>');
         } else {
             $output->writeln('<error>extension memcached not found</error>');

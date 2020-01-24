@@ -1,29 +1,14 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Serializer;
 
 use JMS\Serializer\SerializerBuilder;
 
 /**
- * Class Serializer
- * @package Webuntis\Serializer
+ * Serializes givne data mostly Models
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Serializer {
 
@@ -38,10 +23,10 @@ class Serializer {
      * @param $format
      * @return mixed|string
      */
-    public static function serialize($data, $format = null) {
-        if(!$format) {
+    public static function serialize($data, string $format = null) {
+        if (!$format) {
             return json_decode(self::getSerializer()->serialize($data, 'json'), true);
-        }else {
+        } else {
             return self::getSerializer()->serialize($data, $format);
         }
     }
@@ -50,11 +35,12 @@ class Serializer {
      * return a serializer
      * @return \JMS\Serializer\Serializer
      */
-    private static function getSerializer() {
-        if(!self::$serializer) {
+    private static function getSerializer() : object 
+    {
+        if (!self::$serializer) {
             self::$serializer = SerializerBuilder::create()->build();
             return self::$serializer;
-        }else {
+        } else {
             return self::$serializer;
         }
     }

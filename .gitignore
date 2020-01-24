@@ -3,3 +3,7 @@
 
 # COMPOSER
 /vendor/
+
+*.lock
+
+/var/

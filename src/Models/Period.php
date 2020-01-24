@@ -1,20 +1,5 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Models;
 
@@ -23,9 +8,9 @@ use Webuntis\Query\Query;
 use JMS\Serializer\Annotation\SerializedName;
 
 /**
- * Class Period
- * @package Webuntis\Models
+ * Period Model
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Period extends AbstractModel {
 
@@ -80,16 +65,18 @@ class Period extends AbstractModel {
      * return the startTime
      * @return \DateTime
      */
-    public function getStartTime() {
+    public function getStartTime() : \DateTime 
+    {
         return $this->startTime;
     }
 
     /**
      * sets the startTime
      * @param \DateTime $startTime
-     * @return Period $this
+     * @return Period
      */
-    public function setStartTime(\DateTime $startTime) {
+    public function setStartTime(\DateTime $startTime) : self 
+    {
         $this->startTime = $startTime;
 
         return $this;
@@ -99,16 +86,18 @@ class Period extends AbstractModel {
      * return the endTime
      * @return \DateTime
      */
-    public function getEndTime() {
+    public function getEndTime() : \DateTime 
+    {
         return $this->endTime;
     }
 
     /**
      * sets the endTime
      * @param \DateTime $endTime
-     * @return Period $this
+     * @return Period
      */
-    public function setEndTime(\DateTime $endTime) {
+    public function setEndTime(\DateTime $endTime) : self 
+    {
         $this->endTime = $endTime;
 
         return $this;
@@ -118,16 +107,18 @@ class Period extends AbstractModel {
      * return the classes
      * @return Classes[]
      */
-    public function getClasses() {
+    public function getClasses() : array 
+    {
         return $this->classes;
     }
 
     /**
      * sets the classes
      * @param Classes[] $classes
-     * @return Period $this
+     * @return Period
      */
-    public function setClasses(array $classes) {
+    public function setClasses(array $classes) : self 
+    {
         $this->classes = $classes;
 
         return $this;
@@ -137,16 +128,18 @@ class Period extends AbstractModel {
      * return the teachers
      * @return Teachers[]
      */
-    public function getTeachers() {
+    public function getTeachers() : array 
+    {
         return $this->teachers;
     }
 
     /**
      * sets the teachers
      * @param Teachers[] $teachers
-     * @return Period $this
+     * @return Period
      */
-    public function setTeachers(array $teachers) {
+    public function setTeachers(array $teachers)  : self 
+    {
         $this->teachers = $teachers;
 
         return $this;
@@ -156,16 +149,18 @@ class Period extends AbstractModel {
      * returns the subjects
      * @return Subjects[]
      */
-    public function getSubjects() {
+    public function getSubjects()  : array 
+    {
         return $this->subjects;
     }
 
     /**
      * sets the subjects
      * @param Subjects[] $subjects
-     * @return Period $this
+     * @return Period
      */
-    public function setSubjects(array $subjects) {
+    public function setSubjects(array $subjects) : self 
+    {
         $this->subjects = $subjects;
 
         return $this;
@@ -175,54 +170,68 @@ class Period extends AbstractModel {
      * return the rooms
      * @return Rooms[]
      */
-    public function getRooms() {
+    public function getRooms() : array 
+    {
         return $this->rooms;
     }
 
     /**
      * sets the rooms
      * @param Rooms[] $rooms
-     * @return Period $this
+     * @return Period
      */
-    public function setRooms(array $rooms) {
+    public function setRooms(array $rooms) : self 
+    {
         $this->rooms = $rooms;
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCode() {
+    public function getCode() : string 
+    {
         return $this->code;
     }
 
     /**
-     * @param mixed $code
+     * @param string $code
+     * @return Period
      */
-    public function setCode($code) {
+    public function setCode(string $code) : self 
+    {
         $this->code = $code;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getType() {
+    public function getType() : string 
+    {
         return $this->type;
     }
 
     /**
      * @param string $type
+     * @return Period
      */
-    public function setType($type) {
+    public function setType(string $type) : self 
+    {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return Classes[]|Rooms[]|Subjects[]|Teachers[]
+     * @throws ModelException
      */
-    public function get($key) {
+    public function get(string $key) : array
+    {
         switch ($key) {
             case 'teachers':
                 return $this->teachers;
@@ -239,10 +248,14 @@ class Period extends AbstractModel {
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Period
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

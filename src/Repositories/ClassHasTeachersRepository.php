@@ -1,43 +1,51 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Tobias
- * Date: 05.11.16
- * Time: 11:39
- */
+declare(strict_types=1);
 
 namespace Webuntis\Repositories;
 
-
 use Webuntis\Models\Classes;
 use Webuntis\Query\Query;
-use Webuntis\Util\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandler;
 
+/**
+ * ClassHasTeachersRepository
+ * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
+ */
 class ClassHasTeachersRepository extends Repository {
 
     /**
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @return array
      */
-    public function findAll(array $sort = [], $limit = null) {
-        $cache = self::getCache();
+    public function findAll(array $sort = [], ?int $limit = null) : array 
+    {
         $classesHaveTeachers = [];
-        if ($cache && $cache->contains('ClassesHaveTeachers')) {
-            $classesHaveTeachers = $cache->fetch('ClassesHaveTeachers');
+        if ($this->cache && $this->cache->contains('ClassesHaveTeachers')) {
+            $classesHaveTeachers = $this->cache->fetch('ClassesHaveTeachers');
         } else {
             $query = new Query();
-
-            $classes = ExecutionHandler::execute(new Repository(Classes::class), []);
+            
+            $classes = $this->executionHandler->execute(new Repository(Classes::class), []);
 
             foreach ($classes as $class) {
                 $class = $class->serialize();
                 $class['teachers'] = [];
                 $classesHaveTeachers[] = new $this->model($class);
             }
-            $schoolyear = $query->get('Schoolyear')->findAll();
+            $schoolyear = $query->get('Schoolyears')->getCurrentSchoolyear();
             foreach ($classesHaveTeachers as $key => $value) {
-                $periods = $query->get('Period')->findAll([], null, $value->getId(), 1, date_format($schoolyear->getStartDate(), 'Ymd'), date_format($schoolyear->getEndDate(), 'Ymd'));
+                $periods = $query->get('Period')->findAll([], null, [
+                    'options' => [
+                        'element' => [
+                            'id' => $value->getId(),
+                            'type' => 1
+                        ],
+                        'startDate' => date_format($schoolyear->getStartDate(), 'Ymd'),
+                        'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')
+                    ]
+                ]);
                 $tempTeachers = [];
                 foreach ($periods as $value2) {
                     $teachers = $value2->getTeachers();
@@ -47,8 +55,8 @@ class ClassHasTeachersRepository extends Repository {
                 }
                 $classesHaveTeachers[$key]->setTeachers($tempTeachers);
             }
-            if ($cache) {
-                $cache->save('ClassesHaveTeachers', $classesHaveTeachers);
+            if ($this->cache) {
+                $this->cache->save('ClassesHaveTeachers', $classesHaveTeachers);
             }
         }
         if (!empty($sort)) {
@@ -58,9 +66,9 @@ class ClassHasTeachersRepository extends Repository {
         } else {
             $data = $classesHaveTeachers;
         }
-        if ($limit != null) {
+        if ($limit !== null) {
             return array_slice($data, 0, $limit);
-        }
+        } 
         return $data;
     }
 }

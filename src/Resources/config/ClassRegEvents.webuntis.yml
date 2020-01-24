@@ -1,0 +1,33 @@
+Webuntis\Models\ClassRegEvents:
+    repositoryClass: Webuntis\Repositories\ClassRegEventsRepository
+    fields:
+        student:
+            type: model
+            api:
+                name: surname
+            model:
+                name: Students
+                searchkey: lastName
+        date:
+            type: date
+            api:
+                name: date
+        subject:
+            type: string
+            api:
+                name: subject
+        reason:
+            type: string
+            api:
+                name: reason
+        text:
+            type: string
+            api:
+                name: text
+        category:
+            type: model
+            api:
+                name: categoryId
+            model:
+                name: RemarkCategories
+                searchkey: id

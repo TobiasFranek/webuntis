@@ -1,21 +1,4 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
-
 
 namespace Webuntis\Command;
 
@@ -23,7 +6,7 @@ namespace Webuntis\Command;
 use Memio\Memio\Config\Build;
 use Memio\Model\File;
 use Memio\Model\FullyQualifiedName;
-use Memio\Model\Object;
+use Memio\Model\Objekt;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,9 +17,9 @@ use Symfony\Component\Yaml\Yaml;
 use Webuntis\Repositories\Repository;
 
 /**
- * Class CreateRepositoryCommand
- * @package Webuntis\Command
+ * Command to create a Repository
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class CreateRepositoryCommand extends Command {
 
@@ -54,13 +37,13 @@ class CreateRepositoryCommand extends Command {
         $helper = $this->getHelper('question');
         $fs = new Filesystem();
 
-        if($input->getArgument('pathToModelYML')) {
-            $path = $input->getArgument('pathToModelYML');
+        if ($input->getArgument('pathToModelYML')) {
+            $path = gettype($input->getArgument('pathToModelYML')) == 'array' ? $input->getArgument('pathToModelYML')[0] : $input->getArgument('pathToModelYML');
             $explodedPath = explode('.', $path);
-            if(count($explodedPath) == 3) {
+            if (count($explodedPath) == 3) {
                 $extension = $explodedPath[1] . '.' . $explodedPath[2];
-                if($extension == 'webuntis.yml') {
-                    if($fs->exists($path)) {
+                if ($extension == 'webuntis.yml') {
+                    if ($fs->exists($path)) {
                         $question = new Question('Name of the repository class: ');
                         $name = $helper->ask($input, $output, $question);
                         $question = new Question('Namespace of the repository class: ');
@@ -69,9 +52,9 @@ class CreateRepositoryCommand extends Command {
                         $classPath = $helper->ask($input, $output, $question);
                         $fullPath = $classPath . '/' . $name . '.php';
                         $file = new File($fullPath);
-                        $object = new Object($namespace . "\\" . $name);
+                        $object = new Objekt($namespace . "\\" . $name);
                         $extendFullyQualifiedName = new FullyQualifiedName(Repository::class);
-                        $extend = new Object(Repository::class);
+                        $extend = new Objekt(Repository::class);
                         $object->extend($extend);
                         $file->addFullyQualifiedName($extendFullyQualifiedName);
                         $content = Yaml::parse(file_get_contents($path));
@@ -84,24 +67,24 @@ class CreateRepositoryCommand extends Command {
 
                         $fs->dumpFile($fullPath, $generatedCode);
                         $fs->dumpFile($path, Yaml::dump($content, 6));
-                    }else {
+                    } else {
                         $output->writeln('<error>File does not exist</error>');
                     }
                 } else {
-                    $output->writeln('<error>File is no webuntis.yml yml file</error>');
+                    $output->writeln('<error>File is no webuntis.yml file</error>');
                 }
-            }else {
+            } else {
                 $output->writeln('<error>Something is wrong with the path it should be src/example.webuntis.yml</error>');
             }
-        }else {
+        } else {
             $question = new Question('Path to the yml configuration of the model: ');
             $path = $helper->ask($input, $output, $question);
-            if($path) {
+            if ($path) {
                 $explodedPath = explode('.', $path);
-                if(count($explodedPath) == 3) {
+                if (count($explodedPath) == 3) {
                     $extension = $explodedPath[1] . '.' . $explodedPath[2];
-                    if($extension == 'webuntis.yml') {
-                        if($fs->exists($path)) {
+                    if ($extension == 'webuntis.yml') {
+                        if ($fs->exists($path)) {
                             $question = new Question('Name of the repository class: ');
                             $name = $helper->ask($input, $output, $question);
                             $question = new Question('Namespace of the repository class: ');
@@ -110,9 +93,9 @@ class CreateRepositoryCommand extends Command {
                             $classPath = $helper->ask($input, $output, $question);
                             $fullPath = $classPath . '/' . $name . '.php';
                             $file = new File($fullPath);
-                            $object = new Object($namespace . "\\" . $name);
+                            $object = new Objekt($namespace . "\\" . $name);
                             $extendFullyQualifiedName = new FullyQualifiedName(Repository::class);
-                            $extend = new Object(Repository::class);
+                            $extend = new Objekt(Repository::class);
                             $object->extend($extend);
                             $file->addFullyQualifiedName($extendFullyQualifiedName);
                             $content = Yaml::parse(file_get_contents($path));
@@ -125,17 +108,17 @@ class CreateRepositoryCommand extends Command {
 
                             $fs->dumpFile($fullPath, $generatedCode);
                             $fs->dumpFile($path, Yaml::dump($content, 6));
-                        }else {
+                        } else {
                             $output->writeln('<error>File does not exist</error>');
                         }
                 } else {
                         $output->writeln('<error>File is no webuntis.yml yml file</error>');
                     }
-                }else {
+                } else {
                     $output->writeln('<error>Something is wrong with the path it should be src/example.webuntis.yml</error>');
                 }
 
-            }else {
+            } else {
                 $output->writeln('<error>Path is empty. If you need to create an new model use webuntis:generate:model</error>');
             }
         }

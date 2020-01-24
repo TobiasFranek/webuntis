@@ -1,33 +1,18 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Models;
 
 
 use Webuntis\Exceptions\ModelException;
 use Webuntis\Query\Query;
+use Webuntis\Models\Period;
 use JMS\Serializer\Annotation\SerializedName;
 
-
 /**
- * Class Substitutions
- * @package Webuntis\Models
+ * Substitutions Model
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Substitutions extends AbstractModel {
 
@@ -54,8 +39,8 @@ class Substitutions extends AbstractModel {
     private $endTime;
 
     /**
-    * @var Classes[]
-    */
+     * @var Classes[]
+     */
     private $classes = [];
 
     /**
@@ -86,134 +71,179 @@ class Substitutions extends AbstractModel {
     /**
      * @return string
      */
-    public function getType() {
+    public function getType() : string 
+    {
         return $this->type;
     }
 
     /**
      * @return Classes[]
      */
-    public function getClasses() {
+    public function getClasses() : array 
+    {
         return $this->classes;
     }
 
     /**
      * @return \DateTime
      */
-    public function getEndTime() {
+    public function getEndTime() : \DateTime 
+    {
         return $this->endTime;
     }
 
     /**
      * @return Period
      */
-    public function getLesson() {
+    public function getLesson() : Period 
+    {
         return $this->lesson;
     }
 
     /**
      * @return Rooms[]
      */
-    public function getRooms() {
+    public function getRooms() : array 
+    {
         return $this->rooms;
     }
 
     /**
      * @return \DateTime
      */
-    public function getStartTime() {
+    public function getStartTime() : \DateTime 
+    {
         return $this->startTime;
     }
 
     /**
      * @return Subjects[]
      */
-    public function getSubjects() {
+    public function getSubjects() : array 
+    {
         return $this->subjects;
     }
 
     /**
      * @return Teachers[]
      */
-    public function getTeachers() {
+    public function getTeachers() : array 
+    {
         return $this->teachers;
     }
 
     /**
      * @return string
      */
-    public function getText() {
+    public function getText() : string 
+    {
         return $this->text;
     }
 
     /**
      * @param string $type
+     * @return Substitutions
      */
-    public function setType($type) {
+    public function setType(string $type) : self 
+    {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
      * @param Classes[] $classes
+     * @return Substitutions
      */
-    public function setClasses($classes) {
+    public function setClasses(array $classes) :self 
+    {
         $this->classes = $classes;
+
+        return $this;
     }
 
     /**
      * @param \DateTime $endTime
+     * @return Substitutions
      */
-    public function setEndTime($endTime) {
+    public function setEndTime(\DateTime $endTime) : self 
+    {
         $this->endTime = $endTime;
+
+        return $this;
     }
 
     /**
      * @param Period $lesson
+     * @return Substitutions
      */
-    public function setLesson($lesson) {
+    public function setLesson(Period $lesson) : self 
+    {
         $this->lesson = $lesson;
+
+        return $this;
     }
 
     /**
      * @param Rooms[] $rooms
+     * @return Substitutions
      */
-    public function setRooms($rooms) {
+    public function setRooms(array $rooms) : self {
         $this->rooms = $rooms;
+
+        return $this;
     }
 
     /**
      * @param \DateTime $startTime
+     * @return Substitutions
      */
-    public function setStartTime($startTime) {
+    public function setStartTime(\DateTime $startTime) : self
+    {
         $this->startTime = $startTime;
+    
+        return $this;
     }
 
     /**
      * @param Subjects[] $subjects
+     * @return Substitutions
      */
-    public function setSubjects($subjects) {
+    public function setSubjects(array $subjects) : self
+    {
         $this->subjects = $subjects;
+
+        return $this;
     }
 
     /**
      * @param Teachers[] $teachers
+     * @return Substitutions
      */
-    public function setTeachers($teachers) {
+    public function setTeachers(array $teachers) : self 
+    {
         $this->teachers = $teachers;
+
+        return $this;
     }
 
     /**
      * @param string $text
+     * @return Substitutions
      */
-    public function setText($text) {
+    public function setText(string $text) : self 
+    {
         $this->text = $text;
+
+        return $this;
     }
 
     /**
-     * @param $key
-     * @return Classes[]|Rooms[]|Subjects[]|Teachers[]
+     * @param string $key
+     * @return AbstractModel[]
+     * @throws ModelException
      */
-    public function get($key) {
+    public function get(string $key) : array {
         switch ($key) {
             case 'teachers':
                 return $this->teachers;
@@ -223,6 +253,8 @@ class Substitutions extends AbstractModel {
                 return $this->rooms;
             case 'subjects':
                 return $this->subjects;
+            case 'lesson':
+                return [$this->lesson];
             default:
                 throw new ModelException('array of objects' . $key . 'doesn\'t exist');
         }
@@ -230,10 +262,14 @@ class Substitutions extends AbstractModel {
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Substitutions
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

@@ -1,23 +1,7 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Types;
-
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,19 +11,20 @@ use Webuntis\Query\Query;
 use Webuntis\Types\Interfaces\TypeInterface;
 
 /**
- * Class ModelCollectionType
- * @package Webuntis\Types
+ * fetches different Models by the given ids and maps it to the given field
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class ModelCollectionType implements TypeInterface {
 
     /**
      * executes an certain parsing part
-     * @param AbstractModel $model
-     * @param $data
-     * @param $field
+     * @param object $model
+     * @param array $data
+     * @param array $field
      */
-    public static function execute(AbstractModel &$model, $data, $field) {
+    public static function execute(object &$model, array $data, array $field) : void 
+    {
         $fieldName = array_keys($field)[0];
         $fieldValues = $field[$fieldName];
         $query = new Query();
@@ -47,12 +32,12 @@ class ModelCollectionType implements TypeInterface {
         if (isset($data[$fieldValues['api']['name']])) {
             if (!empty($data[$fieldValues['api']['name']])) {
                 foreach ($data[$fieldValues['api']['name']] as $value) {
-                    if(isset($value[$fieldValues['api']['searchkey']])){
+                    if (isset($value[$fieldValues['api']['searchkey']])) {
                         $referencedModel = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $value[$fieldValues['api']['searchkey']]]);
-                    }else {
+                    } else {
                         $referencedModel = $query->get($fieldValues['model']['name'])->findBy([$fieldValues['model']['searchkey'] => $value]);
                     }
-                    if(isset($referencedModel[0])){
+                    if (isset($referencedModel[0])) {
                         $tmp[] = $referencedModel[0];
                     }
                 }
@@ -69,7 +54,8 @@ class ModelCollectionType implements TypeInterface {
      * @param $helper
      * @return array
      */
-    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) {
+    public static function generateTypeWithConsole(OutputInterface $output, InputInterface $input, $helper) : array 
+    {
         $question = new Question('API key for the data array: ');
         $name = $helper->ask($input, $output, $question);
         $question = new Question('key that should be searched for in the API data array: ');
@@ -95,7 +81,8 @@ class ModelCollectionType implements TypeInterface {
      * return name of the type
      * @return string
      */
-    public static function getName() {
+    public static function getName() : string 
+    {
         return 'modelCollection';
     }
 
@@ -103,7 +90,8 @@ class ModelCollectionType implements TypeInterface {
      * return type of the Type Class
      * @return string
      */
-    public static function getType() {
+    public static function getType() : string 
+    {
         return '\\' . AbstractModel::class . '[]';
     }
 }

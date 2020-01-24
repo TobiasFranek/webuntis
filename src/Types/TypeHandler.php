@@ -1,33 +1,20 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Types;
 
 
 use Webuntis\Configuration\YAMLConfiguration;
+use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Exceptions\TypeException;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Types\Interfaces\TypeInterface;
 
 /**
- * Class TypeHandler
- * @package Webuntis\Types
+ * manages the different default Types and also loads the custom ones.
+ * also executes the right Type by the given data field.
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class TypeHandler {
 
@@ -40,7 +27,9 @@ class TypeHandler {
         'modelCollection' => ModelCollectionType::class,
         'mergeTimeAndDate' => MergeTimeAndDateType::class,
         'model' => ModelType::class,
-        'date' => DateType::class
+        'date' => DateType::class,
+        'array' => ArrayType::class,
+        'bool' => BoolType::class
     ];
 
     public function __construct() {
@@ -50,7 +39,8 @@ class TypeHandler {
     /**
      * loads the additonal custom types
      */
-    private function loadCustomTypes() {
+    private function loadCustomTypes() : void 
+    {
         $additionalTypes = YAMLConfiguration::getAdditionalTypes();
         foreach ($additionalTypes as $key => $value) {
             self::$types[$key] = $value;
@@ -61,7 +51,8 @@ class TypeHandler {
      * returns all available Types
      * @return Interfaces\TypeInterface[]
      */
-    public static function getAllTypes() {
+    public static function getAllTypes() : array 
+    {
         $additionalTypes = YAMLConfiguration::getAdditionalTypes();
         foreach ($additionalTypes as $key => $value) {
             self::$types[$key] = $value;
@@ -72,15 +63,30 @@ class TypeHandler {
     /**
      * handles the parse request from the AbstractModel
      * @param AbstractModel $model
-     * @param $data
-     * @param $fields
+     * @param array $data
+     * @param array $fields
+     * @throws TypeException
      */
-    public function handle(AbstractModel &$model, $data, $fields) {
-        foreach($fields as $key => $value) {
+    public function handle(AbstractModel &$model, array $data, array $fields) : void 
+    {
+        $instanceConfig = WebuntisConfiguration::getConfigByModel($model);
+        foreach ($fields as $key => $value) {
             $implements = class_implements(self::$types[$value['type']]);
-            if(isset($implements[TypeInterface::class])) {
-                self::$types[$value['type']]::execute($model, $data, [$key => $value]);
-            }else {
+            if (isset($implements[TypeInterface::class])) {
+                if (($value['type'] == 'model' || $value['type'] == 'modelCollection') && (isset($instanceConfig['ignore_children']) && $instanceConfig['ignore_children'])) {
+                    if ($value['type'] == 'model') {
+                        if (is_numeric($data[$value['api']['name']]) && $data[$value['api']['name']] < PHP_INT_MAX) {
+                            self::$types['int']::execute($model, $data, [$key => $value]);
+                        } else {
+                            self::$types['string']::execute($model, $data, [$key => $value]);
+                        }
+                    } else {
+                        self::$types['array']::execute($model, $data, [$key => $value]);
+                    }
+                } else {
+                    self::$types[$value['type']]::execute($model, $data, [$key => $value]);
+                }
+            } else {
                 throw new TypeException('this type is not supported');
             }
         }

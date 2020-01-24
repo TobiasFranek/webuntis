@@ -1,30 +1,15 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis;
-
 
 use Webuntis\Models\Interfaces\ConfigurationModelInterface;
 
 /**
- * Class WebuntisFactory
- * @package Webuntis
+ * creates an Webuntis instance by the given context,
+ * which is defined by the model or config
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class WebuntisFactory {
 
@@ -49,26 +34,27 @@ class WebuntisFactory {
      * @param string $model
      * @return Webuntis
      */
-    public static function create($model = null) {
-        if($model !=  null) {
+    public static function create(string $model = null) : object 
+    {
+        if ($model) {
             $interfaces = class_implements($model);
 
             if (isset($interfaces[ConfigurationModelInterface::class])) {
                 $config = $model::CONFIG_NAME;
-            } else if (isset(static::$config['only_admin']) && static::$config['only_admin']){
+            } else if (isset(self::$config['only_admin']) && self::$config['only_admin']) {
                 $config = 'admin';
             } else {
                 $config = 'default';
             }
-        }else {
+        } else {
             $config = 'default';
         }
 
 
-        if (!isset(static::$instances[$config])) {
-            static::$instances[$config] = new Webuntis(static::$config[$config]);
+        if (!isset(self::$instances[$config])) {
+            self::$instances[$config] = new Webuntis(self::$config[$config], $config);
         }
-        return static::$instances[$config];
+        return self::$instances[$config];
     }
 
     /**
@@ -76,24 +62,27 @@ class WebuntisFactory {
      * @param string $name
      * @param array $config
      */
-    public static function addConfig($name, array $config) {
-        static::$config[$name] = $config;
+    public static function addConfig(string $name, array $config) : void 
+    {
+        self::$config[$name] = $config;
     }
 
     /**
      * set the current config new
      * @param array $config
      */
-    public static function setConfig(array $config) {
-        static::$config = $config;
+    public static function setConfig(array $config) : void 
+    {
+        self::$config = $config;
     }
 
     /**
      * return the current configuration
      * @return array
      */
-    public static function getConfig() {
-        return static::$config;
+    public static function getConfig() : array 
+    {
+        return self::$config;
     }
 
 }

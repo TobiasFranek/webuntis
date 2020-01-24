@@ -1,34 +1,22 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use JsonRPC\Client;
-use JsonRPC\HttpClient;
 use Webuntis\Models\AbstractModel;
 use Webuntis\Query\Query;
 use Webuntis\Repositories\Repository;
+use Webuntis\Security\WebuntisSecurityManager;
+use Webuntis\Configuration\WebuntisConfiguration;
+use Webuntis\Exceptions\ModelException;
+use Webuntis\Models\Account;
 
 /**
- * Class Webuntis
- * @package Webuntis
+ * Webuntis is the main instance which stores the client
+ * it also logs the user in and out
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Webuntis {
 
@@ -55,96 +43,71 @@ class Webuntis {
     /**
      * @var string
      */
-    private $session;
+    private $context;
+
+    /** 
+     * @var string
+     */
+    private $userRepo = null;
 
     /**
      * @var string
      */
-    const PATH_SCHEME = 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school=';
+    const DEFAULT_SECURITY_MANAGER = WebuntisSecurityManager::class;
 
     /**
-     * @var array
+     * @var string
      */
-    private $user = [];
+    const DEFAULT_PATH_SCHEME = 'https://{server}.webuntis.com/WebUntis/jsonrpc.do?school={school}';
 
     /**
      * Webuntis constructor.
      * @param array $config
+     * @param string $context
      */
-    public function __construct(array $config) {
-        $this->path = str_replace('{server}', $config['server'], static::PATH_SCHEME) . $config['school'];
+    public function __construct(array $config, string $context) {
 
-        $this->user['username'] = $config['username'];
-        $this->user['password'] = $config['password'];
+        $pathScheme = static::DEFAULT_PATH_SCHEME;
+        $this->context = $context;
 
-
-        $cache = Repository::getCache();
-        $generalConfig = WebuntisFactory::getConfig();
-        if ($cache && $cache->contains($config['username']) && (!isset($generalConfig['only_admin']) || $generalConfig['only_admin'] == false)) {
-            $data = $cache->fetch($config['username']);
-            $this->currentUserId = -1;
-            if(isset($data['userId'])){
-                $this->currentUserId = $cache->fetch($config['username'])['userId'];
-            }
-            $this->currentUserType = 0;
-            if(isset($data['userType'])) {
-                $this->currentUserType = $cache->fetch($config['username'])['userType'];
-            }
-            $this->session = $data['session'];
-            $httpClient = new HttpClient($this->path);
-            $newDate = $data['tokenCreatedAt']->add(new \DateInterval('PT1200000S'));
-            $httpClient->withCookies([
-                'JSESSIONID' => $this->session,
-                'Path' => '/WebUntis',
-                'Version' => '1',
-                'Max-Age' => 1209600,
-                'Expires' => $newDate->format('D, d-M-Y H:i:s ') . 'GMT'
-
-            ]);
-            $this->client = new Client($this->path, false, $httpClient);
-        }else {
-            $this->client = new Client($this->path);
-            $this->authenticate($this->user['username'], $this->user['password']);
+        if (isset($config['path_scheme'])) {
+            $pathScheme = $config['path_scheme'];
         }
-    }
+        $this->path = str_replace(['{server}', '{school}'], [$config['server'], $config['school']], $pathScheme);
 
-    /**
-     * authenticates the given user
-     * @param $username
-     * @param $password
-     * @return mixed
-     */
-    public function authenticate($username, $password) {
-        $result = $this->client->execute('authenticate', [$username, $password, rand(1, 4000)]);
+        $managerClass = static::DEFAULT_SECURITY_MANAGER;
 
-        $this->currentUserId = $result['personId'];
-        $this->currentUserType = $result['personType'];
+        if (isset(WebuntisConfiguration::getConfig()['security_manager'])) {
+            $managerClass = WebuntisConfiguration::getConfig()['security_manager'];
+        } 
+        $manager = new $managerClass($this->path, $config, $context);
 
-        $cache = Repository::getCache();
-        if ($cache) {
-            $cache->save($username, [
-                'session' => $result['sessionId'],
-                'userId' => $this->currentUserId,
-                'userType' => $this->currentUserType,
-                'tokenCreatedAt' => new \DateTime()
-            ], 86400);
+        $this->client = $manager->getClient();
+        $this->currentUserId = $manager->getCurrentUserId();
+        $this->currentUserType = $manager->getCurrentUserType();
+        if (isset($config['user_type']) && $config['user_type']) {
+            $this->userRepo = $config['user_type'];
         }
-
-        $this->session = $result['sessionId'];
-
-        return $result;
     }
 
     /**
      * return the User thats is currently logged in with this instance
-     * @return AbstractModel
+     * @return object
+     * @throws ModelException
      */
-    public function getCurrentUser() {
+    public function getCurrentUser() : object 
+    {
         $query = new Query();
-        if($this->currentUserType == 5) {
-            return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
-        }else if($this->currentUserType == 2) {
-            return $query->get('Teachers')->findBy(['id' => $this->currentUserId])[0];
+        if ($this->userRepo) {
+            return $query->get($this->userRepo)->findBy(['id' => $this->currentUserId])[0];
+        } else {
+            if ($this->currentUserType == 5) {
+                return $query->get('Students')->findBy(['id' => $this->currentUserId])[0];
+            } else if ($this->currentUserType == 2) {
+                return $query->get('Teachers')->findBy(['id' => $this->currentUserId])[0];
+            } else {
+                return new Account($this->currentUserId, $this->currentUserType);
+            }
         }
     }
 
@@ -152,31 +115,27 @@ class Webuntis {
      * return the current user type (5 = student, 2 = teacher)
      * @return int
      */
-    public function getCurrentUserType() {
+    public function getCurrentUserType() : int 
+    {
         return $this->currentUserType;
-    }
-
-    /**
-     * logs the user that is currently logged in in this instance out
-     */
-    public function logout() {
-        $this->client->execute('logout', []);
     }
 
     /**
      * returns the path
      * @return string
      */
-    public function getPath() {
+    public function getPath() : string 
+    {
         return $this->path;
     }
 
     /**
      * sets the path
      * @param string $path
-     * @return Webuntis $this
+     * @return Webuntis
      */
-    public function setPath($path) {
+    public function setPath(string $path) : self 
+    {
         $this->path = $path;
 
         return $this;
@@ -186,32 +145,38 @@ class Webuntis {
      * returns the client
      * @return Client
      */
-    public function getClient() {
+    public function getClient() : object 
+    {
         return $this->client;
     }
 
     /**
      * sets the client
      * @param Client $client
-     * @return Webuntis $this
+     * @return Webuntis
      */
-    public function setClient(Client $client) {
+    public function setClient(Client $client) : self 
+    {
         $this->client = $client;
 
         return $this;
     }
 
     /**
+     * return the user repo which will be used to map the user
      * @return string
      */
-    public function getSession() {
-        return $this->session;
+    public function getUserRepo() : string 
+    {
+        return $this->userRepo;
     }
 
     /**
-     * @param string $session
+     * return the context of the instance
+     * @return string
      */
-    public function setSession($session) {
-        $this->session = $session;
-    }
+    public function getContext() : string 
+    {
+        return $this->context;
+    }   
 }

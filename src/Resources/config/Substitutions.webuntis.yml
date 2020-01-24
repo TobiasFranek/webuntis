@@ -44,9 +44,12 @@ Webuntis\Models\Substitutions:
                 name: Rooms
                 searchkey: id
         lesson:
-            type: string
+            type: model
             api:
                 name: lsid
+            model:
+                name: Period
+                searchkey: id
         type:
             type: string
             api:
@@ -54,4 +57,4 @@ Webuntis\Models\Substitutions:
         text:
             type: string
             api:
-                name: text
+                name: txt

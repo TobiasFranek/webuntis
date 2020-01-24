@@ -1,26 +1,11 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
 
 namespace Webuntis\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -28,87 +13,106 @@ use Webuntis\Configuration\WebuntisConfiguration;
 use Webuntis\Configuration\YAMLConfiguration;
 use Webuntis\Models\Interfaces\CachableModelInterface;
 use Webuntis\Query\Query;
+use Webuntis\Security\WebuntisSecurityManager;
+use Webuntis\CacheBuilder\CacheBuilder;
+use Webuntis\CacheBuilder\Routines\MemcacheRoutine;
 
 /**
- * Class CacheBuildCommand
- * @package Webuntis\Command
+ * Command to build the Cache
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
-class CacheBuildCommand extends Command{
+class CacheBuildCommand extends Command {
     protected function configure() {
         $this->setName('webuntis:cache:build')
             ->setDescription('builds the webuntis cache')
             ->setHelp('This Command builds the webuntis cache')
-            ->addArgument('server', InputArgument::OPTIONAL, 'server whch the school is based in')
-            ->addArgument('school', InputArgument::OPTIONAL, 'school')
-            ->addArgument('adminusername', InputArgument::OPTIONAL, 'the admin username')
-            ->addArgument('adminpassword', InputArgument::OPTIONAL, 'the admin password')
-            ->addArgument('memcachedhost', InputArgument::OPTIONAL, 'the memcached host')
-            ->addArgument('memcachedport', InputArgument::OPTIONAL, 'the memcached port');
+            ->addArgument('config', InputArgument::OPTIONAL|InputArgument::IS_ARRAY, 'config of the whole server + username and password + caching')
+            ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL|InputOption::VALUE_IS_ARRAY, 'exclude models', [])
+            ->addOption('routine', 'r', InputOption::VALUE_OPTIONAL, 'caching routine', [])
+            ->addOption('securityManager', 's', InputOption::VALUE_OPTIONAL, 'Security Manager', []);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) {
-        if(!extension_loaded('memcached')) {
-            $output->writeln('<error>extension memcached not found</error>');
-            return;
+        $helper = $this->getHelper('question');
+        $excluded = $input->getOption('exclude');
+        $config = $input->getArgument('config');
+
+        $routine = MemcacheRoutine::class;
+        $customRoutine = $input->getOption('routine');
+        if ($customRoutine) {
+            $routine = $customRoutine;
         }
 
-        $helper = $this->getHelper('question');
-        if(!$server = $input->getArgument('server')) {
-            $question = new Question('Server of the school: ');
-            $server = $helper->ask($input, $output, $question);
+        $manager = WebuntisSecurityManager::class;
+        $customManager = $input->getOption('securityManager');
+        if ($customManager) {
+            $manager = $customManager;
         }
-        if(!$school = $input->getArgument('school')) {
-            $question = new Question('school: ');
-            $school = $helper->ask($input, $output, $question);
+
+        $cacheConfigMeta = $routine::getConfigMeta();
+        $managerConfigMeta = $manager::getConfigMeta();
+
+        $parsedConfig = [
+            'admin' => [],
+            'cache' => [],
+            'only_admin' => true
+        ];
+
+        foreach ($managerConfigMeta as $i => $value) {
+            if (isset($config[$i])) {
+                $parsedConfig['admin'][$value['name']] = $config[$i];
+            } else {
+                $question = new Question($value['question'], $value['default']);
+                $parsedConfig['admin'][$value['name']] = $helper->ask($input, $output, $question);
+            }
         }
-        $admin = [];
-        if(!$admin['username'] = $input->getArgument('adminusername')) {
-            $question = new Question('Admin username: ');
-            $admin['username'] = $helper->ask($input, $output, $question);
+
+        foreach ($cacheConfigMeta as $i => $value) {
+            if (isset($config[$i + count($managerConfigMeta)])) {
+                $parsedConfig['cache'][$value['name']] = $config[$i + count($managerConfigMeta)];
+            } else {
+                $question = new Question($value['question'], $value['default']);
+                $parsedConfig['cache'][$value['name']] = $helper->ask($input, $output, $question);
+            }
         }
-        if(!$admin['password'] = $input->getArgument('adminpassword')) {
-            $question = new Question('Admin password: ');
-            $admin['password'] = $helper->ask($input, $output, $question);
+        $cacheClearArgs = $parsedConfig['cache'];
+        $parsedConfig['cache']['type'] = $routine::getName();
+        if ($customRoutine) {
+            $parsedConfig['cache']['routine'][$routine::getName()] = $routine;
         }
-        if(!$memcachedPort = $input->getArgument('memcachedport')) {
-            $question = new Question('Memcached host[11211]: ', 11211);
-            $memcachedPort = $helper->ask($input, $output, $question);
-        }
-        if(!$memcachedHost = $input->getArgument('memcachedhost')) {
-            $question = new Question('Memcached host[localhost]: ', 'localhost');
-            $memcachedHost = $helper->ask($input, $output, $question);
+
+        if ($customManager) {
+            $parsedConfig['security_manager'] = $manager;
         }
         $command = $this->getApplication()->find('webuntis:cache:clear');
 
         $arguments = [
-            'host' => $memcachedHost,
-            'port' => $memcachedPort
+            'config' => array_values($cacheClearArgs),
         ];
+
+        if ($customRoutine) {
+            $arguments['--routine'] = $routine;
+        }
 
         $argumentInput = new ArrayInput($arguments);
 
-        $returnCode = $command->run($argumentInput, $output);
+        $command->run($argumentInput, $output);
 
-        $config = new WebuntisConfiguration([
-            'admin' => [
-                'server' => $server,
-                'school' => $school,
-                'username' => $admin['username'],
-                'password' => $admin['password']
-            ],
-            'only_admin' => true
-        ]);
+        new WebuntisConfiguration($parsedConfig);
 
         $query = new Query();
 
         $ymlConfig = new YAMLConfiguration();
 
         $models = $ymlConfig->getModels();
-
-        foreach($models as $key => $value) {
+        
+        foreach ($excluded as $modelName) {
+            unset($models[$modelName]);
+        }
+        foreach ($models as $key => $value) {
             $interfaces = class_implements($value);
-            if(isset($interfaces[CachableModelInterface::class]) || $key == 'Exams') {
+            if (isset($interfaces[CachableModelInterface::class]) || $key == 'Exams') {
                 $output->writeln($key);
                 $query->get($key)->findAll();
             }

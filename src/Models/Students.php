@@ -1,20 +1,5 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Models;
 
@@ -25,9 +10,9 @@ use Webuntis\Types\StringType;
 use JMS\Serializer\Annotation\SerializedName;
 
 /**
- * Class User
- * @package Webuntis\Models
+ * Students Model
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Students extends AbstractModel implements AdministrativeModelInterface, CachableModelInterface {
     /**
@@ -71,16 +56,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * return the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string 
+    {
         return $this->name;
     }
 
     /**
      * sets the name
      * @param string $name
-     * @return Students $this
+     * @return Students
      */
-    public function setName($name) {
+    public function setName(string $name) : self 
+    {
         $this->name = $name;
 
         return $this;
@@ -90,16 +77,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * return the firstName
      * @return string
      */
-    public function getFirstName() {
+    public function getFirstName() : string 
+    {
         return $this->firstName;
     }
 
     /**
      * set the firstName
      * @param string $firstName
-     * @return Students $this
+     * @return Students
      */
-    public function setFirstName($firstName) {
+    public function setFirstName(string $firstName) : self 
+    {
         $this->firstName = $firstName;
 
         return $this;
@@ -109,16 +98,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * get the lastName
      * @return string
      */
-    public function getLastName() {
+    public function getLastName() : string 
+    {
         return $this->lastName;
     }
 
     /**
      * sets the lastName
      * @param string $lastName
-     * @return Students $this
+     * @return Students 
      */
-    public function setLastName($lastName) {
+    public function setLastName(string $lastName) : self
+    {
         $this->lastName = $lastName;
 
         return $this;
@@ -128,16 +119,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * returns the gender
      * @return string
      */
-    public function getGender() {
+    public function getGender() : string 
+    {
         return $this->gender;
     }
 
     /**
      * sets the gender
      * @param string $gender
-     * @return Students $this
+     * @return Students
      */
-    public function setGender($gender) {
+    public function setGender(string $gender) : self 
+    {
         $this->gender = $gender;
 
         return $this;
@@ -147,16 +140,18 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
      * returns the key
      * @return string
      */
-    public function getKey() {
+    public function getKey() : string 
+    {
         return $this->key;
     }
 
     /**
      * sets the key
      * @param string $key
-     * @return Students $this
+     * @return Students
      */
-    public function setKey($key) {
+    public function setKey(string $key) : self 
+    {
         $this->key = $key;
 
         return $this;
@@ -164,10 +159,13 @@ class Students extends AbstractModel implements AdministrativeModelInterface, Ca
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Students
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self {
         $this->$field = $value;
+
+        return $this;
     }
 }

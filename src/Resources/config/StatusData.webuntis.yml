@@ -1,0 +1,11 @@
+Webuntis\Models\StatusData:
+    repositoryClass: Webuntis\Repositories\StatusDataRepository
+    fields:
+        lessonTypes:
+            type: array
+            api:
+                name: lstypes
+        codes:
+            type: array
+            api:
+                name: codes

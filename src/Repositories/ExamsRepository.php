@@ -1,20 +1,5 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
 
 namespace Webuntis\Repositories;
 
@@ -22,31 +7,31 @@ use Webuntis\Models\AbstractModel;
 use Webuntis\Models\Exams;
 use Webuntis\Models\ExamTypes;
 use Webuntis\Query\Query;
-use Webuntis\Util\ExecutionHandler;
+use Webuntis\Handler\ExecutionHandler;
 
 /**
- * Class ExamsRepository
- * @package Webuntis\Repositories
+ * ExamsRepository
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class ExamsRepository extends Repository {
 
     /**
      * @param array $sort
-     * @param null $limit
+     * @param int $limit
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [], $limit = null) {
+    public function findAll(array $sort = [], ?int $limit = null) : array
+    {
         $query = new Query();
-        $cache = self::getCache();
-        if ($cache && $cache->contains('Exams')) {
-            $data = $cache->fetch('Exams');
+        if ($this->cache && $this->cache->contains('Exams')) {
+            $data = $this->cache->fetch('Exams');
         } else {
-            $examTypes = ExecutionHandler::execute(new Repository(ExamTypes::class), []);
+            $examTypes = $this->executionHandler->execute(new Repository(ExamTypes::class), []);
             $exams = [];
-            $schoolyear = $query->get('Schoolyear')->findAll();
+            $schoolyear = $query->get('Schoolyears')->getCurrentSchoolyear();
             foreach ($examTypes as $value) {
-                $exams[] = ExecutionHandler::execute($this, ['examTypeId' => $value->serialize()['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
+                $exams[] = $this->executionHandler->execute($this, ['examTypeId' => $value->serialize()['id'], 'startDate' => date_format(new \DateTime(), 'Ymd'), 'endDate' => date_format($schoolyear->getEndDate(), 'Ymd')]);
             }
             $result = [];
             foreach ($exams as $value) {
@@ -63,11 +48,11 @@ class ExamsRepository extends Repository {
             } else {
                 $data = $result;
             }
-            if ($limit != null) {
+            if ($limit !== null) {
                 return array_slice($data, 0, $limit);
             }
-            if ($cache) {
-                $cache->save('Exams', $data, 604800);
+            if ($this->cache) {
+                $this->cache->save('Exams', $data, 604800);
             }
         }
 

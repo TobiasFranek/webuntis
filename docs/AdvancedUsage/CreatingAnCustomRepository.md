@@ -45,7 +45,7 @@ to execute your own api request in you custom Repository is pretty easy.
 just write this:
 
 ```php
-$result = ExecutionHandler::execute($this, []);
+$result = $this->executionHandler->execute($this, []);
 ```
 
 this method returns the result of the api request as an array of the parsed objects.
@@ -65,10 +65,4 @@ repositoryClass: Your\Path\Repository
 
 ## Caching 
 
-If you want to cache data in your repository. To get the Memcached Service call:
-
-```php
-self::getCache();
-```
-
-this will return an doctrine MemcachedCache object. How to use this MemcachedCache object is documented [here](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/caching.html).
+See [Caching](Caching.md)

@@ -1,29 +1,15 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
+declare(strict_types=1);
+
 namespace Webuntis\Models;
 
 use Webuntis\Models\Interfaces\CachableModelInterface;
 use JMS\Serializer\Annotation\SerializedName;
 
 /**
- * Class Classes
- * @package Webuntis\Models
+ * Classes Model
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Classes extends AbstractModel implements CachableModelInterface {
 
@@ -52,7 +38,8 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * returns the name
      * @return string
      */
-    public function getName() {
+    public function getName() : string
+    {
         return $this->name;
     }
 
@@ -61,7 +48,8 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * @param string $name
      * @return Classes $this
      */
-    public function setName($name) {
+    public function setName(string $name) : self
+    {
         $this->name = $name;
 
         return $this;
@@ -71,7 +59,8 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * returns the fullName
      * @return string
      */
-    public function getFullName() {
+    public function getFullName() : string 
+    {
         return $this->fullName;
     }
 
@@ -80,7 +69,8 @@ class Classes extends AbstractModel implements CachableModelInterface {
      * @param string $fullName
      * @return Classes $this
      */
-    public function setFullName($fullName) {
+    public function setFullName(string $fullName) : self
+    {
         $this->fullName = $fullName;
 
         return $this;
@@ -88,10 +78,14 @@ class Classes extends AbstractModel implements CachableModelInterface {
 
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Classes
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }

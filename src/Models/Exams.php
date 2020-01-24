@@ -1,33 +1,18 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
-
+declare(strict_types=1);
 
 namespace Webuntis\Models;
 
 use Webuntis\Exceptions\ModelException;
 use Webuntis\Models\Interfaces\AdministrativeModelInterface;
 use Webuntis\Query\Query;
+use Webuntis\Models\Interfaces\ModelInterface;
 use JMS\Serializer\Annotation\SerializedName;
 
 /**
- * Class Exams
- * @package Webuntis\Models
+ * Exams Model
  * @author Tobias Franek <tobias.franek@gmail.com>
+ * @license MIT
  */
 class Exams extends AbstractModel implements AdministrativeModelInterface {
 
@@ -47,9 +32,9 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     private $students = [];
 
     /**
-     * @var Subjects[]
+     * @var Subjects
      */
-    private $subject = [];
+    private $subject;
 
     /**
      * @SerializedName("startDate")
@@ -71,93 +56,125 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
     /**
      * @return Classes[]
      */
-    public function getClasses() {
+    public function getClasses() : array 
+    {
         return $this->classes;
     }
 
     /**
      * @return \DateTime
      */
-    public function getEndDate() {
+    public function getEndDate() : \DateTime
+    {
         return $this->endDate;
     }
 
     /**
      * @return Students[]
      */
-    public function getStudents() {
+    public function getStudents() : array 
+    {
         return $this->students;
     }
 
     /**
      * @return \DateTime
      */
-    public function getStartDate() {
+    public function getStartDate() : \DateTime 
+    {
         return $this->startDate;
     }
 
     /**
      * @return Teachers[]
      */
-    public function getTeachers() {
+    public function getTeachers() : array 
+    {
         return $this->teachers;
     }
 
     /**
-     * @return Subjects[]
+     * @return Subjects
      */
-    public function getSubject() {
+    public function getSubject() : Subjects
+    {
         return $this->subject;
     }
 
     /**
      * @param Classes[] $classes
+     * @return Exams
      */
-    public function setClasses($classes) {
+    public function setClasses(array $classes) : self 
+    {
         $this->classes = $classes;
+
+        return $this;
     }
 
     /**
      * @param \DateTime $endDate
+     * @return Exams
      */
-    public function setEndDate($endDate) {
+    public function setEndDate(\DateTime $endDate) : self 
+    {
         $this->endDate = $endDate;
+        
+        return $this; 
     }
 
     /**
      * @param \DateTime $startDate
+     * @return Exams
      */
-    public function setStartDate($startDate) {
+    public function setStartDate(\DateTime $startDate) : self 
+    {
         $this->startDate = $startDate;
+
+        return $this;
     }
 
     /**
      * @param Students[] $students
+     * @return Exams
      */
-    public function setStudents($students) {
+    public function setStudents(array $students) : self 
+    {
         $this->students = $students;
+    
+        return $this;
     }
 
     /**
-     * @param Subjects[] $subject
+     * @param Subjects $subject
+     * @return Exams
      */
-    public function setSubject($subject) {
+    public function setSubject(Subjects $subject) : self 
+    {
         $this->subject = $subject;
+    
+        return $this;
     }
 
     /**
      * @param Teachers[] $teachers
+     * @return Exams
      */
-    public function setTeachers($teachers) {
+    public function setTeachers(array $teachers) : self 
+    {
         $this->teachers = $teachers;
+    
+        return $this;
     }
 
     /**
      * return the children by given id
-     * @param $key
+     * @param string $key
      * @return AbstractModel[]
+     * @throws ModelException
      */
-    public function get($key) {
+    public function get(string $key) : array
+    {
         switch ($key) {
             case 'teachers':
                 return $this->teachers;
@@ -166,17 +183,21 @@ class Exams extends AbstractModel implements AdministrativeModelInterface {
             case 'classes':
                 return $this->classes;
             case 'subject':
-                return $this->subject;
+                return [$this->subject];
             default:
                 throw new ModelException('array of objects' . $key . 'doesn\'t exist');
         }
     }
     /**
      * sets an given field
-     * @param $field
-     * @param $value
+     * @param string $field
+     * @param mixed $value
+     * @return Exams
      */
-    public function set($field, $value) {
+    public function set(string $field, $value) : self 
+    {
         $this->$field = $value;
+
+        return $this;
     }
 }
