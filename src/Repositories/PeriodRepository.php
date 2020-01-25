@@ -57,13 +57,13 @@ class PeriodRepository extends Repository {
      * @param string $endDate
      * @return AbstractModel[]
      */
-    public function findAll(array $sort = [], int $limit = null, array $options = []) : array 
+    public function findAll(array $sort = [], int $limit = null, array $options = []) : array
     {
-        if (isset($options['options']['element']['type'])) {
+        if (!isset($options['options']['element']['type'])) {
             $options['options']['element']['type'] = $this->instance->getCurrentUserType();
         }
-        if (isset($options['options']['element']['id'])) {
-            $options['options']['element']['type'] = $this->instance->getCurrentUser()->getId();
+        if (!isset($options['options']['element']['id'])) {
+            $options['options']['element']['id'] = $this->instance->getCurrentUser()->getId();
         }
         $data = $this->executionHandler->execute($this, $options);
 
